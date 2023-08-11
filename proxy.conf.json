@@ -1,6 +1,6 @@
 {
     "/ws/*": {
-        "target": "http://localhost/gis/",
+        "target": "http://localhost/opis/",
         "secure": false,
         "logLevel": "debug"
     }

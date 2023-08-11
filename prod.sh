@@ -5,6 +5,6 @@ NC='\033[0m'
 
 printf "${GR}Vytvarim release npm run build:prod ${NC}";
 
-rm -rf ./app/*
+rm -rf ./dist/*
 
 npm run build2

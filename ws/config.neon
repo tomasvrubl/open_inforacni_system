@@ -1,25 +1,25 @@
 parameters:
     dibi:
         host: localhost
-        username: uzivatel
-        password: heslo
-        database: informacnisys
+        username: opisuser
+        password: Op1SuS3r*227*12
+        database: opis
         driver: postgre
     karat:
         host: 192.168.1.8
         username: karatlogin
         password: OIz24QS3so**fASQfdsaD4Bg*
-        database: KARAT_MASTER
+        database: KARAT_DATABAZE
         options:
             CharacterSet: UTF-8
             Encrypt: false
             TrustServerCertificate: true
         driver: sqlsrv
     posta:
-        host: 192.168.1.121
-        username: postausername
+        host: localhost
+        username: postauzivatel
         password: heslo
-        database: postatest
+        database: posta
         driver: mysqli
 
 services:

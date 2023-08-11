@@ -22,7 +22,7 @@ export class ObjMaterialPolList extends BaseListComponent  {
 
         this.tab.header = [
             { label: 'ID', clmn: 'id', hidden: true },
-            { label: 'Obj. ID', clmn: 'obj_mat_id'},
+            { label: 'Obj. ID', clmn: 'obj_mat_id' },
             { label: 'Datum obj.', clmn: 'm_datum_obj', type: 3 },            
             { label: 'Položka', clmn: 'popis', fulltext: true},
             { label: 'Množství', clmn: 'mnozstvi', type: 1},
@@ -30,10 +30,10 @@ export class ObjMaterialPolList extends BaseListComponent  {
             { label: 'Cena', clmn: 'predpokl_cena', type: 1},
             { label: 'Obj.stav', clmn: 'o_stav', type: 6, enum: [ { val: 0,  lbl: 'Vytvořen'}, { val: 1,  lbl: 'Čeká na schválení'}, { val: 2,  lbl: 'Odsouhlašen'}, { val: 3,  lbl: 'Objednáno'}] },
             { label: 'Objednáno', clmn: 'p_objednano', type: 2, css_class: 'center', enum: [ { val: false,  lbl: 'Ne'}, { val: true,  lbl: 'Ano'} ] },
-            { label: 'Objednava', clmn: 'm_objednal' },
-            { label: 'Středisko', clmn: 'stredisko'},
-            { label: 'Firma', clmn: 'firma'},
-            { label: 'Poznámka', clmn: 'poznamka'},
+            { label: 'Objednava', clmn: 'm_objednal', fulltext: true  },
+            { label: 'Středisko', clmn: 'stredisko', fulltext: true },
+            { label: 'Firma', clmn: 'firma', fulltext: true },
+            { label: 'Poznámka', clmn: 'poznamka', fulltext: true },
             { label: 'Změněno', clmn: 'zmeneno', type: 4 },
             { label: 'Změnil', clmn: 'zmenil' }
         ];

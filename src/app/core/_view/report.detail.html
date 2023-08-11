@@ -31,14 +31,14 @@
       
         <div *ngIf="_state == 0" class="mw-uploader"  mwDragDrop (fileDropped)="onFileDropped($event)" >
             <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event.target.files)" />
-            <img src="assets/img/ic-upload-file.svg" alt="">
+            <img src="assets/ic-upload-file.svg" alt="">
             <h3>Přetáhni sem soubor</h3>
             <h3>nebo</h3>
             <label for="fileDropRef">Vložit soubor ...</label>
         </div>
         <div *ngIf="_state == 1" class="report">    
             <div class="single-file" *ngFor="let file of files; let i = index">
-                <img src="assets/img/ic-file.svg" width="25px" alt="file">
+                <img src="assets/ic-file.svg" width="25px" alt="file">
                 <div class="info">
                     <h4 class="name">
                         {{ file?.name }}
@@ -54,7 +54,7 @@
         </div>        
         <div *ngIf="_state == 2" class="report">    
             <div class="single-file">
-                <img src="assets/img/ic-file.svg" width="25px" alt="file">
+                <img src="assets/ic-file.svg" width="25px" alt="file">
                 <a [href]="_det.url"> {{ _det.url }}</a>
                 <button (click)="clearFile()" class="btn btn-primary"><i class="fa fa-refresh"></i>Změnit soubor</button>
             </div>    
