@@ -1,0 +1,42 @@
+<mw-alert-message [response]="response"></mw-alert-message>       
+<mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+<div class='detail'> 
+    <legend *ngIf="_rec.id < 1"><i class="fa fa-plus"></i>Nová kategorie</legend>
+    <legend *ngIf="_rec.id > -1"><i class="fa fa-edit"></i>Editace</legend>
+      <div class="form-buttons">
+      <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>
+      <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!jednotkaForm.form.valid"><i class="fa fa-save"></i>Uložit záznam / změny</button>
+      <button *ngIf="(_rec.id > -1)" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit záznam</button>
+    </div>    
+    <form #jednotkaForm="ngForm" >
+        <ul class="form-fields">
+            <li>
+                <label for="kod" class="control-label">Kód</label>
+                <div>
+                  <input [(ngModel)]="_rec.kod" class="form-control" id="kod" name='kod' placeholder="Zadej kód pracovní katerogire" type="text" required #kod="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                  <div *ngIf="kod.errors && (kod.dirty || kod.touched)" class="alert alert-danger">   
+                      <div [hidden]="!kod.errors.required">
+                              Zadej kód kategorie.
+                      </div>
+                  </div>
+                </div>  
+            </li> 
+            <li>
+              <label for="nazev" class="control-label">Název</label>
+              <div>
+                  <input [(ngModel)]="_rec.nazev" class="form-control" id="nazev" name='nazev' placeholder="Zadej název pracovní kategorie" type="text" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                  <div *ngIf="nazev.errors && (nazev.dirty || nazev.touched)" class="alert alert-danger">   
+                      <div [hidden]="!nazev.errors.required">
+                              Zadej název kategorie
+                      </div>
+                  </div>
+              </div>  
+            </li>              
+        </ul>         
+        <mw-changed [zmeneno]="_rec.zmeneno" [zmenil]="_rec.zmenil"></mw-changed>            
+    </form>   
+</div>      
+
+
+
+

@@ -1,0 +1,72 @@
+<div class="terminal-pnl pnl-smena">
+    <div class='detail'> 
+        <legend *ngIf="_rec.id < 1"><i class="fa fa-plus"></i>Nový zápis</legend>
+        <legend *ngIf="_rec.id > -1"><i class="fa fa-edit"></i>Editace záznamu    <button class="btn btn-default" (click)="novyZaznam()"><i class="fa fa-plus"></i>Nový záznam</button></legend>
+        
+        <form>
+            <ul class="form-fields">
+              <li>
+                <label class="control-label">Datum</label> 
+                <mw-date [(datum)]="_rec.datum"></mw-date>    
+              </li>
+              <li>
+                <label class="control-label">Směna</label> 
+                <mw-dropdown [items]="_smena" [(value)]="_rec.kalendar_smena_id" #smena></mw-dropdown>
+                <div *ngIf="!validForm.kalendar" class="alert alert-danger">   
+                  <div>
+                      Vyber směnu
+                  </div>
+                </div>
+              </li>
+              <li>
+                <label for="odv_mnozstvi" class="control-label">Počet vyrobených forem</label>
+                  <div style="width: 150px">
+                    <input [(ngModel)]="_rec.odv_mnozstvi" class="form-control" id="odv_mnozstvi" name='odv_mnozstvi' placeholder="Zadej odvedené množství " type="text" onfocus="this.select()">
+                  </div>  
+              </li>
+              <li>
+                <label for="n_kod" class="control-label">Utrženo forem</label>
+                <div style="width: 150px">  
+                    <input [(ngModel)]="_rec.utrz_forem" class="form-control" id="utrz_forem" name='utrz_forem' placeholder="Zadej počet utržených forem pokud se jedná o linku" type="text" onfocus="this.select()">
+                  </div>  
+              </li>    
+              <li class="section">Pracovní zařazení</li>      
+              <li style="display: block; width: 100%">                
+                <div *ngIf="!validForm.zarazeni" class="alert alert-danger">   
+                <div>
+                    Nejsou zadány osoby k daným pracovním pozicím. Alespoň 1 pozice musí být zadána.
+                </div>
+              </div></li>
+              <li class="clmn2" *ngFor="let z of _rec.polozky">
+                  <label>{{z.pracovni_zarazeni}}</label>
+                  <mw-choose [label]="'Osoba'" 
+                          [txtPlaceholder]="'Vyber osobu'"
+                          [txtValue]="z.osoba_oscislo"
+                          [txtLabel]="z.osoba"
+                          [TypeOfList]="_vyrOsobyList"
+                          [extraFilter]="_extraFilter"
+                          (onSelectedEvent)="onZarazeniChanged($event, z)">
+                  </mw-choose> 
+              </li>
+              <li class="clmn">
+                <label for="n_poznamka" class="control-label">Poznámka </label>
+                <div>
+                    <textarea [(ngModel)]="_rec.poznamka" id="n_poznamka" name='poznamka' class="form-control" style="min-height: 140px"></textarea>              
+                </div>     
+              </li> 
+            </ul>
+        </form>
+
+    </div>
+
+</div>
+<div class="terminal-pnl-bottom">
+    <div style="display: inline-block;" class="calendar">
+    </div>
+    <div class="osoba">
+        {{prihlasenaOsoba()}}
+    </div>
+    <div class="right">        
+        <button type="button" class="btn btn-default send" (click)="sendData()"><i class="fa fa-paper-plane"></i> Odeslat data</button>
+    </div>
+</div>

@@ -1,0 +1,85 @@
+
+<mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+  <div class='detail'> 
+      <legend *ngIf="_rec.id < 1"><i class="fa fa-plus"></i>Nová zakázka</legend>
+      <legend *ngIf="_rec.id > -1"><i class="fa fa-edit"></i>Úprava zakázky</legend>
+        <div class="form-buttons">
+        <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>
+        <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!zakForm.form.valid"><i class="fa fa-save"></i>Uložit záznam / změny</button>
+        <button *ngIf="(_rec.id > -1)" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit záznam</button>
+      </div>
+      <mw-alert-message [response]="response"></mw-alert-message>       
+      <form #zakForm="ngForm">
+          <ul class="form-fields">
+            <li style='display: block; width: 100%'>
+                <label for="n_id" class="control-label" style="display: inline-block;">ID : </label>{{_rec.id}}
+            </li>
+            <li>
+                <label for="n_vyrobek" class="control-label">Číslo výrobku</label>
+                <div>
+                    <input [(ngModel)]="_rec.tp_vyrobek" class="form-control" id="vyrobek" name='n_vyrobek' placeholder="Zadej číslo výrobku" type="text" required #vyrobek="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                    <div *ngIf="vyrobek.errors && (vyrobek.dirty || vyrobek.touched)" class="alert alert-danger">   
+                        <div [hidden]="!vyrobek.errors.required">
+                            Zadej číslo výrobku
+                        </div>
+                    </div>
+                </div>  
+            </li>              
+            <li>
+                <label for="n_nazev" class="control-label">Název</label>
+                <div>
+                    <input [(ngModel)]="_rec.nazev" class="form-control" id="n_nazev" name='nazev' placeholder="Zadej název Středisko" type="text" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                    <div *ngIf="nazev.errors && (nazev.dirty || nazev.touched)" class="alert alert-danger">   
+                        <div [hidden]="!nazev.errors.required">
+                               Zadej název zakázky
+                         </div>
+                    </div>
+                </div>  
+            </li>            
+            <li>
+                <label for="datum_od" class="control-label">Začátek</label>
+                
+            </li>
+            <li>
+                <label for="datum_do" class="control-label">Konec</label>
+                
+            </li>
+            <li>
+                <label for="n_planks" class="control-label">Plán v ks</label>
+                <div>
+                    <input [(ngModel)]="_rec.plan_ks" class="form-control" id="n_planks" name='n_planks' placeholder="Zadej plán v ks" type="text" onfocus="this.select()">
+                </div>  
+            </li>                                                    
+            <li>
+                <label for="n_kod" class="control-label">Kód</label>
+                <div>
+                    <input [(ngModel)]="_rec.kod" class="form-control" id="kod" name='kod' placeholder="Zadej kód/skupina" type="text" onfocus="this.select()">
+                </div>  
+            </li>                            
+            <li>
+                  <label for="n_kod" class="control-label">Externí kód</label>
+                  <div>
+                    <input [(ngModel)]="_rec.extern_kod" class="form-control" id="extern_kod" name='extern_kod' placeholder="Zadej externí kód" type="text" onfocus="this.select()">
+                  </div>  
+            </li>              
+            <li>
+                <label for="platnost" class="control-label">Ukončen</label>
+                <div  class="col">
+                    <input [checked]="_rec.ukoncen" (change)="_rec.ukoncen = !_rec.ukoncen;" type="checkbox" />                              
+                </div>
+            </li>              
+            <li class="clmn">
+                <label for="n_poznamka" class="control-label">Poznámka</label>
+                <div>
+                    <textarea [(ngModel)]="_rec.poznamka" id="n_poznamka" name='poznamka'  class="form-control" style="min-height: 140px"></textarea>    
+                </div>     
+            </li>
+              
+          </ul>         
+          <mw-changed [zmeneno]="_rec.zmeneno" [zmenil]="_rec.zmenil"></mw-changed>            
+          </form> 
+  </div>      
+
+
+
+

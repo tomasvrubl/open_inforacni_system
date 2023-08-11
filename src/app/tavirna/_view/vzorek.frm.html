@@ -1,0 +1,21 @@
+<div class="page-header">
+    <h1>Seznam laboratorních měření<span *ngIf="isSelector"> - vyber vzorek</span></h1>
+    <small>Laboratorní měření taveb.</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/laborator/vzorek/list"><i class='fa fa-align-justify'></i>Seznam vzorků</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/laborator/vzorek/-1"><i class='fa fa-plus'></i>Přidat vzorek</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/laborator/vzorek/print" ><i class='fa fa-print'></i>Tiskové sestavy</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body" *ngIf="!_showSestavy">
+        <lab-vzorek-list *ngIf="_showList" [urlrec]="urlrec" [isPrint]="true"></lab-vzorek-list>
+        <lab-vzorek-detail *ngIf="_showDetail" [detail]="detail" [urlrec]="urlrec" [isPrint]="true" ></lab-vzorek-detail>
+    </div>   
+    <div class="pnl-body" *ngIf="_showSestavy">
+        <report-frm  [urlrec]="urlrec"></report-frm>
+    </div>         
+</div>
+

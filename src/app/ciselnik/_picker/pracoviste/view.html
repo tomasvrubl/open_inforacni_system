@@ -1,0 +1,12 @@
+<label for="pracoviste" class="control-label">Středisko</label>
+<div  class="col">
+    <div style="display: inline-block;">
+       <input [(ngModel)]="kod" class="form-control" id="pracoviste_kod" name='pracoviste_kod' placeholder="Zadej kód Středisko" type="text" onfocus="this.select()" style="display: inline-block; width: 120px;">                   
+       <button (click)="showPracovisteList = true" style="display:inline-block">...</button>     
+    </div>                    
+   <label style="display: inline-block;">{{nazev}}</label>                    
+</div>
+
+<mw-popwnd *ngIf="showPracovisteList" [title]="'Vyber Středisko'" (onCancel)="showPracovisteList=false">
+   <!--<pracoviste-list [isSelector]="true" (onSelectedPartner)="onPracovisteChanged($event)"></pracoviste-list>-->
+</mw-popwnd> 

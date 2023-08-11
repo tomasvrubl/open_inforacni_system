@@ -1,0 +1,28 @@
+<detail-form *ngIf="_rec" [detail]="this" [prilohy]="false"  [ButtonSave]="_rec.typ != 1" [ButtonDelete]="_rec.typ != 1">
+    <form  #detForm="ngForm">
+        <div>
+            <ul class="form-fields">
+                  <li>
+                    <label for="n_nazev" class="control-label">E-mailová adresa</label>
+                    <div>
+                      <input [(ngModel)]="_rec.email" class="form-control" id="n_nazev" name='nazev' placeholder="jmeno.prijmeni@domena.cz" type="text" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                      <div *ngIf="nazev.errors && (nazev.dirty || nazev.touched)" class="alert alert-danger">   
+                          <div [hidden]="!nazev.errors.required">
+                                Zadej e-mailovou adresu
+                          </div>
+                      </div>
+                    </div>  
+                </li>
+                <li>
+                    <label for="f_heslo" class="control-label">Heslo (min. 8)</label>
+                    <input type="password"  [(ngModel)]="_rec.password" class="form-control" id="f_heslo" name='f_heslo' placeholder="heslo min. 8 znaků" onfocus="this.select()">               
+                </li>
+                <li>
+                    <label for="domena" class="control-label">Doména</label> 
+                    <mw-dropdown [items]="_domeny" [(value)]="_rec.domain_id"></mw-dropdown>
+                </li>
+                </ul>
+                <mw-changed [zmeneno]="_rec.zmeneno" [zmenil]="_rec.zmenil"></mw-changed>            
+        </div>
+    </form>
+</detail-form>

@@ -1,0 +1,22 @@
+<div class="page-header">
+    <ng-container *ngIf="!_showSestavy">
+        <h1>Report jízd</h1>
+        <small>Měsíční výkazy jízd firemních vozů.</small>
+    </ng-container>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/cestak/auto/report/list"><i class='fa fa-align-justify'></i>Seznam výkazů</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/cestak/auto/report/-1"><i class='fa fa-plus'></i>Přidat výkaz</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/cestak/auto/report/print" ><i class='fa fa-print'></i>Tiskové sestavy</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body" *ngIf="!_showSestavy">        
+        <auto-report-list *ngIf="_showList" [urlrec]="urlrec" [isPrint]="true"></auto-report-list>     
+        <auto-report-detail *ngIf="_showDetail" [detail]="detail" [urlrec]="urlrec"></auto-report-detail>     
+    </div>        
+    <div class="pnl-body" *ngIf="_showSestavy">
+        <report-frm  [urlrec]="urlrec"></report-frm>
+    </div>        
+</div>

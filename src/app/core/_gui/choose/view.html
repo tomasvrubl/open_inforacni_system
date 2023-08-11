@@ -1,0 +1,13 @@
+<div class="mw-choose" [attr.id]="id">    
+    <div>
+        <div style="display: inline-block;">
+              <input [readonly] = "readonly" [(ngModel)]="txtValue" autocomplete="off" class="form-control txtvalue" [attr.id]="id+'input'" placeholder="{{txtPlaceholder}}" type="text" onfocus="this.select()" (keyup)="onKey($event.target.value)" style="display: inline-block; width: calc(100% - 35px);">
+              <button [class.hidden]="readonly" (click)="showBrowser()" class="chooser">...</button>     
+        </div>
+        <a *ngIf="urlDetail" class="nazev" (click)="navigateDetail()">{{txtLabel}}&nbsp;<i class="fa fa-link"></i></a>
+        <label *ngIf="!urlDetail" class="nazev">{{txtLabel}}</label>      
+    </div>
+    <mw-popwnd [class.mw-popup-hidden]="!showPopup" class="pop-wnd" [title]="label" (onCancel)="showPopup=false; _isToggle=false"  [id]="id+'-pop'" >    
+        <ng-template adHost></ng-template>       
+    </mw-popwnd> 
+</div>

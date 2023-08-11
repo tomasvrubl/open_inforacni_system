@@ -1,0 +1,23 @@
+<div class="page-header">
+    <h1>Uživatelské role, oprávnění</h1>
+    <small>Seznam uživatelských rolí. Jsou to oprávnění, které lze přiřadit uživatelům.<br/>
+           Role představuje formulář v JS ke kterému se nastavují oprávnění jednotlivým ůživatelům. 
+           Role jsou nastavovány také na menu (url odkazy k JS třídám).     
+    </small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">            
+            <button type="button" class="btn btn-default active" routerLink="/admin/role/role/list"><i class='fa fa-align-justify'></i>Seznam rolí</button>
+            <button type="button" class="btn btn-default" routerLink="/admin/role/role/-1"><i class='fa fa-plus'></i>Přidat roli</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <role-list *ngIf="role == null"></role-list>
+        <role-detail *ngIf="role" [detail]="role" ></role-detail>
+    </div>        
+</div>
+
+
+
+

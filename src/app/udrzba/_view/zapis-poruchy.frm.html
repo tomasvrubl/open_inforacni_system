@@ -1,0 +1,22 @@
+<div class="page-header">
+    <ng-container  *ngIf="!_showSestavy">
+        <h1>Seznam hlášení poruch<span *ngIf="isSelector"> - vyber ze seznamu</span></h1>
+        <small>Seznam poruch, které jsou nahlášeny</small>
+    </ng-container>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/udrzba/hlaseni-poruchy/list"><i class='fa fa-align-justify'></i>Seznam hlášených poruch</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/udrzba/hlaseni-poruchy/-1"><i class='fa fa-plus'></i>Přidat hlášení</button>     
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/udrzba/hlaseni-poruchy/print" ><i class='fa fa-print'></i>Tiskové sestavy</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body" *ngIf="!_showSestavy">
+        <zapis-poruchy-list *ngIf="_showList" [urlrec]="urlrec" [isPrint]="true"></zapis-poruchy-list>
+        <zapis-poruchy-detail *ngIf="_showDetail" [detail]="detail" [urlrec]="urlrec" ></zapis-poruchy-detail>
+    </div>        
+    <div class="pnl-body" *ngIf="_showSestavy">
+        <report-frm  [urlrec]="urlrec"></report-frm>
+    </div>    
+</div>

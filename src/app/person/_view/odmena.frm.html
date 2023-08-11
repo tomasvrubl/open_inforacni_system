@@ -1,0 +1,24 @@
+<div class="page-header">
+    <h1>Odměny zaměstnancům placeno pokladnou</h1>
+    <small>Seznam vyplacených odměn přes pokladnu</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" (click)="_showSestavy=false;" routerLink="/pers/odmena/list"><i class='fa fa-align-justify'></i>Seznam odměn</button>
+            <button type="button" class="btn btn-default active" (click)="_showSestavy=false;" routerLink="/pers/odmena/-1"><i class='fa fa-plus'></i>Přidat odměnu</button>
+            <button type="button" class="btn btn-default" (click)="_showSestavy=true;" ><i class='fa fa-print'></i>Tiskové sestavy</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body" *ngIf="!_showSestavy">
+        <pers-odmena-list *ngIf="detail == null" urlrec="/pers/odmena" [isPrint]="true"></pers-odmena-list>
+        <pers-odmena-detail *ngIf="detail" [detail]="detail" ></pers-odmena-detail>
+    </div>       
+    <div class="pnl-body" *ngIf="_showSestavy">
+        <report-frm  urlrec="/pers/odmena"></report-frm>
+    </div>     
+</div>
+
+
+
+

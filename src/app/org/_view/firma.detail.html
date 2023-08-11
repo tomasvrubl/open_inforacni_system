@@ -1,0 +1,102 @@
+
+<mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+  <div class='detail'> 
+      <legend *ngIf="_rec.id < 1"><i class="fa fa-plus"></i>Nová firma</legend>
+      <legend *ngIf="_rec.id > -1"><i class="fa fa-edit"></i>Editace firmy</legend>
+        <div class="form-buttons">
+        <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>
+        <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!detForm.form.valid"><i class="fa fa-save"></i>Uložit záznam / změny</button>
+        <button *ngIf="(_rec.id > -1)" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit záznam</button>
+      </div>
+      <mw-alert-message [response]="response"></mw-alert-message>       
+      <form #detForm="ngForm">
+          <ul class="form-fields">             
+              <li>
+                  <label for="n_nazev" class="control-label">Název</label>
+                  <div>
+                    <input [(ngModel)]="_rec.nazev" class="form-control" id="n_nazev" name='nazev' placeholder="Zadej název firmy" type="text" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                    <div *ngIf="nazev.errors && (nazev.dirty || nazev.touched)" class="alert alert-danger">   
+                        <div [hidden]="!nazev.errors.required">
+                               Zadej název firmy
+                         </div>
+                    </div>
+                  </div>  
+              </li>
+              <li>
+                <div class="clmn2">
+                  <label for="n_ico" class="control-label">IČO</label>
+                  <div>
+                    <input [(ngModel)]="_rec.ico" class="form-control" id="n_ico" name='n_ico' placeholder="IČO" type="text" onfocus="this.select()">
+                  </div>  
+                </div>                  
+                <div class="clmn2">
+                    <label for="n_dic" class="control-label">DIČ</label>
+                    <div>
+                      <input [(ngModel)]="_rec.dic" class="form-control" id="n_dic" name='n_dic' placeholder="DIČ" type="text" onfocus="this.select()">
+                    </div>  
+                  </div>
+              </li>
+              <li>
+                  <label for="n_ulice" class="control-label">Ulice</label>
+                  <div>
+                    <input [(ngModel)]="_rec.ulice" class="form-control" id="n_ulice" name='n_ulice' placeholder="ulice" type="text" onfocus="this.select()">
+                  </div>  
+              </li>
+              <li>
+                <div class="clmn2" style="width: 70%">
+                  <label for="n_obec" class="control-label">Město/obec</label>
+                  <div>
+                    <input [(ngModel)]="_rec.obec" class="form-control" id="n_obec" name='n_obec' placeholder="" type="text" onfocus="this.select()">
+                  </div>  
+                </div>
+                <div class="clmn2" style="width: 30%">
+                  <label for="n_psc" class="control-label">PSČ</label>
+                  <div>
+                    <input [(ngModel)]="_rec.psc" class="form-control" id="n_psc" name='n_psc' placeholder="" type="text" onfocus="this.select()">
+                  </div>  
+                </div>                  
+              </li>
+              <li>
+                <label for="n_stat" class="control-label">Stát</label>
+                <div>
+                  <input [(ngModel)]="_rec.stat" class="form-control" id="n_stat" name='n_stat' placeholder="" type="text" onfocus="this.select()">
+                </div>  
+              </li>
+              <li>
+                <label for="n_cu" class="control-label">Číslo účtu</label>
+                <div>
+                  <input [(ngModel)]="_rec.cu" class="form-control" id="n_cu" name='n_cu' placeholder="" type="text" onfocus="this.select()">
+                </div>  
+              </li>
+              <li>
+                <label for="n_telefon" class="control-label">Telefón</label>
+                <div>
+                  <input [(ngModel)]="_rec.telefon" class="form-control" id="n_telefon" name='n_telefon' placeholder="" type="text" onfocus="this.select()">
+                </div>  
+              </li>
+              <li>
+                <label for="n_email" class="control-label">E-mail</label>
+                <div>
+                  <input [(ngModel)]="_rec.email" class="form-control" id="n_email" name='n_email' placeholder="" type="text" onfocus="this.select()">
+                </div>  
+              </li>
+              <li>
+                <label for="n_www" class="control-label">WWW</label>
+                <div>
+                  <input [(ngModel)]="_rec.www" class="form-control" id="n_www" name='n_www' placeholder="" type="text" onfocus="this.select()">
+                </div>  
+              </li>
+              <li>
+                <label for="platnost" class="control-label">Platnost</label>
+                 <div  class="col">
+                    <input [checked]="_rec.platnost" (change)="_rec.platnost = !_rec.platnost;" type="checkbox" />                              
+                 </div>
+              </li>             
+          </ul>         
+          <mw-changed [zmeneno]="_rec.zmeneno" [zmenil]="_rec.zmenil"></mw-changed>            
+        </form>
+  </div>      
+
+
+
+

@@ -1,0 +1,21 @@
+<div class="page-header">
+    <h1>Jakost kovu / litiny <span *ngIf="isSelector"> - vyber jakost</span></h1>
+    <small>Seznam jakostí kovu</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/tavirna/jakost/list"><i class='fa fa-align-justify'></i>Seznam jakostí</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/tavirna/jakost/-1"><i class='fa fa-plus'></i>Přidat jakost</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/tavirna/jakost/print" ><i class='fa fa-print'></i>Tiskové sestavy</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body" *ngIf="!_showSestavy">
+        <tav-jakost-list *ngIf="_showList" [urlrec]="urlrec" [isPrint]="true"></tav-jakost-list>
+        <tav-jakost-detail *ngIf="_showDetail" [detail]="detail" [urlrec]="urlrec" [isPrint]="true" ></tav-jakost-detail>
+    </div>   
+    <div class="pnl-body" *ngIf="_showSestavy">
+        <report-frm  [urlrec]="urlrec"></report-frm>
+    </div>         
+</div>
+

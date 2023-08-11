@@ -1,0 +1,8 @@
+.mw-alert {padding: 10px; background: #286090; color: #FFF; border-color: #204d74; position: fixed;top: 0px;width: 100%;z-index: 99;margin: 0px;left: 0px; border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px; font-size: 1.4em;}
+.mw-alert i {margin-right: 10px;}
+
+.mw-alert-err { background: #e35041 !important; color: #FFF  !important; border-color: #f00 !important;	}
+button { float: right; padding: 3px; background: inherit; border: none; color: #FFF; box-shadow: none;}
+button:hover {background: inherit; }
+button i { margin: 0px; padding: 0px;}
+button:hover i {color: #012426;}

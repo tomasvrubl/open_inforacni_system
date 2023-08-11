@@ -1,0 +1,94 @@
+<mw-modal-common *ngIf="user" [yesLabel]="'Uložit změny'" [noLabel]="'Zavřít formulář'" [title]="'Editace profilu'" [id]="'userProfileModal'" class="user-profile-form" (onYes)="updateProfile()">
+    <mw-alert-message [response]="userResponse"></mw-alert-message>   
+    <ul>
+        <li>
+            <label for="heslo" class="control-label">Heslo (min. 8)</label>
+             <div>
+                <input type="password"  [(ngModel)]="user.heslo" class="form-control" id="heslo" name='heslo' placeholder="heslo min. 8 znaků" onfocus="this.select()">                
+             </div>         
+            <p class="tip">čím složitější heslo tím bezpečnější, min. 8 znaků</p>
+        </li>
+        <li>
+            <label for="email" class="control-label">E-mail</label>
+             <div>
+                 <input [(ngModel)]="user.email" class="form-control" id="email" name='email' placeholder="e-mailová adresa" type="text" onfocus="this.select()">
+             </div>  
+            <p class="tip">e-mail slouží k resetování hesla</p>
+        </li>
+        <li>
+            <label for="email" class="control-label">Seznam - editace záznamu </label>
+            <div>
+                <select class="form-control" [(ngModel)]="user.editokno" name="editokno" id="editokno">
+                    <option [value]="0">Stávající stránka</option>
+                    <option [value]="1">Otevírat do nového okna</option>
+                </select>            
+            </div>            
+        </li>
+    </ul>
+</mw-modal-common>
+<mat-sidenav-container class="side-container" >
+    <mat-sidenav #sidenav mode="side" [(opened)]="opened" class="hlavni-menu">
+
+        <div data-bs-toggle="modal" data-target="#userProfileModal" class="user" (click)="userResponse=null">
+            <i class="fa fa-user" id="user_avatar"></i>
+            <span class="name"> {{ getUserDisplayname() }}</span>
+            <span class="usrname">{{getUsername()}}</span>
+        </div>  
+
+        <a routerLink="/" class="mat-expansion-panel">Dashboard<i class="fa fa-home"></i></a>
+        <a routerLink="/hlaseni/list" class="mat-expansion-panel" routerLinkActive="active-link">Hlašení výroby<i class="fa fa-bullhorn"></i></a>
+
+        <mat-expansion-panel  *ngFor="let key of menu | keys">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{menu[key].name}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>        
+            <a *ngFor="let si of menu[key].mnu;" routerLink="{{si.url}}" class="sub-menu"  routerLinkActive="active-link">{{si.name}}<i *ngIf="si.icon" class="{{si.icon}}" aria-hidden="true"></i></a>                    
+        </mat-expansion-panel>
+        
+        <mat-expansion-panel  *ngIf="isAdmin()">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Administrace
+              </mat-panel-title>
+            </mat-expansion-panel-header>        
+            <a routerLink="/admin/user/list" class="sub-menu" routerLinkActive="active-link"><i class="fa fa-user"></i>Uživatelé</a>
+            <a routerLink="/admin/setting/list" class="sub-menu" routerLinkActive="active-link"><i class="fa fa-cogs" aria-hidden="true"></i>Nastavení</a>
+            <a routerLink="/admin/role/group/list" class="sub-menu" routerLinkActive="active-link"><i class="fa fa-cogs" aria-hidden="true"></i>Skupiny rolí</a>
+            <a routerLink="/admin/role/role/list" class="sub-menu" routerLinkActive="active-link"><i class="fa fa-cogs" aria-hidden="true"></i>Definice role</a>
+            <a routerLink="/admin/menu/list" class="sub-menu" routerLinkActive="active-link"><i class="fa fa-cogs" aria-hidden="true"></i>Definice menu</a>
+            <a routerLink="/admin/hlaseni/list" class="sub-menu" routerLinkActive="active-link"><i class="fa fa-cogs" aria-hidden="true"></i>Typy vyr. hlášení</a>
+        </mat-expansion-panel>
+        <a routerLink="/logout" routerLinkActive="active-link" class="mat-expansion-panel">Odhlásit se... <i class="fa fa-sign-out-alt" title="Odhlásit se"></i></a>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>      
+        <div class="m-header"> 
+            <div class="menu-btn active" (click)="sidenav.toggle()">
+                <i class="fa-solid fa-bars"></i>
+            </div>            
+            <div class="logo">
+                <span class="title">GIFF </span>
+                 výrobní evidenční systém
+            </div>
+            <div *ngIf="user" class="userinfo-part">
+                <div class='user-reload-rights'>
+                        <button (click)="reloadGrantMenu()"><i class='fa-solid fa-refresh'></i>Aktualizuj práva</button>
+                </div>
+                <div>
+                    <span data-bs-toggle="modal" data-bs-target="#userProfileModal" style="cursor:pointer; display: inline-block" (click)="userResponse=null">
+                        <b class="bigger"><i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> {{user.jmeno}} {{user.prijmeni}}</b><br/><span class="usrname">{{user.username}}</span>
+                    </span>
+                    
+                </div>
+                <a routerLink="/logout" class="logout"><span><i class="fa fa-sign-out" title="Odhlásit se"></i></span></a>
+            </div>
+        </div>
+        <div class="page">
+            <router-outlet></router-outlet>
+        </div>
+        
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+

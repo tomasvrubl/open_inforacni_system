@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+// set to run indefinitely if needed
+set_time_limit(0);
+
+/* Optional. It’s better to do it in the php.ini file */
+date_default_timezone_set('America/Los_Angeles');
+
+$container = require_once __DIR__ . '/bootstrap.php';
+
+$services = $container->findByTag('command');
+// import the Symfony Console Application
+use Symfony\Component\Console\Application;
+
+
+$app = new Application();
+
+foreach ($services as $name => $serv)
+{
+    $app->add($container->getService($name));
+}
+
+
+$app->run();

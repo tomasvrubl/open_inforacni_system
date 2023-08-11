@@ -1,0 +1,20 @@
+<div class="page-header">
+    <h1>Číselník neshod <span *ngIf="isSelector"> - vyber položku</span></h1>
+    <small>Seznam typů neshod</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/vada"><i class='fa fa-align-justify'></i>Seznam vad</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/vada/-1"><i class='fa fa-plus'></i>Přidat typ vady</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <vada-list *ngIf="_showList"></vada-list>
+        <vada-detail *ngIf="_showDetail" [detail]="vada" ></vada-detail>
+    </div>        
+</div>
+
+
+
+

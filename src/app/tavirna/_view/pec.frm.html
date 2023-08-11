@@ -1,0 +1,21 @@
+<div class="page-header">
+    <h1>Seznam tavících pecí<span *ngIf="isSelector"> - vyber pec</span></h1>
+    <small>Tavící pece jsou použity při odvádění taveb.</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/tavirna/pec/list"><i class='fa fa-align-justify'></i>Seznam tavících pecí</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/tavirna/pec/-1"><i class='fa fa-plus'></i>Přidat tavící pec</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/tavirna/pec/print" ><i class='fa fa-print'></i>Tiskové sestavy</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body" *ngIf="!_showSestavy">
+        <tav-pec-list *ngIf="_showList" [urlrec]="urlrec" [isPrint]="true"></tav-pec-list>
+        <tav-pec-detail *ngIf="_showDetail" [detail]="detail" [urlrec]="urlrec" [isPrint]="true" ></tav-pec-detail>
+    </div>   
+    <div class="pnl-body" *ngIf="_showSestavy">
+        <report-frm  [urlrec]="urlrec"></report-frm>
+    </div>         
+</div>
+

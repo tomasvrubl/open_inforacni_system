@@ -1,0 +1,42 @@
+<mw-alert-message [response]="response" #baselist></mw-alert-message> 
+<mw-table #tabchild
+        [id]="id"
+        [css]="css" 
+        [table]="tab" 
+        [(SelectButton)]="isSelector"
+        [(MultiSelectButton)]="isMultiSelect"
+        [DropButton]="isDropButton" 
+        [EditButton]="isEditButton"  
+        [CollapseIcon]="isEditButton && isExpandable"          
+        [FilterButton]="isFilterButton"
+        [PDFButton]="isPrint"
+        [CustomButton]="getCustomButtons()"
+        (onEditRecord)="onEdit($event, false)" 
+        (onEditRecordWnd)="onEdit($event, true)"
+        (onSelectRecord)="onSelected($event)"
+        (onMultiSelect)="onMultiSelect($event)"
+        (onDropRecord)="onDrop($event)"
+        (onReloadData)="reloadData($event)"
+        (onPDFButton)="onPrintData($event)"
+        (onSelectCancel)="onCancel($event)"
+        (onSaveSetting)="onSaveSetting($event)">
+        <ng-container #container></ng-container>  
+</mw-table>
+<mw-popwnd *ngIf="_showPrintPopup" title="Tiskové sestavy" [centerScreen]="true" (onCancel)="_showPrintPopup = !_showPrintPopup">
+        <table class="print-list">
+                <thead>
+                        <tr>
+                                <th>Název</th>
+                                <th>Popis</th>
+                                <th></th>
+                        </tr>
+                </thead>
+                <tbody>
+                        <tr *ngFor="let r of _printList">
+                                <td>{{r.nazev}}</td>
+                                <td>{{r.note}}</td>
+                                <td style="text-align: right;"><button class="btn btn-primary" (click)="printReport(r.id)"><i class="fa fa-print"></i> Vytisknout</button></td>
+                        </tr>
+                </tbody>
+        </table>
+</mw-popwnd>

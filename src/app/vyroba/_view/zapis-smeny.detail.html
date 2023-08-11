@@ -1,0 +1,88 @@
+<mw-alert-message [response]="response"></mw-alert-message>       
+<mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+  <div class='detail'> 
+      <legend *ngIf="_rec.id < 1"><i class="fa fa-plus"></i>Nový zápis</legend>
+      <legend *ngIf="_rec.id > -1"><i class="fa fa-edit"></i>Editace záznamu</legend>
+        <div class="form-buttons">
+        <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>
+        <button type="submit" class="btn btn-primary" (click)="saveme()"><i class="fa fa-save"></i>Uložit záznam / změny</button>
+        <button *ngIf="_rec.id > -1" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit záznam</button>
+      </div>
+      
+      <form>
+          <ul class="form-fields">
+            <li>
+              <label class="control-label">Datum</label> 
+              <mw-date [(datum)]="_rec.datum"></mw-date>    
+            </li>
+            <li>
+              <label>Zadej zdroj nebo středisko</label>
+              <div class="clmn2" >
+                <mw-choose [label]="'Zdroj'" 
+                        [txtPlaceholder]="'Kód zdroje'"
+                        [txtValue]="_rec.zdroj_kod"
+                        [txtLabel]="_rec.zdroj"
+                        [TypeOfList]="_zdrojList"
+                        [urlDetail]="'/ciselnik/zdroj/'+_rec.zdroj_id"
+                        (onSelectedEvent)="onZdrojChanged($event)">
+                </mw-choose> 
+              </div>
+              <div class="clmn2" >
+                  <mw-choose [label]="'Středisko'" 
+                          [txtPlaceholder]="'Kód střediska'"
+                          [txtValue]="_rec.pracoviste_kod"
+                          [txtLabel]="_rec.pracoviste"
+                          [TypeOfList]="_pracovisteList"
+                          [urlDetail]="'/ciselnik/pracoviste/'+_rec.pracoviste_id"
+                          (onSelectedEvent)="onPracovisteChanged($event)">
+                  </mw-choose> 
+              </div>
+            </li>            
+            <li>
+              <label class="control-label">Směna</label> 
+              <mw-dropdown [items]="_smena" [(value)]="_rec.kalendar_smena_id" #smena></mw-dropdown>
+              <div *ngIf="!validForm.kalendar" class="alert alert-danger">   
+                <div>
+                    Vyber směnu
+                </div>
+              </div>
+            </li>       
+            <li>
+              <div class="clmn2">
+                <label for="odv_mnozstvi" class="control-label">Odvedené množství</label>
+                <div>
+                  <input [(ngModel)]="_rec.odv_mnozstvi" class="form-control" id="odv_mnozstvi" name='odv_mnozstvi' placeholder="Zadej odvedené množství " type="text" onfocus="this.select()">
+                </div>  
+              </div>
+              <div class="clmn2">
+                <label for="n_kod" class="control-label">Utrženo forem (pokud se jedná o formovací linku)</label>
+                <div>
+                  <input [(ngModel)]="_rec.utrz_forem" class="form-control" id="utrz_forem" name='utrz_forem' placeholder="Zadej počet utržených forem pokud se jedná o linku" type="text" onfocus="this.select()">
+                </div>  
+              </div>              
+            </li>
+            <li class="section">Pracovní zařazení</li>      
+            <li class="clmn2" *ngFor="let z of _rec.polozky">
+                <label>{{z.pracovni_zarazeni}}</label>
+                <mw-choose [label]="'Osoba'" 
+                        [txtPlaceholder]="'Vyber osobu'"
+                        [txtValue]="z.osoba_oscislo"
+                        [txtLabel]="z.osoba"
+                        [TypeOfList]="_vyrOsobyList"
+                        (onSelectedEvent)="onZarazeniChanged($event, z)">
+                </mw-choose> 
+            </li>
+            <li class="clmn">
+              <label for="n_poznamka" class="control-label">Poznámka </label>
+              <div>
+                  <textarea [(ngModel)]="_rec.poznamka" id="n_poznamka" name='poznamka' class="form-control" style="min-height: 140px"></textarea>              
+              </div>     
+            </li>   
+          </ul>         
+          <mw-changed [zmeneno]="_rec.zmeneno" [zmenil]="_rec.zmenil"></mw-changed>            
+      </form>   
+  </div>      
+
+
+
+

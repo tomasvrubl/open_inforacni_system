@@ -1,0 +1,32 @@
+<div class="page-header">
+    <ng-container  *ngIf="!_showSestavy && !_showNastaveni">
+        <h1>Zdravotních prohlídky <span *ngIf="isSelector"> - vyber ze seznamu</span></h1>
+        <small>Seznam všech zdravotních prohlídek zaměstnanců</small>
+    </ng-container>
+    <ng-container  *ngIf="_showNastaveni">
+        <h1>Zdravotních prohlídky nastavení</h1>
+        <small>Nastavení výpočtu platnosti zdravotních prohlídek. Pravidla jsou použity v generování následných prohlídek.</small>
+    </ng-container>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/prohlidky/list"><i class='fa fa-align-justify'></i>Seznam prohlídek</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/prohlidky/id/-1"><i class='fa fa-plus'></i>Přidat prohlídku</button>     
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/prohlidky/nastaveni"><i class='fa fa-gear'></i>Nastavení výpočtu platnosti</button>     
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/prohlidky/generator"><i class='fa fa-gear'></i>Generátor prohlídek</button>     
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/prohlidky/print" ><i class='fa fa-print'></i>Tiskové sestavy</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body" *ngIf="!_showSestavy && !_showNastaveni">
+        <pers-zdrav-prohlidka-list *ngIf="_showList" [urlrec]="urlrec" [isPrint]="true"></pers-zdrav-prohlidka-list>
+        <pers-zdrav-prohlidka-detail *ngIf="_showDetail" [detail]="detail" [urlrec]="urlrec" ></pers-zdrav-prohlidka-detail>
+    </div>        
+    <div class="pnl-body" *ngIf="_showSestavy">
+        <report-frm  [urlrec]="urlrec"></report-frm>
+    </div>    
+    <div class="pnl-body" *ngIf="_showNastaveni">
+        <pers-prohlidky-nastaveni></pers-prohlidky-nastaveni>
+    </div>    
+    
+</div>

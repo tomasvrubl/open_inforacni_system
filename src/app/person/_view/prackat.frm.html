@@ -1,0 +1,20 @@
+<div class="page-header">
+    <h1>Pracovní kategorie <span *ngIf="isSelector"> - vyber</span></h1>
+    <small>Seznam pracovních kategorií</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLink="/pers/prackat/list"><i class='fa fa-align-justify'></i>Seznam</button>
+            <button type="button" class="btn btn-default active" routerLink="/pers/prackat/-1"><i class='fa fa-plus'></i>Přidat záznam</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <pers-prackat-list *ngIf="detail == null"></pers-prackat-list>
+        <pers-prackat-detail *ngIf="detail" [detail]="detail" ></pers-prackat-detail>
+    </div>        
+</div>
+
+
+
+

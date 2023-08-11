@@ -1,0 +1,20 @@
+<div class="page-header">
+    <h1>Číselník hlášení <span *ngIf="isSelector"> - vyber položku</span></h1>
+    <small>Seznam typů hlášení</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLink="/admin/hlaseni/list"><i class='fa fa-align-justify'></i>Seznam hlášení</button>
+            <button type="button" class="btn btn-default active" routerLink="/admin/hlaseni/-1"><i class='fa fa-plus'></i>Přidat typ</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <hlaseni-typ-list *ngIf="typ == null"></hlaseni-typ-list>
+        <hlaseni-typ-detail *ngIf="typ" [typ]="typ" ></hlaseni-typ-detail>
+    </div>        
+</div>
+
+
+
+

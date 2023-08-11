@@ -1,0 +1,7 @@
+{
+    "/ws/*": {
+        "target": "http://localhost/gis/",
+        "secure": false,
+        "logLevel": "debug"
+    }
+}

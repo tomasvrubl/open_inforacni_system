@@ -1,0 +1,18 @@
+<div class="page-header">
+    <h1>Seznam pracovních činností a faktorů <span *ngIf="isSelector"> - vyber ze seznamu</span></h1>
+    <small>Seznam pracovních činností s lhůtama prohlídek, které jsou použity v rizikovosti pracovišť. Činnosti jsou používány při výpočtu lékařských prohlídek.
+           Pokud je pracovní činnost označena rizikovým faktorem, pak je brána jako rizikový faktor.
+    </small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default active" routerLink="/prohlidky/cinnost/list"><i class='fa fa-align-justify'></i>Seznam činností</button>
+            <button type="button" class="btn btn-default" routerLink="/prohlidky/cinnost/-1"><i class='fa fa-plus'></i>Přidat činnost</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <pers-cinnost-list *ngIf="rec == null"></pers-cinnost-list>
+        <pers-cinnost-detail *ngIf="rec" [detail]="rec" ></pers-cinnost-detail>
+    </div>        
+</div>

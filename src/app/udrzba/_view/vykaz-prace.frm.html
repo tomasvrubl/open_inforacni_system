@@ -1,0 +1,22 @@
+<div class="page-header">
+    <ng-container  *ngIf="!_showSestavy">
+        <h1>Seznam výkazu<span *ngIf="isSelector"> - vyber ze seznamu</span></h1>
+        <small>Seznam výkazu práce, řešení poruch apod.</small>
+    </ng-container>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/udrzba/vykaz-prace/list"><i class='fa fa-align-justify'></i>Seznam výkazu</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/udrzba/vykaz-prace/-1"><i class='fa fa-plus'></i>Přidat výkaz</button>     
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/udrzba/vykaz-prace/print" ><i class='fa fa-print'></i>Tiskové sestavy</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body" *ngIf="!_showSestavy">
+        <vykaz-prace-list *ngIf="_showList" [urlrec]="urlrec" [isPrint]="true"></vykaz-prace-list>
+        <vykaz-prace-detail *ngIf="_showDetail" [detail]="detail" [urlrec]="urlrec" ></vykaz-prace-detail>
+    </div>        
+    <div class="pnl-body" *ngIf="_showSestavy">
+        <report-frm  [urlrec]="urlrec"></report-frm>
+    </div>    
+</div>

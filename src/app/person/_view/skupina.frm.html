@@ -1,0 +1,16 @@
+<div class="page-header">
+    <h1>Seznam skupin <span *ngIf="isSelector"> - vyber ze seznamu</span></h1>
+    <small>Seznam skupin</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default active" routerLink="/prohlidky/skupina/list"><i class='fa fa-align-justify'></i>Seznam skupin</button>
+            <button type="button" class="btn btn-default" routerLink="/prohlidky/skupina/-1"><i class='fa fa-plus'></i>Přidat skupinu</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <pers-skupina-list *ngIf="rec == null"></pers-skupina-list>
+        <pers-skupina-detail *ngIf="rec" [detail]="rec" ></pers-skupina-detail>
+    </div>        
+</div>

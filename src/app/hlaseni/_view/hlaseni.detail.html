@@ -1,0 +1,42 @@
+<mw-alert-message [response]="response"></mw-alert-message>       
+<mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+<div class="page-header">
+    <h1>Nové hlášení</h1>
+    <small>Seznam typů hlášení</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLink="/hlaseni/list"><i class='fa fa-align-justify'></i>Seznam hlášení</button>
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <div class='detail'>             
+            <div class="form-buttons">             
+              <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!typForm.form.valid"><i class="fa fa-save"></i>Uložit záznam / změny</button>
+              <button *ngIf="(hlaseni.id > -1)" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit záznam</button>
+            </div>            
+            <form #typForm="ngForm" >
+                <ul class="form-fields">
+                    <li class="clmn">
+                        <label for="typ-hlaseni" class="control-label">Typ hlášení</label>  
+                        <select  class="form-control" [(ngModel)]="hlaseni.typ" name="hlaseni_typ" id="hlaseni_typ">
+                            <option *ngFor="let k of aTyp" [value]="k.id">{{k.nazev}}</option>
+                        </select>
+                    </li> 
+                      
+                    <li class="clmn">
+                      <label for="nazev" class="control-label">Zpráva</label>
+                      <div>
+                          <textarea [(ngModel)]="hlaseni.text" id="n_text" name='text'></textarea>
+                      </div>  
+                    </li>                                                      
+                </ul>          
+            </form>   
+        </div>      
+    </div>        
+</div>
+
+
+
+

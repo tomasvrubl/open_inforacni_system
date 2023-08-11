@@ -1,0 +1,165 @@
+
+<mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+  <div class='detail'> 
+        <div class="form-buttons">
+        <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>
+        <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!detForm.form.valid"><i class="fa fa-save"></i>Uložit záznam / změny</button>
+        <button *ngIf="(_osoba.id > -1)" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit záznam</button>
+      </div>
+      <mw-alert-message [response]="response"></mw-alert-message>       
+      <form #detForm="ngForm">
+          <ul class="form-fields">
+              <li>
+                <div class="col clmn2">
+                  <label for="oscislo" class="control-label">Osobní číslo</label>
+                  <input [(ngModel)]="_osoba.oscislo" class="form-control" id="oscislo" name='oscislo' placeholder="Zadej osobní číslo" type="text" required #oscislo="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                    <div *ngIf="oscislo.errors && (oscislo.dirty || oscislo.touched)" class="alert alert-danger">   
+                        <div [hidden]="!oscislo.errors.required">
+                               Zadej osobní číslo zaměstnance
+                         </div>
+                    </div>
+                </div>  
+                  <div class="col clmn2">
+                    <label for="cip" class="control-label">Kód čipu</label>
+                    <input [(ngModel)]="_osoba.cip" class="form-control" id="cip" name='cip' placeholder="Zadej kód čipu" type="text" onfocus="this.select()">                   
+                  </div>  
+              </li>
+              <li>
+                <div class="col clmn2" style="width: 20%">
+                  <label for="titul" class="control-label">Titul</label>
+                  <input [(ngModel)]="_osoba.titul" class="form-control" id="titul" name='titul' type="text" onfocus="this.select()">
+                </div>  
+                <div class="col clmn2" style="width: 40%">
+                      <label for="jmeno" class="control-label">Jméno</label>
+                      <input [(ngModel)]="_osoba.jmeno" class="form-control" id="jmeno" name='jmeno' placeholder="Zadej jméno" type="text" required #jmeno="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                      <div *ngIf="jmeno.errors && (jmeno.dirty || jmeno.touched)" class="alert alert-danger">   
+                          <div [hidden]="!jmeno.errors.required">
+                                Zadej jméno
+                          </div>
+                      </div>
+                </div>  
+                <div class="col clmn2" style="width: 40%">
+                  <label for="prijmeni" class="control-label">Příjmení</label>
+                  <input [(ngModel)]="_osoba.prijmeni" class="form-control" id="prijmeni" name='prijmeni' placeholder="Zadej příjmení" type="text" required #prijmeni="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                  <div *ngIf="prijmeni.errors && (prijmeni.dirty || prijmeni.touched)" class="alert alert-danger">   
+                      <div [hidden]="!prijmeni.errors.required">
+                             Zadej příjmení
+                       </div>
+                  </div>
+                </div>                    
+              </li>
+              <li class="clmn1" style="margin-top: 15px;">
+                <label for="platnost" class="control-label inline">Platnost osoby</label>
+                <input [checked]="_osoba.platnost" (change)="_osoba.platnost = !_osoba.platnost;" type="checkbox" style="margin-left: 15px" />                              
+              </li>
+              <li class="section">Personální informace</li>   
+              <li>
+                <label for="pracoviste" class="control-label">Středisko</label>
+                <mw-choose [label]="'Středisko'" 
+                        [txtPlaceholder]="'Kód Středisko'"
+                        [txtValue]="_osoba.pracoviste_kod"
+                        [txtLabel]="_osoba.pracoviste"
+                        [TypeOfList]="_pracovisteList"
+                        (onSelectedEvent)="onPracovisteChanged($event)">
+                </mw-choose>      
+              </li>
+              <li>
+                <label for="pracoviste" class="control-label">Rizikovost pracoviště</label>
+                <mw-choose [label]="'Rizikovost'" 
+                        [txtPlaceholder]="'Kód rizika'"
+                        [txtValue]="_osoba.rizikovost_kod"
+                        [txtLabel]="_osoba.rizikovost_druh_prace"
+                        [TypeOfList]="_rizikovostList"
+                        (onSelectedEvent)="onRizikovostChanged($event)">
+                </mw-choose>              
+              </li>
+              <li>
+                <label for="pracovni_zarazeni" class="control-label">Pracovní zařazení </label> 
+                <mw-dropdown [items]="_zarazeni" [(value)]="_osoba.prac_zarazeni_id"></mw-dropdown>
+              </li>
+
+              <li>
+                <label for="zdravotni_pojistovna" class="control-label">Zdravotní pojišťovna</label>
+                <div>
+                  <input [(ngModel)]="_osoba.zdravotni_pojistovna" class="form-control" id="zdravotni_pojistovna" name='zdravotni_pojistovna' type="text" onfocus="this.select()">                  
+                </div> 
+              </li>
+
+
+              <li class="section">Ostatní informace</li>              
+              <li>
+                <div class="col clmn2" style="width:25%">
+                  <label for="bydliste_ulice" class="control-label">Ulice</label>
+                  <input [(ngModel)]="_osoba.bydliste_ulice" class="form-control" id="bydliste_ulice" name='bydliste_ulice' type="text" onfocus="this.select()">                  
+                </div>  
+                <div class="col clmn2" style="width:10%">
+                  <label for="bydliste_cp" class="control-label">č.p.</label>
+                  <input [(ngModel)]="_osoba.bydliste_cp" class="form-control" id="bydliste_cp" name='bydliste_cp' type="text" onfocus="this.select()">                  
+                </div>  
+                <div class="col clmn2" style="width:30%">
+                  <label for="bydliste_obec" class="control-label">Město</label>
+                  <input [(ngModel)]="_osoba.bydliste_obec" class="form-control" id="bydliste_obec" name='bydliste_obec' type="text" onfocus="this.select()">                  
+                </div>  
+                <div class="col clmn2"  style="width:20%">
+                  <label for="mobil" class="control-label">PSČ</label>
+                  <input [(ngModel)]="_osoba.bydliste_psc" class="form-control" id="bydliste_psc" name='bydliste_psc' type="text" onfocus="this.select()">                  
+                </div>  
+                <div class="col clmn2"  style="width:15%">
+                  <label for="mobil" class="control-label">Stát</label>
+                  <input [(ngModel)]="_osoba.bydliste_stat" class="form-control" id="bydliste_stat" name='bydliste_stat' type="text" maxlength="5" onfocus="this.select()">                  
+                </div>  
+              </li>
+              <li>                
+                <div class="col clmn3">
+                  <label for="mobil" class="control-label">Mobil</label>
+                  <input [(ngModel)]="_osoba.mobil" class="form-control" type="text" name="mobil" onfocus="this.select()">
+                </div>  
+                <div class="col clmn3">
+                  <label for="email" class="control-label">Telefón, pevná linka</label>
+                  <input [(ngModel)]="_osoba.telefon" class="form-control" name="telefon" type="text" onfocus="this.select()">
+                </div>  
+                <div class="col clmn3">
+                  <label for="email" class="control-label">E-mail</label>
+                  <input [(ngModel)]="_osoba.email" class="form-control" name="email" type="text" onfocus="this.select()">
+                </div>  
+              </li>
+              <li>
+                <div class="col clmn2">
+                  <label for="datum_narozeni" class="control-label">Datum narození</label>
+                  <mw-date [(datum)]="_osoba.datum_narozeni"></mw-date>
+                   &nbsp;&nbsp;{{ getVek() }} let
+                </div> 
+                <div class="col clmn2 ">
+                  <label for="rodnecislo" class="control-label">Rodné číslo</label>
+                  <input [(ngModel)]="_osoba.rodnecislo" class="form-control" name="rodnecislo" type="text" onfocus="this.select()">
+                </div> 
+              </li>
+
+              <ng-container *ngIf="_osoba.id > -1">    
+              <li class="section">Zdravotní prohlídky</li>    
+              <li class="clmn1">                
+                  <div>
+                      <div class="pnl-head">
+                          <div class="tool-part">
+                            <div class="btn-group">
+                              <button type="button" class="btn btn-default" (click)="isSeznamProhlidky = true"><i class='fa fa-align-justify'></i>Seznam prohlídek</button>
+                              <button type="button" class="btn btn-default"  (click)="newProhlidka()"><i class='fa fa-plus'></i>Přidat prohlídku</button>     
+                            </div>
+                        </div>
+                      </div>
+                      <div class="pnl-body" [class.box-shadow]="!isSeznamProhlidky">
+                          <pers-zdrav-prohlidka-detail *ngIf="!isSeznamProhlidky" [detail]="_prohlidka" ></pers-zdrav-prohlidka-detail>
+                          <pers-zdrav-prohlidka-list *ngIf="isSeznamProhlidky" [filter]="_prohlidkaFilter"></pers-zdrav-prohlidka-list>
+                      </div>              
+                  </div>                  
+              </li>
+            </ng-container>
+
+          </ul>         
+          <mw-changed [zmeneno]="_osoba.zmeneno" [zmenil]="_osoba.zmenil"></mw-changed>            
+          </form>   
+  </div>      
+
+
+
+

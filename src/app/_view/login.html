@@ -1,0 +1,30 @@
+<div class="content">
+ <div id="loginbox"  class="mainbox d-flex justify-content-center">
+    <div class="panel " >
+            <div class="panel-heading">
+                <div class="panel-title"></div>
+                Výrobní informační systém
+            </div>
+            <div class="frm-part">
+                <div style="padding-top:30px" class="panel-body" >
+                    <form id="loginform" class="form-horizontal" role="form">
+                        <label>Uživatelské jméno</label>
+                        <div class="input-group">
+                                <input [(ngModel)]="username" name="username" id="login-username" type="text" class="form-control"  value="" placeholder="uživatelské jméno">
+                        </div>
+                        <label>Zadej heslo</label>                        
+                        <div class="input-group">
+                            <input [(ngModel)]="password" name="password" id="login-password" type="password" class="form-control" placeholder="heslo"  autocomplete="on" style="width: 100%">
+                            <span class="info">používej bezpečné heslo, min. 8 znaků</span>
+                        </div>
+                            <span *ngIf="errorMsg && errorMsg.length > 0" class="errmsg">{{errorMsg}}</span>
+                            <button type="submit"  id="btn-fblogin"  class="btn btn-primary" (click)="login()"><i *ngIf="loading" class='fa fa-spinner fa-spin '></i>Přihlásit se</button>
+                        </form>     
+                </div>          
+                <div class="panel-footer">
+                        <a routerLink="/resetpass" class="reset-pass"> Zapomenuté heslo</a>
+                        GIFF a.s., copyright 2021, informační systém, admin@giff.cz
+                </div>
+            </div>  
+    </div>
+</div>

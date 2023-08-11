@@ -1,0 +1,94 @@
+<mw-alert-message [response]="response"></mw-alert-message>       
+<mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+  <div class='detail' *ngIf="karta"> 
+      <legend *ngIf="karta.id < 0"><i class="fa fa-plus"></i>Nová skladová karta</legend>
+      <legend *ngIf="karta.id > -1"><i class="fa fa-edit"></i>Editace skladové karty</legend>
+        <div class="form-buttons">
+        <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>
+        <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!skladKartaForm.form.valid"><i class="fa fa-save"></i>Uložit záznam / změny</button>
+        <button *ngIf="(karta.id > -1)" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit záznam</button>
+      </div>
+      <form #skladKartaForm="ngForm" (ngSubmit)="onSubmit()">
+          <ul class="form-fields">
+                <li>
+                  <label for="kod" class="control-label">Kód karty(unikátní)</label>
+                  <div>
+                    <input [(ngModel)]="karta.kod" class="form-control" id="kod" name='kod' placeholder="Zadej kódové označení" type="text" required #kod="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                    <div *ngIf="kod.errors && (kod.dirty || kod.touched)" class="alert alert-danger">   
+                        <div [hidden]="!kod.errors.required">
+                               Zadej kódové označení karty. Kód musí být unikátní.
+                         </div>
+                    </div>
+                  </div>  
+              </li> 
+              <li>
+                  <label for="kod" class="control-label">Externí kód karty (unikátní)</label>
+                  <div>
+                        <input [(ngModel)]="karta.extern_kod" class="form-control" id="extern_kod" name='extern_kod' placeholder="Zadej externí kód (spojení s externím systémem)" type="text" onfocus="this.select()">
+                  </div>  
+              </li>
+              <li>
+                <label for="nazev" class="control-label">Název</label>
+                <div>
+                    <input [(ngModel)]="karta.nazev" class="form-control" id="nazev" name='nazev' placeholder="Zadej název" type="text" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                    <div *ngIf="nazev.errors && (nazev.dirty || nazev.touched)" class="alert alert-danger">   
+                        <div [hidden]="!nazev.errors.required">
+                               Zadej název karty
+                         </div>
+                    </div>
+                </div>  
+              </li>    
+              <li>
+                <label for="platnost" class="control-label">Platnost</label>
+                 <div  class="col">
+                    <input [checked]="karta.platnost" (change)="karta.platnost = !karta.platnost;" type="checkbox" />                              
+                 </div>
+              </li>
+              <li *ngIf="karta.id > 0" class="clmn1">
+                <label for="_sklad_nazev" class="control-label">Sklad</label>
+                 <div class="col" style="width: 50%">
+                    <input [(ngModel)]="karta.sklad_nazev" class="form-control" id="_sklad_nazev" name='_sklad_nazev' placeholder="0" type="text" readonly>
+                 </div>
+              </li>
+              <li>
+                  <label for="platnost" class="control-label">Množství / Evidenční jednotka</label>
+                  <div class="control-clmn2">
+                    <input [(ngModel)]="karta.mnozstvi" class="form-control" id="mnozstvi" name='mnozstvi' placeholder="0" type="text" style="margin-right: 3px" readonly>&nbsp;/&nbsp;
+                    <mw-dropdown [items]="jednotky" [(value)]="karta.jednotka_id"></mw-dropdown>   
+                  </div>
+                  
+              </li>
+              <li>
+                  <label for="platnost" class="control-label">Množství 2 / Evidenční jednotka 2</label>
+                  <div class="control-clmn2">
+                    <input [(ngModel)]="karta.mnozstvi2" class="form-control" id="mnozstvi2" name='mnozstvi2' placeholder="0" type="text" readonly>&nbsp;/&nbsp;
+                    <mw-dropdown [items]="jednotky" [(value)]="karta.jednotka2_id"></mw-dropdown>
+                  </div>
+              </li>
+          </ul>         
+          <mw-changed [zmeneno]="karta.zmeneno" [zmenil]="karta.zmenil"></mw-changed>            
+        </form> 
+  </div>      
+
+<div *ngIf="karta.id == -1" class='detail-section'> 
+    <h2>Seznam skladů, do kterých kartu založit 
+        <button class="btn" (click)="selectSkladList=true"><i class="fa fa-plus"></i>Přidat sklad</button>
+    </h2>
+    <mw-popwnd *ngIf="selectSkladList" [title]="'Vyber sklady z nabídky'" (onCancel)="selectSkladList=false">
+        <sklad-list [isMultiSelect]="true" (onSelectedSkladList)="onSelectedSkladList($event)"></sklad-list>
+    </mw-popwnd> 
+    
+    <mw-table
+        [css]="'sklady'" 
+        [table]="tabSklady" 
+        [SelectButton]="false"
+        [DropButton]="true" 
+        [CollapseIcon]="false"
+        (onDropRecord)="onDropSklad($event)">
+</mw-table>
+    
+</div>
+
+
+
+

@@ -1,0 +1,27 @@
+<mw-alert-message [response]="response"></mw-alert-message>     
+<div class="page-header">
+    <h1>Generování zdravotních prohlídek</h1>
+    <small>Hromadné zakládání nových zdravotních prohlídek. Pro vybrané zaměstnance se založí nový záznam zdravotní prohlídky a následně se vygenerují formuláře pro rohlídku.</small>
+    <div class='tool-part'>
+        <button class="btn btn-primary" (click)="generujSeznam()"><i class='fa fa-gear'></i> Založ prohlídky u vybraných osob</button>
+        <button type="button" class="btn btn-default" routerLink="/prohlidky/list"><i class='fa fa-align-justify'></i>Seznam prohlídek</button>
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">        
+        <mw-table #seznam [table]="tab" [EditButton]="true"
+                [FilterButton]="true"
+                [MultiSelect]="true"
+                [CustomButton]="getCustomButtons()"
+                (onEditRecord)="onEdit($event, false)" 
+                (onEditRecordWnd)="onEdit($event, true)"
+                (onSaveSetting)="onSaveSetting($event)"
+                (onReloadData)="reloadData($event)" >                
+                <pers-zdrav-prohlidka-detail #detail></pers-zdrav-prohlidka-detail>
+    </mw-table>
+    </div>        
+</div>
+
+
+
+

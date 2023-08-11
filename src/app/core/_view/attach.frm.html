@@ -1,0 +1,20 @@
+<div class="page-header">
+    <h1>Přílohy</h1>
+    <small>Seznam příloh uložených v systému</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" [class.active] = "showSeznam" (click)="showSeznam = true"><i class='fa fa-align-justify'></i>Seznam příloh</button>
+            <button type="button" class="btn btn-default" [class.active] = "!showSeznam" (click)="showSeznam = false"><i class='fa fa-plus'></i>Přidat přílohy</button>
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <attach-list *ngIf="showSeznam" [urlrec]="_urlrec" [modul]="modul"  #attlist></attach-list>
+        <attach-detail *ngIf="!showSeznam" [detail]="null" [urlrec]="_urlrec" [modul]="modul"></attach-detail>
+    </div>        
+</div>
+
+
+
+

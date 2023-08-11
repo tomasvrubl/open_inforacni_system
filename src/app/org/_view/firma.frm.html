@@ -1,0 +1,24 @@
+<div class="page-header">
+    <h1>Seznam firem  <span *ngIf="isSelector"> - vyber ze seznamu</span></h1>
+    <small>Seznam obchodních partnerů</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/org/firma/list"><i class='fa fa-align-justify'></i>Seznam firem</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/org/firma/-1"><i class='fa fa-plus'></i>Přidat firmu</button>   
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/org/firma/print"><i class='fa fa-print'></i>Tiskové sestavy</button>
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body" *ngIf="!_showSestavy">
+        <firma-list *ngIf="detail == null" urlrec="/org/firma" [isPrint]="true"></firma-list>
+        <firma-detail *ngIf="detail" [detail]="detail" ></firma-detail>
+    </div>        
+    <div class="pnl-body" *ngIf="_showSestavy">
+        <report-frm urlrec="/org/firma"></report-frm>
+    </div>    
+</div>
+
+
+
+

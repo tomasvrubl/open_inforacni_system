@@ -1,0 +1,43 @@
+<mw-modal-drop [id]="'dropModalTemplate'" (onYes)="dropRecord($event)"></mw-modal-drop>
+<div class="pnl">
+    <div class="pnl-head">
+        <h1>Uživatelský autocomplete</h1>
+        <small>Šablona pro výkazy.Tyto hodnoty jsou pak předbízeny při vyplňování výkazu.</small>
+        <mw-processing [inProgress]="inProgress"></mw-processing>
+        <mw-alert-message [response]="response"></mw-alert-message>  
+        <div class="toolbar">
+              <button *ngIf="!inProgress" type="submit" class="btn btn-primary" (click)="saveme()" ><i class="fa fa-save"></i>Uložit změny</button>
+              <button *ngIf="!inProgress" type="submit" class="btn btn-danger"  data-bs-toggle="modal" data-bs-target="#dropModalTemplate"><i class="fa fa-trash"></i>Odstranit označené</button>
+              <button *ngIf="!inProgress" type="submit" class="btn btn-setting" (click)="generate()" ><i class="fa fa-cogs" aria-hidden="true"></i>Generuj z existujících výkazů</button>
+              <button *ngIf="!inProgress" type="submit" class="btn btn-nav-back" (click)="navback()" ><i class="fa fa-share-alt" aria-hidden="true"></i>Zpět na měsíční výkaz</button>
+        </div>  
+  </div>
+<div class="pnl-body">
+    <!-- Table -->
+    <table id="header-fixed" class="table cmesvy"></table>
+    <table class="table cmesvy" id="tab-data">
+        <thead>
+            <tr>
+                <th width="30">
+                    <input type="checkbox" name='r_all'  (change)="checkAll()" [(ngModel)]="chkAll"/>
+                </th>
+                <th>Název cesty</th>
+                <th width="150">Služební Km</th>
+                <th width="150">Soukromé  Km</th>
+                <th width="40"></th>
+            </tr>
+        </thead>
+        <tbody>
+             <tr *ngFor="let r of list; let i = index">    
+                <td class="day"><input type="checkbox" name='r_{{i}}' [(ngModel)]="r._ischk"/></td>   
+                <td><input type="text" class="form-control up-down" [(ngModel)]="r.cesta" onfocus="this.select()" title='ceta' (change)="changeKm($event, r)" /></td> 
+                <td><input type="text" class="form-control up-down" [(ngModel)]="r.km" onfocus="this.select()" title='sluzebni km' (change)="changeKm($event, r)" /></td>
+                <td><input type="text" class="form-control up-down" [(ngModel)]="r.km_private" onfocus="this.select()" title='soukrome km' (change)="changeKmPrivate($event, r)" /></td>            
+                <td><button alt="Odstranit záznam" type="button" style="padding: 0px; text-align: center;" data-bs-toggle="modal" data-bs-target="#dropModalTemplate" (click)="_editIDX = i" ><i style="margin:0px; padding: 0px;" class="fa fa-trash"></i></button></td>
+             </tr>
+        </tbody>
+    </table>
+    <button alt="Přidat záznam" type="button" (click)="newone()" ><i class="fa fa-plus"></i>Přidat záznam</button>        
+   
+    </div>
+</div>

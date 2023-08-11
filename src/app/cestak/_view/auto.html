@@ -1,0 +1,127 @@
+
+<mw-modal-drop (onYes)="dropme()"></mw-modal-drop>
+<mw-alert-message [response]="response"></mw-alert-message>
+<div class='detail'> 
+    <legend *ngIf="_det.id < 1"><i class="fa fa-plus"></i>Nový firemní vůz</legend>
+    <legend *ngIf="_det.id > -1"><i class="fa fa-edit"></i>Editace firemního vozu</legend>           
+    <form #rForm="ngForm">
+      <div class="form-buttons">
+        <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>          
+        <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!rForm.form.valid"><i class="fa fa-save"></i>Uložit záznam / změny</button>        
+        <button *ngIf="(_det.id > -1)" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit záznam</button>
+      </div>
+      
+        <ul class="form-fields">
+
+            <li>
+                <label for="n_nazev" class="control-label">Název vozu</label>
+                <div>
+                  <input [(ngModel)]="_det.nazev" class="form-control" id="n_nazev" name='nazev' placeholder="Zadej název, označení vozidla" type="text" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                  <div *ngIf="nazev.errors && (nazev.dirty || nazev.touched)" class="alert alert-danger">   
+                      <div [hidden]="!nazev.errors.required">
+                             Zadej název, označení vozidla.
+                       </div>
+                  </div>
+                </div>  
+            </li>
+            <li>
+                <label for="n_spz" class="control-label">SPZ</label>
+                <div>
+                  <input  [(ngModel)]="_det.spz" class="form-control" id="n_spz" name='spz' placeholder="SPZ poznávací značka auta" type="text" required #spz="ngModel"  oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                  <div *ngIf="spz.errors && (spz.dirty || spz.touched)" class="alert alert-danger">   
+                      <div [hidden]="!spz.errors.required">
+                             SPZ nemůže být prázdná
+                       </div>
+                  </div>
+                </div>                 
+            </li>
+            <li style="display:block;">
+              <label for="platnost" class="control-label">Platnost záznamu</label>
+               <div  class="col">
+                  <input [checked]="_det.platnost" (change)="_det.platnost = !_det.platnost;" type="checkbox" />                              
+               </div>
+            </li>
+            <li>
+              <label for="n_ciskarty" class="control-label">Číslo karty</label>
+              <div>
+                <input  [(ngModel)]="_det.ciskarty" class="form-control" id="n_ciskarty" name='ciskarty' placeholder="číslo debetní karty" type="text" onfocus="this.select()">
+              </div>    
+            </li>
+            <li>
+              <label for="n_vs" class="control-label">Variabilní symbol</label>
+              <div>
+                <input  [(ngModel)]="_det.vs" class="form-control" id="n_vs" name='vs' placeholder="variabilní symbol" type="text" onfocus="this.select()">
+              </div>    
+            </li>
+            <li>
+              <label for="n_spz" class="control-label">Stav ujetých km</label>
+              <div>
+                  <input  [(ngModel)]="_det.stavkm" class="form-control" id="n_spz" name='stavkm' placeholder="Počáteční stav km" type="text" onfocus="this.select()">
+              </div>
+            </li>
+            <li>          
+              <label for="osoba" >Osoba</label>
+              <mw-choose [label]="'Osoba'" 
+                      [txtPlaceholder]="'Osobní číslo'"
+                      [txtValue]="_det.osoba_oscislo"
+                      [txtLabel]="_det.osoba"
+                      [TypeOfList]="_osobaList"
+                      (onSelectedEvent)="onOsobaChanged($event)">
+              </mw-choose> 
+            </li> 
+            <li>          
+              <label for="n_zmenil" class="col-lg-3 control-label">Druh paliva</label>
+              <div class="col-lg-9">
+                  <ul class="inline input-field">
+                      <li><input [checked]="_det.natural" (change)="_det.natural = !_det.natural" type="checkbox" />&nbsp;Natural</li>
+                      <li><input [checked]="_det.diesel" (change)="_det.diesel = !_det.diesel" type="checkbox" />&nbsp;Diesel</li>
+                      <li><input [checked]="_det.lpg" (change)="_det.lpg = !_det.lpg" type="checkbox" />&nbsp;LPG</li>
+                      <li><input [checked]="_det.kwh" (change)="_det.kwh = !_det.kwh" type="checkbox" />&nbsp;kWh</li>
+                  </ul>                    
+              </div>
+          </li>            
+          <li>          
+              <label for="n_zmenil" class="col-lg-3 control-label">Výchozí palivo</label>
+              <div class="col-lg-9">
+                  <ul class="inline input-field">
+                      <li><input type="radio" name="vychozi_palivo" (change)="_det.def_palivo=1" [checked]="_det.def_palivo == 1">&nbsp;Natural</li>
+                      <li><input type="radio" name="vychozi_palivo" (change)="_det.def_palivo=2" [checked]="_det.def_palivo == 2">&nbsp;Diesel</li>
+                      <li><input type="radio" name="vychozi_palivo" (change)="_det.def_palivo=3" [checked]="_det.def_palivo == 3">&nbsp;LPG</li>
+                      <li><input type="radio" name="vychozi_palivo" (change)="_det.def_palivo=4" [checked]="_det.def_palivo == 4">&nbsp;kWh</li>
+                  </ul>                    
+              </div>
+          </li>            
+
+            <li style="width:100%"></li>
+            <li>
+              <label>Pohonné hmoty</label>
+              <div class="col clmn2">
+                <label for="n_prum_spotreba" class="control-label">Průměrná spotřeba l/100 km</label>
+                <input  [(ngModel)]="_det.prum_spotreba"  (change)="changeSpotreba($event)" class="form-control" id='n_prum_spotreba' name='n_prum_spotreba' placeholder="Průměrná spotřeba na l/100km" type="text" onfocus="this.select()">
+              </div>  
+              <div class="col clmn2">
+                    <label for="n_nadrz_l" class="control-label">Velikost nádrže v L</label>
+                    <input  [(ngModel)]="_det.nadrz_l" class="form-control" id="n_nadrz_l" name='nadrz_l' placeholder="Velikost nádrže v L" type="text" onfocus="this.select()">
+              </div>  
+            </li>
+            <li>
+              <label>Elektrobaterie</label>
+              <div class="col clmn2">
+                <label for="kwh_spotreba" class="control-label">Průměrná spotřeba kWh/100 km</label>
+                <input  [(ngModel)]="_det.kwh_spotreba"  (change)="changeSpotrebaKWH($event)" class="form-control" id='kwh_spotreba' name='kwh_spotreba' placeholder="Průměrná spotřeba na kWh/100km" type="text" onfocus="this.select()">
+              </div>  
+              <div class="col clmn2">
+                    <label for="kwh_baterie" class="control-label">Kapacita kWh</label>
+                    <input  [(ngModel)]="_det.kwh_baterie" class="form-control" id="kwh_baterie" name='kwh_baterie' placeholder="Kapacita baterie v kWh" type="text" onfocus="this.select()">
+              </div>  
+            </li>
+           
+           
+
+        </ul>
+
+        <mw-changed [zmeneno]="_det.zmeneno" [zmenil]="_det.zmenil"></mw-changed>
+            
+        </form>   
+</div>
+

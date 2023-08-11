@@ -1,0 +1,16 @@
+<div class="page-header">
+    <h1>Seznam rizikovost pracovišť <span *ngIf="isSelector"> - vyber ze seznamu</span></h1>
+    <small>Seznam rizikovost pracovišť</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default active" routerLink="/prohlidky/rizikovost/list"><i class='fa fa-align-justify'></i>Seznam rizik</button>
+            <button type="button" class="btn btn-default" routerLink="/prohlidky/rizikovost/-1"><i class='fa fa-plus'></i>Přidat riziko</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <pers-rizikovost-list *ngIf="rec == null"></pers-rizikovost-list>
+        <pers-rizikovost-detail *ngIf="rec" [detail]="rec" ></pers-rizikovost-detail>
+    </div>        
+</div>

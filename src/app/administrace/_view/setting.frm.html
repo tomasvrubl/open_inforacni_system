@@ -1,0 +1,20 @@
+<div class="page-header">
+    <h1>Nastavení</h1>
+    <small>Seznam parametrů. Zde jsou uloženy všechny konfigurační parametry, které se používají v aplikaci.</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">            
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/admin/setting/list"><i class='fa fa-align-justify'></i>Seznam parametrů</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/admin/setting/-1"><i class='fa fa-plus'></i>Přidat parametr</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <setting-list *ngIf="rec == null"></setting-list>
+        <setting-detail *ngIf="rec" [detail]="rec" ></setting-detail>
+    </div>        
+</div>
+
+
+
+

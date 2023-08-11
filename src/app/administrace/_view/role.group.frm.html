@@ -1,0 +1,20 @@
+<div class="page-header">
+    <h1>Skupiny uživatelských rolí</h1>
+    <small>Seznam skupin uživatelských rolí.</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">            
+            <button type="button" class="btn btn-default active" routerLink="/admin/role/group/list"><i class='fa fa-align-justify'></i>Seznam skupin</button>
+            <button type="button" class="btn btn-default" routerLink="/admin/role/group/-1"><i class='fa fa-plus'></i>Přidat skupinu</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <role-group-list *ngIf="roleGroup == null"></role-group-list>
+        <role-group-detail *ngIf="roleGroup" [rolegroup]="roleGroup" ></role-group-detail>
+    </div>        
+</div>
+
+
+
+

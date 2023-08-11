@@ -1,0 +1,259 @@
+<detail-form *ngIf="_rec" [detail]="this">
+    <form  #detForm="ngForm">
+        <div>
+            <ul class="form-fields">
+              <li>
+                <label for="zadost_vystavena" class="control-label">Vystavená žádost</label>
+                <mw-date [(datum)]="_rec.zadost_vystavena"></mw-date>    
+              </li>            
+              <li>
+                <label for="zadanky_predany" class="control-label">Předána žádanka</label>
+                <mw-date [(datum)]="_rec.zadanky_predany"></mw-date>
+              </li>
+                <li>
+                  <label class="control-label">Datum prohlídky</label> 
+                  <mw-date [(datum)]="_rec.datum_prohlidky" (datumChange)="datumProhlidkyChanged($event)"></mw-date>    
+                </li>
+                <li>
+                  <div class="clmn2">                
+                    <label class="control-label">Platnost prohlídky  <small> / {{_rec.platnost_prohlidky_roky}} roky podle výpočtů</small></label> 
+                    <span *ngIf="_busyDatumPlatnost" class="busy">Vypočítávám platnost ... <img src="assets/preloader.gif"/></span>
+                    <mw-date *ngIf="!_busyDatumPlatnost" [(datum)]="_rec.platnost_prohlidky"></mw-date>
+                  </div>               
+                  <div class="clmn2">
+                    <label class="control-label">Mimořádná prohlídka</label> 
+                    <mw-date [(datum)]="_rec.mimoradna_prohlidka"></mw-date>
+                  </div>
+                </li>
+                <li>
+                  <label class="control-label">Druh</label> 
+                  <mw-dropdown [items]="_typ" [(value)]="_rec.typ" (change)="changeDruh($event)"></mw-dropdown>
+                </li>                   
+                <li>
+                  <label for="osoba">Osoba</label>
+                  <mw-choose [label]="'Osoba'" 
+                          [txtPlaceholder]="'Osoba'"
+                          [txtValue]="_rec.osoba_oscislo"
+                          [txtLabel]="_rec.osoba_osoba"
+                          [TypeOfList]="_osobaList"
+                          [urlDetail]="'/pers/osoba/'+_rec.osoba_id"
+                          (onSelectedEvent)="onOsobaChanged($event)">
+                  </mw-choose> 
+              </li>
+              <li *ngIf="_rec.duvod_pravidlo && _rec.duvod_pravidlo.length > 0" class="prohlidka-gen-pravidlo ">
+                <label for="osoba">Pravidlo použité při generování</label>
+                <p class="note">
+                    {{_rec.duvod_pravidlo}} 
+                </p>
+              </li>
+            </ul>
+    
+            <div class="pnl prohlidka">
+              <div class="pnl-head">
+                  <div class="section">Popis práce</div>
+              </div>
+              <div class="pnl-body">
+                <table class="prohlidka">
+                    <tr>
+                      <td width="250">Pracovní zařazení zaměstnance</td>
+                      <td><input type="text" class="form-control" id="prac_zarazeni" name="prac_zarazeni" [(ngModel)]="_rec.prac_zarazeni" onfocus="this.select()"></td>
+                    </tr>
+                    <tr>
+                        <td>Druh práce</td>
+                        <td><input type="text" class="form-control" id="druh_prace" name="druh_prace" [(ngModel)]="_rec.druh_prace" onfocus="this.select()"></td>
+                    </tr>
+                    <tr>
+                      <td>Režim práce</td>
+                      <td><input type="text" class="form-control" id="rezim_prace" name="rezim_prace" [(ngModel)]="_rec.rezim_prace" onfocus="this.select()"></td>
+                    </tr>
+                </table>
+              </div>
+            </div>
+        
+            <div class="pnl prohlidka">
+              <div class="pnl-head">
+                  <div class="section">Rizikové faktory</div>
+              </div>
+              <div class="pnl-body">
+                <table class="prohlidka prohl-rizika">
+                    <tr>
+                      <td class="bold" colspan="2">faktor</td>
+                      <td class="ph">prach</td>
+                      <td class="ph">chemické látky a směsi</td>
+                      <td class="ph">hluk</td>
+                      <td class="ph">vibrace</td>
+                      <td class="ph">neionizující záření</td>
+                      <td class="ph">fyzická zátěž</td>
+                      <td class="ph">pracovní poloha</td>
+                      <td class="ph">zátěž teplem</td>
+                      <td class="ph">zátěž chladem</td>
+                      <td class="ph">zraková zátěž</td>
+                      <td class="ph">psychická zátěž</td>
+                      <td class="ph">biologickými činiteli</td>
+                      <td class="ph">ve zvýšeném tlaku</td>
+                    </tr>
+                    <tr>
+                      <td class="bold" rowspan="3">kategorie</td>
+                      <td style="padding: 0px 8px;">2</td>
+                      <td><input [checked]="_rec.f_prach == 2" (change)="_rec.f_prach = $event.currentTarget.checked ? 2 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_chem == 2" (change)="_rec.f_chem = $event.currentTarget.checked ? 2 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_hluk == 2" (change)="_rec.f_hluk = $event.currentTarget.checked ? 2 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_vibrace == 2" (change)="_rec.f_vibrace = $event.currentTarget.checked ? 2 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_zareni == 2" (change)="_rec.f_zareni = $event.currentTarget.checked ? 2 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_fyz == 2" (change)="_rec.f_fyz = $event.currentTarget.checked ? 2 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_poloha == 2" (change)="_rec.f_poloha = $event.currentTarget.checked ? 2 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_teplo == 2" (change)="_rec.f_teplo = $event.currentTarget.checked ? 2 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_chlad == 2" (change)="_rec.f_chlad = $event.currentTarget.checked ? 2 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_zrak == 2" (change)="_rec.f_zrak = $event.currentTarget.checked ? 2 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_psychika == 2" (change)="_rec.f_psychika = $event.currentTarget.checked ? 2 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_biologicka == 2" (change)="_rec.f_biologicka = $event.currentTarget.checked ? 2 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_tlak == 2" (change)="_rec.f_tlak = $event.currentTarget.checked ? 2 : 0" type="checkbox" /></td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 0px 8px;">3</td>
+                      <td><input [checked]="_rec.f_prach == 3" (change)="_rec.f_prach = $event.currentTarget.checked ? 3 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_chem == 3" (change)="_rec.f_chem = $event.currentTarget.checked ? 3 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_hluk == 3" (change)="_rec.f_hluk = $event.currentTarget.checked ? 3 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_vibrace == 3" (change)="_rec.f_vibrace = $event.currentTarget.checked ? 3 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_zareni == 3" (change)="_rec.f_zareni = $event.currentTarget.checked ? 3 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_fyz == 3" (change)="_rec.f_fyz = $event.currentTarget.checked ? 3 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_poloha == 3" (change)="_rec.f_poloha = $event.currentTarget.checked ? 3 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_teplo == 3" (change)="_rec.f_teplo = $event.currentTarget.checked ? 3 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_chlad == 3" (change)="_rec.f_chlad = $event.currentTarget.checked ? 3 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_zrak == 3" (change)="_rec.f_zrak = $event.currentTarget.checked ? 3 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_psychika == 3" (change)="_rec.f_psychika = $event.currentTarget.checked ? 3 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_biologicka == 3" (change)="_rec.f_biologicka = $event.currentTarget.checked ? 3 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_tlak == 3" (change)="_rec.f_tlak = $event.currentTarget.checked ? 3 : 0" type="checkbox" /></td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 0px 8px;">4</td>
+                      <td><input [checked]="_rec.f_prach == 4" (change)="_rec.f_prach = $event.currentTarget.checked ? 4 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_chem == 4" (change)="_rec.f_chem = $event.currentTarget.checked ? 4 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_hluk == 4" (change)="_rec.f_hluk = $event.currentTarget.checked ? 4 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_vibrace == 4" (change)="_rec.f_vibrace = $event.currentTarget.checked ? 4 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_zareni == 4" (change)="_rec.f_zareni = $event.currentTarget.checked ? 4 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_fyz == 4" (change)="_rec.f_fyz = $event.currentTarget.checked ? 4 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_poloha == 4" (change)="_rec.f_poloha = $event.currentTarget.checked ? 4 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_teplo == 4" (change)="_rec.f_teplo = $event.currentTarget.checked ? 4 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_chlad == 4" (change)="_rec.f_chlad = $event.currentTarget.checked ? 4 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_zrak == 4" (change)="_rec.f_zrak = $event.currentTarget.checked ? 4 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_psychika == 4" (change)="_rec.f_psychika = $event.currentTarget.checked ? 4 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_biologicka == 4" (change)="_rec.f_biologicka = $event.currentTarget.checked ? 4 : 0" type="checkbox" /></td>
+                      <td><input [checked]="_rec.f_tlak == 4" (change)="_rec.f_tlak = $event.currentTarget.checked ? 4 : 0" type="checkbox" /></td>
+                    </tr>
+                
+                </table>
+              </div>
+            </div>
+            <div class="pnl prohlidka">
+                  <div class="pnl-head">
+                      <div class="section">Druh prohlídky a důvod pracovně lékařské prohlídky</div>
+                  </div>
+                  <div class="pnl-body">
+
+                      <table class="prohlidka"> 
+                        <tbody>
+                          <ng-container *ngIf="_rec.typ == 0">
+                            <tr>
+                              <td class="bold" rowspan="2" colspan="3">vstupní</td>
+                              <td width="20"><input [checked]="_rec.t0_0" (change)="_rec.t0_0 = !_rec.t0_0;" type="checkbox" /></td><td>nový zaměstnanec</td>  
+                            </tr>
+                            <tr>                          
+                              <td><input [checked]="_rec.t0_1" (change)="_rec.t0_1 = !_rec.t0_1;" type="checkbox" /></td><td>převedení na jinou práci (změna nebo navýšení rizikových faktorů nejméně o jeden, výkon rizikové práce nově)</td>
+                            </tr>
+                          </ng-container>
+                          <ng-container *ngIf="_rec.typ == 1">
+                            <tr>
+                              <td class="bold" colspan="3">periodická</td>
+                              <td width="20"><input [checked]="_rec.t1_0" (change)="_rec.t1_0 = !_rec.t1_0;" type="checkbox" /></td><td>před uplynutím doby od poslední prohlídky</td>  
+                            </tr>
+                          </ng-container>
+                          <ng-container *ngIf="_rec.typ == 2">
+                            <tr>
+                              <td class="bold" rowspan="11" colspan="3">mimořádná</td>
+                              <td width="20"><input [checked]="_rec.t2_0" (change)="_rec.t2_0 = !_rec.t2_0;" type="checkbox" /></td><td>nařídil ji orgán ochrany veřejného zdraví</td>  
+                            </tr>
+                            <tr>
+                              <td><input [checked]="_rec.t2_1" (change)="_rec.t2_1 = !_rec.t2_1;" type="checkbox" /></td><td>vyžaduje to zdravotní náročnost konkrétních pracovních podmínek</td>
+                            </tr>
+                            <tr>
+                              <td><input [checked]="_rec.t2_2" (change)="_rec.t2_2 = !_rec.t2_2;" type="checkbox" /></td><td>zhoršení pracovních podmínek zvýšení míry rizika u rizikového faktoru, k němuž již byla posuzována zdravotní způsobilost zaměstnance</td>
+                            </tr>
+                            <tr>
+                              <td><input [checked]="_rec.t2_3" (change)="_rec.t2_3 = !_rec.t2_3;" type="checkbox" /></td><td>zjištěno opakované překročení limitní hodnoty ukazatelů biologického expozičního testu</td>
+                            </tr>
+                            <tr>
+                              <td><input [checked]="_rec.t2_4" (change)="_rec.t2_4 = !_rec.t2_4;" type="checkbox" /></td><td>na základě závěrů jiných vyšetření sledování zátěže organizmu působením rizikových faktorů pracovních podmínek</td>
+                            </tr>
+                            <tr>
+                              <td><input [checked]="_rec.t2_5" (change)="_rec.t2_5 = !_rec.t2_5;" type="checkbox" /></td><td>zdravotní stav zaměstnance předpokládá změnu zdravotní způsobilosti k práci v době kratší, než je interval periodické prohlídky</td>
+                            </tr>
+                            <tr>
+                              <td><input [checked]="_rec.t2_6" (change)="_rec.t2_6 = !_rec.t2_6;" type="checkbox" /></td><td>výkon práce přerušen z důvodu nemoci po dobu delší než 8 týdnů (mimo 1. kategorii prací, rizikovou činnost nebo jiný právní předpis)</td>
+                            </tr>
+                            <tr>
+                              <td><input [checked]="_rec.t2_7" (change)="_rec.t2_7 = !_rec.t2_7;" type="checkbox" /></td><td>výkon práce přerušen v důsledku úrazu s těžkými následky, nemoci spojené s bezvědomím nebo jiné těžké újmy na zdraví</td>
+                            </tr>
+                            <tr>
+                              <td><input [checked]="_rec.t2_8" (change)="_rec.t2_8 = !_rec.t2_8;" type="checkbox" /></td><td>výkon práce přerušen z jiných důvodů na dobu delší než 6 měsíců</td>
+                            </tr>
+                            <tr>
+                              <td><input [checked]="_rec.t2_9" (change)="_rec.t2_9 = !_rec.t2_9;" type="checkbox" /></td><td>žádost předložená zaměstnavatelem z vlastního podnětu nebo podnětu zaměstnance</td>
+                            </tr>
+                            <tr>
+                              <td><input [checked]="_rec.t2_10" (change)="_rec.t2_10 = !_rec.t2_10;" type="checkbox" /></td><td>informace sdělené ošetřujícím lékařem (důvodné podezření, že zmněnou zdravotního stavu zaměstnance došlo ke změně zdravotní způsobilosti)</td>
+                            </tr>
+                          </ng-container>
+                          <ng-container>
+                            <tr *ngFor="let ci of _cinnostList">
+                              <td width="2  0">
+                                <input type="checkbox" [checked]="isCinnostChecked(ci)" (change)="cinnostCheckedChange($event.currentTarget.checked, ci)" />
+                              </td>
+                              <td width="40">{{ci.zakon_riziko}}</td><td width="40">{{ci.zakon_skupina}}</td><td colspan="2">{{ci.nazev}}</td>
+                            </tr>
+                          </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+              </div>
+
+              <div class="pnl prohlidka">
+                  <div class="pnl-head">
+                      <div class="section">Posudkový závěr</div>
+                  </div>
+                  <div class="pnl-body">
+                    <table class="prohlidka">
+                      <tr>
+                        <td width="40"><input type="checkbox" [checked]="_rec.is_zpusobily" (change)="_rec.is_zpusobily = !_rec.is_zpusobily"/></td>
+                        <td>je zdravotně způsobilý/á</td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox" [checked]="_rec.is_nezpusobily" (change)="_rec.is_nezpusobily = !_rec.is_nezpusobily"/></td>
+                        <td>je zdravotně nezpůsobilý/á</td>
+                      </tr>
+                      <tr>
+                        <td rowspan="2"><input type="checkbox" [checked]="_rec.is_zpusobilypodm" (change)="_rec.is_zpusobilypodm = !_rec.is_zpusobilypodm"/></td>
+                        <td>je zdravotně způsobilý/á s podmínkou</td>
+                      </tr>
+                      <tr>
+                        <textarea [(ngModel)]="_rec.note_podminka" id="note_podminka" name='note_podminka' class='form-control'></textarea>              
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox" [checked]="_rec.is_ztrata_zpusobilosti" (change)="_rec.is_ztrata_zpusobilosti = !_rec.is_ztrata_zpusobilosti"/></td>
+                        <td>pozbyl/a dlouhodobě zdravotní způsobilost</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <ul class="form-fields">
+                  <li class="clmn">
+                    <label for="zadost_vystavena" class="control-label">Poznámka k prohlídce, posudkový závěr</label>
+                    <div>
+                        <textarea [(ngModel)]="_rec.posudkovy_zaver" id="posudkovy_zaver" name='posudkovy_zaver' class='form-control'></textarea>              
+                    </div>     
+                  </li>
+                </ul>
+                <mw-changed [zmeneno]="_rec.zmeneno" [zmenil]="_rec.zmenil"></mw-changed>            
+        </div>
+    </form>
+</detail-form>

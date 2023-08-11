@@ -1,0 +1,38 @@
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+
+RewriteRule ^(.*) /index.html [NC,L]
+</IfModule>
+
+
+
+
+#RewriteEngine On
+#RewriteBase /
+
+
+# prozatim takto
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+
+#RewriteRule ^$ / [L]
+#RewriteRule .* /index.html [L,QSA]
+#RewriteRule ^$ /index.php [L,QSA]
+
+
+
+
+# prozatim takto
+
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule .* index.php [L,QSA]
+#RewriteRule ^$ index.php [L,QSA]
+
+
+

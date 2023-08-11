@@ -1,0 +1,24 @@
+<div class="page-header">
+    <h1>Osoba  <span *ngIf="isSelector"> - vyber osobu</span></h1>
+    <small>Zaměstnanci vedení v systému.</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/pers/osoba/list"><i class='fa fa-align-justify'></i>Seznam osob</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/pers/osoba/-1"><i class='fa fa-plus'></i>Přidat osobu</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/pers/osoba/print" ><i class='fa fa-print'></i>Tiskové sestavy</button>
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body" *ngIf="!_showSestavy">
+        <osoba-list *ngIf="detail == null" urlrec="/pers/osoba" [isPrint]="true"></osoba-list>
+        <osoba-detail *ngIf="detail" [detail]="detail" ></osoba-detail>
+    </div>        
+    <div class="pnl-body" *ngIf="_showSestavy">
+        <report-frm urlrec="/pers/osoba"></report-frm>
+    </div> 
+</div>
+
+
+
+

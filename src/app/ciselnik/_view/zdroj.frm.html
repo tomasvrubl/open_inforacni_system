@@ -1,0 +1,20 @@
+<div class="page-header">
+    <h1>Zdroj  <span *ngIf="isSelector"> - vyber zdroj</span></h1>
+    <small>Seznam výrobních strojů</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/zdroj"><i class='fa fa-align-justify'></i>Seznam zdrojů</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/zdroj/-1"><i class='fa fa-plus'></i>Přidat zdroj</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <zdroj-list *ngIf="_showList"></zdroj-list>
+        <zdroj-detail *ngIf="_showDetail" [detail]="zdroj" ></zdroj-detail>
+    </div>        
+</div>
+
+
+
+

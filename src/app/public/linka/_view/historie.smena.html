@@ -1,0 +1,37 @@
+<div class="terminal-pnl">
+    <table class="table terminal">
+        <thead>
+            <tr>
+                <th *ngFor="let h of tab.header"  [hidden]="h.hidden == true" [class.right]='h.type == 1 || h.type == 6 || h.right'>{{h.label}}</th>                
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>            
+            <tr *ngFor="let r of tab._data.list">
+                <td>{{formatDatum(r.datum)}}</td>
+                <td style="text-align: right">{{r.smena}}</td>
+                <td style="text-align: right">{{r.odv_mnozstvi}}</td>
+                <td style="text-align: right">{{r.utrz_forem}}</td>
+                <td style="text-align: right">{{r.termosoba}}</td>
+                <td style="text-align: right">{{r.zmeneno}}</td>
+                <td style="text-align: right">{{r.zmenil}}</td>
+                <td style="text-align: right;"><button>Editovat ...</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="terminal-pnl-bottom">
+    <div style="display: inline-block;" class="calendar">
+        <button class="btn btn-default" (click)="nastavDen(-1)"> << </button>
+        <span>{{getAktualniDatum()}} </span>
+        <button class="btn btn-default" (click)="nastavDen(1)"> >> </button>
+        <button class="btn btn-default dnes" (click)="nastavDnes()">Dnes</button>
+    </div>
+    <div class="osoba">
+        {{prihlasenaOsoba()}}
+    </div>
+    <div class="right">        
+        <button type="button" class="btn btn-default" (click)="reloadData()"><i class="fa fa-refresh"></i> Aktualizovat data</button>
+    </div>
+</div>
+

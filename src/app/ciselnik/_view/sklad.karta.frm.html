@@ -1,0 +1,26 @@
+<div class="page-header">
+    
+    <h1 *ngIf="sklad.id > -1"> {{sklad.nazev}}  <span>Skladové karty</span></h1>    
+    <h1 *ngIf="sklad.id == -1">Skladové karty  <span *ngIf="isSelector"> - vyber skladovou kartu</span></h1>
+    <small>Seznam skladových karet</small>
+    <div class='tool-part'>
+        <div *ngIf="sklad.id > -1" class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/sklad/{{sklad.id}}/karta/list"><i class='fa fa-align-justify'></i>Seznam skladových karet</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/sklad/{{sklad.id}}/karta/-1"><i class='fa fa-plus'></i>Přidat skladovou kartu</button>     
+        </div>        
+        <div *ngIf="sklad.id == -1" class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/sklad/karta/list"><i class='fa fa-align-justify'></i>Seznam skladových karet</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/sklad/karta/-1"><i class='fa fa-plus'></i>Přidat skladovou kartu</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <sklad-karta-list *ngIf="karta == null"></sklad-karta-list>
+        <sklad-karta-detail *ngIf="karta" [karta]="karta" [sklad]="sklad" ></sklad-karta-detail>
+    </div>        
+</div>
+
+
+
+

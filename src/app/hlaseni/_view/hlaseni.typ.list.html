@@ -1,0 +1,16 @@
+<mw-alert-message [response]="response"></mw-alert-message> 
+<mw-table
+        [css]="'vada'" 
+        [table]="tab" 
+        [SelectButton]="isSelector"
+        [MultiSelectButton]="false"
+        [DropButton]="true" 
+        [EditButton]="true"  
+        (onEditRecord)="onEdit($event, false)" 
+        (onEditRecordWnd)="onEdit($event, true)"
+        (onSelectRecord)="onSelected($event)"
+        (onDropRecord)="onDrop($event)"
+        (onReloadData)="reloadData($event)"
+        (onSelectCancel)="onCancel($event)">
+        <hlaseni-typ-detail [typ]="typ" ></hlaseni-typ-detail>
+</mw-table>

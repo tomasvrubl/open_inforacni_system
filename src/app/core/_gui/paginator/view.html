@@ -1,0 +1,21 @@
+
+<div class="mw-paginator {{css}}" >
+    <ul>
+        <li>
+            Celkem záznamů <span class="total"> {{total}}</span> na stránce                
+                <input [(ngModel)]="limit" type="text" class="form-control limit" onfocus="this.select()" (change)="limitChanged()"/>
+                Strana: <input [(ngModel)]="_page" type="text" class="form-control cpage" onfocus="this.select()" (change)="navPage(_page)"/> / {{_pages}}
+        </li>
+        <li>
+            <ul class="pages">
+                <li (click)="navPage(1)" class="pg-first {{btnclass}}"><i class="fa fa-angle-double-left" aria-hidden="true"></i>Začátek</li>
+                <li (click)="navPage(_page-1)"  class="pg-prev {{btnclass}}"><i class="fa fa-angle-left" aria-hidden="true"></i>Předchozí</li>               
+                <li *ngFor="let i of a_pages"  class="pg-page {{btnclass}}" [class.active]="i == _page" (click)="navPage(i)"> 
+                    {{i}}
+                </li>                
+                <li (click)="navPage(_page+1)"  class="pq-next {{btnclass}}">Další<i class="fa fa-angle-right" aria-hidden="true"></i></li>
+                <li (click)="navPage(_pages)"  class="pg-last {{btnclass}}">Konec<i class="fa fa-angle-double-right" aria-hidden="true"></i></li>
+            </ul>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,122 @@
+<mw-modal-drop [id]="id+'-dropModalTable'" (onYes)="dropRecord($event)"></mw-modal-drop>
+<div class="mw-table" [id]="id+'-mw-table'">
+    <div *ngIf="isFultext()" class="fulltext">
+        <span>Hledej:</span>
+        <input type="text" class="form-control" placeholder="Zadej hledaný text" onfocus="this.select()" [(ngModel)]="fulltextValue"  (keyup)="fulltextKeyHandler($event)"/>
+    </div>
+    <div class="table-part">
+     <table class="table {{css}}" [id]="id">
+        <thead>
+            <tr>
+                <th *ngIf="SelectButton || MultiSelectButton || MultiSelect || PDFButton" class="th-select">
+                    <input *ngIf="MultiSelectButton || MultiSelect || PDFButton" type="checkbox" class="r-select" (change)="checkAll($event.currentTarget.checked)" />
+                </th>
+                <th class="th-id" *ngIf="CollapseIcon"></th>
+                <th *ngFor="let r of table.header; let clmnidx = index" [class.right]='r.type == 1 || r.type == 6 || r.type == 4 || r.right' [class.hidden]="r.hidden">
+                    <span>{{r.label}}</span>
+                    <div class="a-btn">
+                        <button *ngIf="r.sort == 0 && hasSort"  (click)="sortColumn(clmnidx)" class="btnth"><i class="fa-solid fa-text-height"></i></button>
+                        <button *ngIf="r.sort == 1 && hasSort" class="sorted btnth"  (click)="sortColumn(clmnidx)" ><i class="fa-solid fa-arrow-down-short-wide"></i></button>
+                        <button *ngIf="r.sort == 2 && hasSort" class="sorted btnth" (click)="sortColumn(clmnidx)" ><i class="fa-solid fa-arrow-down-wide-short"></i></button>
+                        <button *ngIf="hasFilter" name="table_popup_open" [class.fitler-active]="isFilter(r.filter)" (click)="showFilterPopup($event,clmnidx)" class="btnth"><i class="fa-solid fa-filter"></i></button>
+                    </div>
+                    <div *ngIf="_isPopIDX == clmnidx" class="filter" name="table_popup" >
+                        <ul>
+                            <li class="toolbar">
+                                <label>{{r.label}}</label>
+                                <button (click)="applyFilter(clmnidx)" class="btn btn-default nomargin"><i class="fa-solid fa-check"></i>Aplikuj filtr</button>   
+                                <button (click)="clearFilter(clmnidx)" class="btn btn-default nomargin"><i class="fa-solid fa-xmark"></i>Odstranit filtr</button>                                                       
+                            </li>
+                            <ng-container *ngIf="!r.enum">
+                                <li *ngFor="let rf of r.filter; let filteridx = index;" class="fltritem">
+                                    <select [(ngModel)]="rf.operator">
+                                        <option value='0'>=</option>
+                                        <option value='1'><</option>
+                                        <option value='2'>></option>
+                                        <option value='3'><=</option>
+                                        <option value='4'>>=</option>
+                                        <option value='5'>!=</option>
+                                        <option value='6'>obsahuje</option>
+                                        <option value='7'>v (...)</option>
+                                        <option value='8'>není v (...)</option>                                    
+                                    </select>                                
+                                    <input type="text" [(ngModel)]="rf.value">
+                                    <button (click)="dropFilter(clmnidx, filteridx)" name="tab_pop_drop" class="btn btn-default btnact"><i class="fa-solid fa-xmark"></i></button>                                
+                                </li>                                                        
+                            </ng-container>        
+                            <ng-container *ngIf="r.enum">                                
+                                <li *ngFor="let rf of r.filter; let filteridx = index;" class="fltritem">
+                                    <select [(ngModel)]="rf.operator">
+                                        <option value='0'>=</option>                                        
+                                        <option value='5'>!=</option>                                        
+                                    </select>                        
+                                    <select [(ngModel)]="rf.value" class="w80">
+                                        <option *ngFor="let e of r.enum" [value]="e.val">{{e.lbl}}</option>
+                                    </select>                                            
+                                    <button (click)="dropFilter(clmnidx, filteridx)" name="tab_pop_drop" class="btn btn-default btnact"><i class="fa-solid fa-xmark"></i></button>                                
+                                </li>
+                            </ng-container>
+                        </ul>
+                        <button  (click)="addFilter(clmnidx)" class="btn btn-default btnadd" ><i class='fa-solid fa-plus nomargin'></i></button>
+                    </div>
+                </th>
+                <th *ngIf="DropButton || EditButton || PDFButton"></th>
+            </tr>
+        </thead>
+        <tbody *ngIf="table.data">
+            <tr *ngFor="let r of table.data.list; let ridx = index;" [attr.ridx]="ridx" class="{{rowCSS(r)}}" >
+                <td *ngIf="MultiSelectButton || MultiSelect || PDFButton" class="td-select">
+                    <input type="checkbox" name="use-{{id}}"  class="r-select"  [(ngModel)]="_multiSel[ridx]"/>
+                </td>
+                <td *ngIf="SelectButton" class="td-select">
+                    <input type="radio" name="use-{{id}}" value="{{ridx}}" class="r-select" [(ngModel)]="_selIDX"/>
+                </td>
+                <td class="edit-row" *ngIf="CollapseIcon" title="Zobrazit detail záznamu" class="td-expand">                    
+                    <i (click)="editRecord(ridx)" class='fa-solid pointer' [class.fa-caret-down]="_editIDX == ridx" [class.fa-caret-right]="_editIDX != ridx"></i>
+                </td>
+                <td *ngFor="let h of table.header; let i = index;"  (click)="clickOnRow(ridx)" class="{{h.clmn}} {{h.css_class}} {{cellCSS(r[h.clmn == null ? i : h.clmn])}}" [class.hand]="MultiSelectButton || SelectButton" [class.hidden]="h.hidden" [innerHTML]="cellVal(r[h.clmn == null ? i : h.clmn], h.type)  | safeHtml" [class.number]="h.type == 1 || h.type == 6 || h.type == 4 || h.right" [class.clmnfilter]="hasFilter && h.filter && h.filter.length > 1 && h.filter[0].value != null">
+                    
+                </td>
+                <td *ngIf="DropButton || EditButton || PDFButton || ChartButton || CustomButton.length > 0" class="cmd-row">
+                    <button *ngIf="EditButton" type="button" title="Upravit záznam" (click)="editRecordView(ridx)" class="tab-btn"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button *ngIf="ChartButton" type="button" title="Zobrazit graf" (click)="chartRecordView(ridx)" class="tab-btn"><i class="fa-solid fa-chart-pie"></i></button>                    
+                    <button *ngIf="PDFButton" type="button"  title="Vytisknout záznam" (click)="onPDFButtonClick(ridx)" class="tab-btn"><i class="fa-solid fa-print"></i></button>
+                    <button *ngIf="DropButton" type="button" title="Smazat záznam" class="tab-btn" data-bs-toggle="modal" [attr.data-bs-target]="'#'+id+'-dropModalTable'" (click)="_editIDX = ridx"><i class="fa-solid fa-xmark nomargin"></i></button>
+
+                    <button *ngFor="let b of CustomButton;" (click)="b.tocall(b, ridx, r)" [title]="b.title">
+                        <i [class]="b.icon"></i>&nbsp;&nbsp;{{b.label}}
+                    </button>
+                </td>    
+            </tr>
+            <tr *ngIf="CollapseIcon" id="tr-ed-{{id}}" style="display: none;" class="detail-view">
+                <td [attr.colspan]="_colspan">
+                    <div class="edt-detail">
+                        <div class="edt-detail-frm">
+                            <ng-content *ngIf="_editIDX > -1"></ng-content>                                
+                        </div>                        
+                    </div>                    
+                </td>                
+            </tr>            
+        </tbody>
+        <tfoot *ngIf="ShowSummary">
+            <tr>
+                <td *ngFor="let h of table.header; let i = index" class="{{h.clmn}}" [innerHTML]="getSummary(i, h)" [class.number]="h.type == 1" [class.clmnfilter]="hasFilter && h.filter && h.filter.length > 1 && h.filter[0].value != null"></td>
+            </tr>
+        </tfoot>
+   
+     </table>   
+    </div>
+    <ul class="bottom-tools">
+        <li><mw-paginator *ngIf="hasPaginator" [btnclass]="'btn-tab'" [total]="table.data.total" [page]="table.data.page" [limit]="table.data.limit" (onPageChange)="onPageChange($event)"  (onLimitChange)="onLimitChange($event)"></mw-paginator></li>
+        <li>
+            <button class="btn-tab gray" *ngIf="SelectButton" (click)="useSelected()">Použít vybraný záznam</button>
+            <button class="btn-tab gray" *ngIf="MultiSelectButton" (click)="useSelected()">Použít vybrané záznamy</button>
+            <button class="btn-tab" (click)="reloadData()">Aktualizovat data</button>
+            <button class="btn-tab" *ngIf="hasFilter"  (click)="cleanFilterSett()">Zrušit filtr</button>
+            <button class="btn-tab" (click)="exportXLS()">Export do XLS</button>
+
+            <button *ngIf="PDFButton" type="button" (click)="onPDFButtonMulti()" class="btn btn-primary"><i class="fa-solid fa-print"></i> Hromadný tisk</button>
+        </li>
+    </ul>
+    
+</div>

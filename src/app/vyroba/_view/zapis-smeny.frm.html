@@ -1,0 +1,24 @@
+<div class="page-header">
+    <h1>Zápis pracovní směny</h1>
+    <small>Seznam zápisů z pracovní směny. Formulář používá směnnový kalendář buď ze zdroje nebo ze střediska. <a routerLink="/ciselnik/zdroj" target="_blank">Zdroj</a> by měl obsahovat 
+        <a routerLink="/ciselnik/pracoviste/list" target="_blank">středisko</a>, do kterého patří. Pracovní zařazení se bere z výroby <a routerLink="/vyroba/zarazeni/list" target="_blank">Pracovní zařazení</a>.
+    </small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/vyroba/zapis-smeny/list"><i class='fa fa-align-justify'></i>Seznam zápisů</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/vyroba/zapis-smeny/-1"><i class='fa fa-plus'></i>Přidat záznam</button>     
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/vyroba/zapis-smeny/print" ><i class='fa fa-print'></i>Tiskové sestavy</button>
+        </div>        
+    </div>
+</div>
+
+<div class="pnl">
+    <div class="pnl-body" *ngIf="!_showSestavy">
+        <vyr-zapis-smeny-list *ngIf="detail == null" urlrec="/vyroba/zapis-smeny" [isPrint]="true"></vyr-zapis-smeny-list>
+        <vyr-zapis-smeny-detail *ngIf="detail" [detail]="detail" ></vyr-zapis-smeny-detail>
+    </div>        
+    <div class="pnl-body" *ngIf="_showSestavy">
+        <report-frm urlrec="/vyroba/zapis-smeny"></report-frm>
+    </div> 
+</div>
+

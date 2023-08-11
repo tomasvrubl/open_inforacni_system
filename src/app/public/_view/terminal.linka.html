@@ -1,0 +1,25 @@
+<mw-alert-message [response]="response"></mw-alert-message>
+<div class="terminal-header" id="terminal-header">
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default active" routerLinkActive="active" routerLink="/terminal/linka/{{zdroj_kod}}"><i class='fa fa-align-justify'></i>Denní plán</button>
+            <button type="button" class="btn btn-default" routerLink="/terminal/linka/{{zdroj_kod}}/smena"><i class='fa fa-plus'></i>Zápis směny</button>
+            <button type="button" class="btn btn-default" routerLink="/terminal/linka/{{zdroj_kod}}/porucha" ><i class="fa fa-plus"></i>Hlášení poruchy</button>     
+            <button type="button" class="btn btn-default" routerLink="/terminal/linka/{{zdroj_kod}}/historie/odvadeni" ><i class="fa-solid fa-list"></i>Historie odvádění</button>     
+            <button type="button" class="btn btn-default" routerLink="/terminal/linka/{{zdroj_kod}}/historie/smena" ><i class="fa-solid fa-list"></i>Historie směny</button>     
+            <button type="button" class="btn btn-default" routerLink="/terminal/linka/{{zdroj_kod}}/historie/porucha" ><i class="fa-solid fa-list"></i>Historie poruchy</button>            
+        </div>        
+        <div class="label">
+            <div *ngIf="!user">
+                <button class="btn btn-default" routerLink="/terminal/linka/{{zdroj_kod}}/login"><i class="fa-solid fa-person"></i>Přihlásit se</button>
+            </div>
+            <div *ngIf="user">
+                <button class="btn btn-default" (click)="odhlasitse()">{{user.osoba}}, Odhlásit se... <i class="fa-solid fa-person-walking-arrow-right"></i></button>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<div class="terminal-page" id="terminal-page">
+   <router-outlet></router-outlet>
+</div>

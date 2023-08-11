@@ -1,0 +1,64 @@
+<div class="terminal-pnl">
+    <div *ngIf="plan.poznamka.length > 0">
+        {{plan.poznamka}}
+    </div>
+
+    <table class="table terminal">
+        <thead>
+            <tr>
+                <th>Položka</th>
+                <th>Teplota lití °C</th>
+                <th class="right">Váha kg/ks</th>
+                <th>Jakost</th>
+                <th class="right">Pořadí</th>
+                <th class="right">Ve formě</th>
+                <th class="right">Plán ks</th>
+                <th class="right">Odvedeno</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let r of plan.seznam; let i = index;">
+                <tr>
+                    <td>{{r.nazev}}<div *ngIf="r.pokyn.length > 0" class="sh-pokyn"><button (click)="row_pokyn.style.display = 'table-row'" style="border: none; padding: 5px;"><img src="assets/pozor.png" class="icon"></button></div></td>
+                    <td>{{r.teplota}}</td>
+                    <td class="right">{{r.hmotnost}}</td>
+                    <td class="center">{{r.jakost}}</td>
+                    <td class="right">{{r.poradi}}</td>
+                    <td class="right">{{r.pocet_na_forme}}</td>
+                    <td class="right">{{r.plan_ks}}</td>
+                    <td class="right">{{r.odvedeno}}</td>
+                    <td width="90"><input type="number" style="text-align: right" class="form-control" [(ngModel)]="r._hodnota" onfocus="this.select()"></td>
+                </tr>
+                <tr class="pokyn" #row_pokyn>
+                    <td colspan="9">
+                        <div class="container">
+                            <div class="txt">
+                                {{r.pokyn}}
+                            </div>
+                            <div>
+                                <button (click)="row_pokyn.style.display = 'none'">Skrýt pokyn</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-container>            
+        </tbody>
+    </table>
+</div>
+<div class="terminal-pnl-bottom">
+    <div style="display: inline-block;" class="calendar">
+        <button class="btn btn-default" (click)="nastavDen(-1)"> << </button>
+        <span>{{getAktualniDatum()}} </span>
+        <button class="btn btn-default" (click)="nastavDen(1)"> >> </button>
+        <button class="btn btn-default dnes" (click)="nastavDnes()">Dnes</button>
+    </div>
+    <div class="osoba">
+        {{prihlasenaOsoba()}}
+    </div>
+    <div class="right">        
+        <button type="button" class="btn btn-default" (click)="reloadPlan()"><i class="fa fa-refresh"></i> Aktualizovat plán</button>
+        <button type="button" class="btn btn-default send" (click)="sendData()"><i class="fa fa-paper-plane"></i> Odeslat data</button>
+    </div>
+</div>
+

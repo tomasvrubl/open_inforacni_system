@@ -1,0 +1,12 @@
+<mw-alert-message [response]="response"></mw-alert-message> 
+<mw-table
+        [table]="tabRoles" 
+        [EditIndex]="_editIDX"        
+        [DropButton]="true" 
+        [EditButton]="true"  
+        (onEditRecord)="onEdit($event, false)" 
+        (onEditRecordWnd)="onEdit($event, true)"
+        (onDropRecord)="onDrop($event)"
+        (onReloadData)="reloadData($event)">
+        <user-role-detail *ngIf="role && role.id > -1" [detail]="role" (roleChanged)="roleChanged($event)"></user-role-detail>
+</mw-table>

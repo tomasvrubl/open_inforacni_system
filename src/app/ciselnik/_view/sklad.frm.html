@@ -1,0 +1,20 @@
+<div class="page-header">
+    <h1>Sklady  <span *ngIf="isSelector"> - vyber sklad</span></h1>
+    <small>Seznam skladů</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/sklad/sklad/list"><i class='fa fa-align-justify'></i>Seznam skladů</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/sklad/sklad/-1"><i class='fa fa-plus'></i>Přidat sklad</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <sklad-list *ngIf="_showList"></sklad-list>
+        <sklad-detail *ngIf="_showDetail" [sklad]="sklad" ></sklad-detail>
+    </div>        
+</div>
+
+
+
+

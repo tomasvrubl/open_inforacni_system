@@ -1,0 +1,84 @@
+<detail-form *ngIf="_rec" [detail]="this">
+      <form #jakostForm="ngForm" >
+          <ul class="form-fields">
+                <li>
+                  <label for="nazev" class="control-label">Název (unikátní)</label>
+                  <div>
+                    <input [(ngModel)]="_rec.nazev" class="form-control" id="nazev" name='nazev' placeholder="Zadej jakost tekutého kovu" type="text" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                    <div *ngIf="nazev.errors && (nazev.dirty || nazev.touched)" class="alert alert-danger">   
+                        <div [hidden]="!nazev.errors.required">
+                               Zadej jakost. Název musí být unikátní. Např. GG15, GG20, GG50
+                        </div>
+                    </div>
+                  </div>  
+              </li>              
+
+              <li>
+                <label for="karta" class="control-label">Externí kód</label>
+                 <div  class="col">
+                        <input [(ngModel)]="_rec.externi_kod" class="form-control" id="externi_kod" name='externi_kod' placeholder="Zadej externí kód pro převod mezi systémy" type="text" onfocus="this.select()">            
+                 </div>                
+              </li>           
+              <li>
+                <label for="platnost" class="control-label">Platnost</label>
+                 <div  class="col">
+                    <input [checked]="_rec.platnost" (change)="_rec.platnost = !_rec.platnost;" type="checkbox" />                              
+                 </div>
+              </li>   
+              <li class="clmn">
+                <label for="n_poznamka" class="control-label">Poznámka</label>
+                <div>
+                    <textarea [(ngModel)]="_rec.poznamka" id="n_poznamka" name='poznamka'  class="form-control" style="min-height: 140px"></textarea>              
+                </div>
+              </li>
+          </ul>         
+          <ng-container *ngIf="_rec.id > -1">      
+            <div class="pnl">
+                <div class="pnl-head">             
+                    <div *ngIf="!showKarta" class="tool-part" >
+                          <button class="btn " (click)="showKarta=true"><i class="fa fa-random" aria-hidden="true"></i>Přidat surovinu</button>
+                    </div>
+                    <div class="section">Seznam přiřazených surovin</div>
+                </div>
+                <div class="pnl-body"  [class.box-shadow]="showKarta">
+
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Karta kód</th>
+                        <th>Název materiálu</th>
+                        <th>Platnost</th>
+                        <th>Jednotka pro odvádění</th>
+                        <th></th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let p of _rec.slozeni" [class.neplatny]="!p.platnost">
+                            <td>{{p.karta_kod}}</td>
+                            <td>{{p.karta_nazev}}</td>
+                            <td>
+                              <mw-dropdown [items]="_platnost" [(value)]="p.platnost"></mw-dropdown>
+                            </td>
+                            <td><mw-dropdown [items]="jednotky" [(value)]="p.jednotka_id"></mw-dropdown></td>
+                            <td>
+                              <button class="drop" (click)="dropKartaSlozeni(p)"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                      </tbody>
+                  </table>           
+                  
+                  <mw-popwnd  *ngIf="showKarta" [title]="'Vyber karty, které se mají přidat jako surovina'" (onCancel)="showKarta=false">
+                      <sklad-karta-list [isMultiSelect]="true" (onSelectedSkladKartaList)="onSelectedKartaList($event)"></sklad-karta-list>                
+                  </mw-popwnd>
+    
+                </div>   
+            </div>   
+          </ng-container>
+          
+          <mw-changed [zmeneno]="_rec.zmeneno" [zmenil]="_rec.zmenil"></mw-changed>            
+        </form>   
+</detail-form>      
+
+
+
+

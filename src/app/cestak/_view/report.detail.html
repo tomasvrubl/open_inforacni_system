@@ -1,0 +1,185 @@
+<mw-popwnd *ngIf="_showPrintPopup" title="Tiskové sestavy" [centerScreen]="true" (onCancel)="_showPrintPopup = !_showPrintPopup">
+    <table class="print-list">
+            <thead>
+                    <tr> <th>Název</th><th>Popis</th><th></th></tr>
+            </thead>
+            <tbody>
+                    <tr *ngFor="let r of _printList">
+                            <td>{{r.nazev}}</td>
+                            <td>{{r.note}}</td>
+                            <td style="text-align: right;"><button class="btn btn-primary" (click)="printReport(r.id)"><i class="fa fa-print"></i> Vytisknout</button></td>
+                    </tr>
+            </tbody>
+    </table>
+</mw-popwnd>
+
+<mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+<div class="page-header head-vykaz">
+    <h1><i class="fa fa-pencil-square-o" aria-hidden="true" style="margin-right: 15px;"></i>Měsíční výkaz jízd <small>/ {{vykaz.id}}</small></h1>
+</div>
+  
+<div class="pnl">
+    <div class="pnl-head">
+        <mw-processing [inProgress]="inProgress"></mw-processing><mw-alert-message [response]="response"></mw-alert-message>  
+        <div class="toolbar">
+            <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>
+            <button  type="submit" class="btn btn-primary" (click)="saveme()" ><i class="fa fa-save"></i>Uložit změny</button>        
+            <button *ngIf="(vykaz.id > -1)" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit záznam</button>
+
+            <button  type="submit" class="btn btn-setting" (click)="autocomplete()" style="float:right;" ><i class="fa fa-cog" aria-hidden="true"></i>Našeptávač nastavení</button>      
+            <button *ngIf="vykaz.id > -1" type="submit" class="btn btn-primary" (click)="printme()" style="float:right; margin-right: 4px;" ><i class="fa fa-print" aria-hidden="true"></i>Tisk výkazu</button>      
+        </div>
+
+    <ul class="cestak-form">
+        <li>
+            <label class="control-label">Vyber měsíc</label> 
+            <mw-date [(datum)]="datum" [mesic]="true" (datumChange)="onZmenaMesice($event)"></mw-date>    
+        </li>
+        <li>
+            <label for="nazev" class="control-label">Osoba</label>
+            <mw-choose [label]="'Osoba'" 
+                    [txtPlaceholder]="'Osobní číslo'"
+                    [txtValue]="vykaz.osoba_oscislo"
+                    [txtLabel]="vykaz.osoba_osoba"
+                    [TypeOfList]="_osobaList"
+                    (onSelectedEvent)="onOsobaChanged($event)">
+            </mw-choose> 
+        </li>
+        <li>
+            <label for="nazev" class="control-label">Služební auto</label>
+            <mw-choose [label]="'Služební auto'" 
+                    [txtPlaceholder]="'SPZ auta'"
+                    [txtValue]="vykaz.auto_spz"
+                    [txtLabel]="vykaz.auto_nazev"
+                    [TypeOfList]="_autoList"
+                    (onSelectedEvent)="onAutoChanged($event)">
+            </mw-choose> 
+        </li>
+    </ul>
+
+
+  <div class="panel-body cestak-panel">
+
+        <ul class="cestak-form">            
+            <li><label>Stav tachometru počátčení</label><input type="text" class="form-control" name='poc_stav' [(ngModel)]="vykaz.poc_stav" onfocus="this.select()" (change)="pocStavChanged();saveme()"   style="width: 200px; display:inline-block;" title='Stav tachometru na počátku měsíce' /> km</li>
+            <li class="konstav"><label>Stav tachometru konečný</label><span>{{vykaz.kon_stav}}</span> km</li>
+            <li class="konstav"><label>Počet ujetých kilometrů</label><span>{{vykaz.kon_stav-vykaz.poc_stav}}</span> km</li>
+            <li class="konstav"><label>Průměrná spotřeba</label><span>{{cauto.prum_spotreba}}</span> ./100 km</li>
+            
+            <li class="konstav"><label>Náklady za pohonné hmoty</label><span>{{vykaz.diesel_palivo_nakup_kc+vykaz.natural_palivo_nakup_kc+vykaz.lpg_palivo_nakup_kc}}</span> Kč</li>
+            <li><label>Ostatní výdaje</label> <input class="only-info" type="text" [(ngModel)]="vykaz.ost_kc" size="5" readonly="readonly"/> Kč</li>
+            <li class="konstav"><label>Celkové výdaje</label><span>{{vykaz.ost_kc+vykaz.diesel_palivo_nakup_kc+vykaz.natural_palivo_nakup_kc+vykaz.lpg_palivo_nakup_kc}}</span> Kč</li>
+            <li></li>
+        </ul>      
+
+      <table class="cmesvy-sumar">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Stav v nádrži počáteční</th>
+                    <th>Stav v nádrži končený</th>
+                    <th>Nakoupeno pohonných hmot</th>
+                    <th>Průměrná cena</th>
+                    <th>Průměrná spotřeba</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="cauto.natural">
+                    <td>Natural</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="vykaz.natural_poc_stav_l" (change)="changePocStavL_Natural($event)" onfocus="this.select()"/> L</td>
+                    <td [class.error-color]="vykaz.natural_kon_stav_l < 0"><input type="text" class="form-control" name='kon_stav_l' [(ngModel)]="vykaz.natural_kon_stav_l" (change)="changeKonStavL_Natural($event)" onfocus="this.select()" /> L</td>
+                    <td><input class="only-info" type="text" [(ngModel)]="vykaz.natural_palivo_nakup_l" size="4" readonly="readonly"/> L</td>
+                    <td><input class="only-info" type="text" [(ngModel)]="vykaz.natural_palivo_nakup_prumkc" size="4" readonly="readonly"/> Kč/L</td>
+                    <td [class.error-color]="vykaz.natural_prum_spotreba < cauto.prum_spotreba"><input class="only-info" type="text" size="5" [value]="vykaz.natural_prum_spotreba" readonly="readonly"/> L/100km</td>                    
+                </tr>
+                <tr *ngIf="cauto.diesel">
+                    <td>Diesel</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="vykaz.diesel_poc_stav_l" (change)="changePocStavL_Diesel($event)" onfocus="this.select()"/> L</td>
+                    <td [class.error-color]="vykaz.diesel_kon_stav_l < 0"><input type="text" class="form-control" name='kon_stav_l' [(ngModel)]="vykaz.diesel_kon_stav_l" (change)="changeKonStavL_Diesel($event)" onfocus="this.select()" /> L</td>
+                    <td><input class="only-info" type="text" [(ngModel)]="vykaz.diesel_palivo_nakup_l" size="4" readonly="readonly"/> L</td>
+                    <td><input class="only-info" type="text" [(ngModel)]="vykaz.diesel_palivo_nakup_prumkc" size="4" readonly="readonly"/> Kč/L</td>
+                    <td [class.error-color]="vykaz.diesel_prum_spotreba < cauto.prum_spotreba"><input class="only-info" type="text" size="5" [value]="vykaz.diesel_prum_spotreba" readonly="readonly"/> L/100km</td>                    
+                </tr>
+                <tr *ngIf="cauto.lpg">
+                    <td>LPG</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="vykaz.lpg_poc_stav_l" (change)="changePocStavL_LPG($event)" onfocus="this.select()"/> L</td>
+                    <td [class.error-color]="vykaz.lpg_kon_stav_l < 0"><input type="text" class="form-control" name='kon_stav_l' [(ngModel)]="vykaz.lpg_kon_stav_l" (change)="changeKonStavL_LPG($event)" onfocus="this.select()" /> L</td>
+                    <td><input class="only-info" type="text" [(ngModel)]="vykaz.lpg_palivo_nakup_l" size="4" readonly="readonly"/> L</td>
+                    <td><input class="only-info" type="text" [(ngModel)]="vykaz.lpg_palivo_nakup_prumkc" size="4" readonly="readonly"/> Kč/L</td>
+                    <td [class.error-color]="vykaz.lpg_prum_spotreba < cauto.prum_spotreba"><input class="only-info" type="text" size="5" [value]="vykaz.lpg_prum_spotreba" readonly="readonly"/> L/100km</td>                    
+                </tr>
+                <tr *ngIf="cauto.kwh">
+                    <td>kWh</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="vykaz.kwh_pocatecni_stav" (change)="changePocStav_KWH($event)" onfocus="this.select()"/> kWh</td>
+                    <td [class.error-color]="vykaz.kwh_konecny_stav < 0"><input type="text" class="form-control" name='kon_stav_l' [(ngModel)]="vykaz.kwh_konecny_stav" (change)="changeKonStav_KWH($event)" onfocus="this.select()" /> kWh</td>
+                    <td><input class="only-info" type="text" [(ngModel)]="vykaz.kwh_nabijeni" size="4" readonly="readonly"/> kWh</td>
+                    <td><input class="only-info" type="text" [(ngModel)]="vykaz.kwh_nabijeni_prumkc" size="4" readonly="readonly"/> Kč/kWh</td>
+                    <td [class.error-color]="vykaz.kwh_prum_spotreba < cauto.kwh_spotreba"><input class="only-info" type="text" size="5" [value]="vykaz.kwh_prum_spotreba" readonly="readonly"/> kWh/100km</td>                    
+                </tr>
+            </tbody>
+       </table>            
+     
+    </div>
+  </div>
+
+    <!-- Table -->
+    <table id="header-fixed" class="table cmesvy"></table>
+    <table class="table cmesvy" id="tab-data">
+        <thead>
+            <tr>
+                <th width="30">#</th>
+                <th width="50">Datum</th>
+                <th>Cesta</th>
+                <th width="90">Služební<br/>Km</th>
+                <th width="90">Soukromé<br/> Km</th>
+                <th width="120">Druh paliv.</th>
+                <th width="80" title="Stav v nádrži/baterii">Stav <br/> v L/kWh</th>
+                <th width="80">Platba za<br/>palivo kč</th>              
+                <th width="90">Tank./nabíj.<br/> L/kWh</th>
+                <th width="80">Cena<br/> Kč/L</th>
+                <th>Ostatní</th>
+                <th width="120">Ostatní výd.<br/>/Kč</th>
+                <th width="20"></th>                    
+            </tr>
+        </thead>
+        <tbody>
+             <tr *ngFor="let r of vykaz.list; let i = index;" [class.saturday]="r.datum.getDay() == 6" [class.sunday]="r.datum.getDay() == 0">    
+                <ng-container *ngIf="r.poradi < 1">
+                    <td class="day">{{getWeekDay(r.datum)}}</td>     
+                    <td>{{formatDay(r.datum)}}</td>
+                </ng-container>
+                <ng-container *ngIf="r.poradi > 0">
+                     <td colspan="2"><button class="drop" (click)="dropRow(i)" title="Odstranit řádek"><i class="fa fa-trash"></i></button></td>
+                </ng-container>
+                <td>
+                    <mw-autocomplete id="n_cesta" [(textValue)]="r.cesta" [autoitems]="cbocesta" (textValueChange)="autocomplCestaChange($event, i)"></mw-autocomplete>
+                </td>
+                <td><input type="text" class="form-control up-down" [(ngModel)]="r.km" onfocus="this.select()" title='kilometry' (change)="changeKm($event, r)" /></td>
+                <td><input type="text" class="form-control up-down" [(ngModel)]="r.km_private" onfocus="this.select()" title='kilometry' (change)="changeKmPrivate($event, r)" /></td>            
+                <td>         
+                    <span *ngIf="cauto.natural" class="palivo">
+                         <input type="radio"  name="palivo_{{r.getHash()}}" (change)="r.natural=true;r.kwh=r.lpg=r.diesel=false; calcStatistika()" [checked]="r.natural || (cauto.vychozi_palivo == 1 && !r.diesel && !r.lpg && !r.kwh)"> Natural  
+                    </span>
+                    <span *ngIf="cauto.diesel" class="palivo">
+                          <input type="radio" name="palivo_{{r.getHash()}}" (change)="r.diesel=true;r.kwh=r.lpg=r.natural=false; calcStatistika()" [checked]="r.diesel || (cauto.vychozi_palivo == 2 && !r.natural && !r.lpg && !r.kwh)"> Diesel  
+                    </span>
+                    <span *ngIf="cauto.lpg" class="palivo">
+                          <input type="radio"  name="palivo_{{r.getHash()}}" (change)="r.lpg=true;r.kwh=r.natural=r.diesel=false; calcStatistika()" [checked]="r.lpg || (cauto.vychozi_palivo == 3 && !r.diesel && !r.natural && !r.kwh)"> LPG  
+                    </span>
+                    <span *ngIf="cauto.kwh" class="palivo">
+                        <input type="radio"  name="palivo_{{r.getHash()}}" (change)="r.kwh=true;r.kwh=r.natural=r.diesel=false; calcStatistika()" [checked]="r.kwh || (cauto.vychozi_palivo == 4  && !r.diesel && !r.lpg && !r.natural)"> kWh  
+                  </span>
+                </td>
+                <td><input type="text" name="r_phm_{{i}}" [(ngModel)]="r._tmp_phm" size="4" style="border:none; background: inherit;" readonly="readonly"></td>
+                <td><input type="text" class="form-control up-down" [(ngModel)]="r.tankovanikc" onfocus="this.select()" title='tankování/nabíjení v kč' (change)="changeTankovaniKc($event, r)" /></td>              
+                <td><input type="text" class="form-control up-down" [(ngModel)]="r.tankovanil" onfocus="this.select()" title='tankování/nabíjení v L/kWh' (change)="changeTankovaniL($event, r)" /></td>
+                <td>{{  r.getCenaZaPalivo() }}</td> 
+                <td>
+                      <mw-autocomplete id="n_ovyd" [(textValue)]="r.ovyd" [autoitems]="cboostatni" (textValueChange)="saveme()"></mw-autocomplete>
+                </td>
+                <td><input type="text" class="form-control up-down" [(ngModel)]="r.ovydkc" (change)="changeOstatniVydajeKc($event, r)" /></td>
+                <td><button (click)="addRow(i)" title='Přidat další řádek'>+</button></td>
+             </tr>
+        </tbody>
+    </table>
+</div>

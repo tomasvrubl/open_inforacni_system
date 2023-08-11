@@ -1,0 +1,16 @@
+<div class="page-header">
+    <h1>Seznam firemních vozů</h1>
+    <small>Seznam firemních vozů</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/cestak/auto/list"><i class='fa fa-align-justify'></i>Seznam vozidel</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/cestak/auto/-1"><i class='fa fa-plus'></i>Přidat vozidlo</button>
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <auto-list  *ngIf="_showList"></auto-list>
+        <auto-detail *ngIf="_showDetail" [detail]="detail" ></auto-detail>
+    </div>    
+</div>

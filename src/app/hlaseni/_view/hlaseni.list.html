@@ -1,0 +1,49 @@
+<div class="page-header hlaseni-dashboard">
+    <h1>Hlášení výroby</h1>
+    <small>Hlášení výrobních poruch, podnětů na změny / úpravu.</small>
+    <div class='tool-part'>
+        <div class="filter">
+            <div class="grpchk">
+                <input [checked]="fVytvoreno" (change)="fVytvoreno = !fVytvoreno; reloadData()" type="checkbox" /> Nové    
+            </div>
+            <div class="grpchk">
+                <input [checked]="fPrevzato" (change)="fPrevzato = !fPrevzato; reloadData()" type="checkbox" /> Převzaté
+            </div>
+            <div class="grpchk">
+                <input [checked]="fUzavreno" (change)="fUzavreno = !fUzavreno; reloadData()" type="checkbox" /> Uzavřené
+            </div>
+        </div>    
+        <button class="btn btn-success new-rec" (click)="newone()"><i class="fa fa-plus"></i>Přidat hlášení</button>    
+    </div>
+</div>
+<div class="pnl">       
+        <div *ngFor="let k of lst" class="hlaseni">
+            <div class="osoba">
+                <div class="avatar"></div>
+                <span class="osoba"></span>
+            </div>
+            <div class="hlaseni-body">
+                <div class="hlaseni-typ">
+                    <span class="typ">{{k.typ_s}}</span><span class="pracoviste">{{k.pracoviste}}</span>
+                </div>
+                <div class="vytvoreno">
+                    <label>Vytvořeno</label><span class="datum">{{k.vytvoreno}}</span>
+                </div>
+                <div class="zdroj">
+                    <label>Zdroj</label><span class="zdroj">{{k.zdroj}}</span>
+                </div>
+                <div class="text">
+                    {{k.text}}
+                </div>
+                <div class="prevzato">
+                    <label>Převzato</label>
+                    <span class="datum">{{k.prevzato}}</span> / <span class="osoba">{{k.prevzal}}</span>
+                </div>
+            </div>        
+            <div class="buttons">
+                <button>Převzít hlášení</button>
+                <button>Uzavřít požadavek</button>
+            </div>
+        </div> 
+              
+</div>

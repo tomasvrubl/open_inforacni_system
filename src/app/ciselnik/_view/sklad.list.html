@@ -1,0 +1,18 @@
+<mw-alert-message [response]="response"></mw-alert-message> 
+<mw-table
+        [css]="'sklad'" 
+        [table]="tabSklad" 
+        [SelectButton]="isSelector"
+        [MultiSelectButton]="isMultiSelect"
+        [DropButton]="true" 
+        [EditButton]="true"  
+        [CustomButton]="getCustomButtons()"
+        (onEditRecord)="onEdit($event, false)" 
+        (onEditRecordWnd)="onEdit($event, true)"
+        (onSelectRecord)="onSelected($event)"
+        (onMultiSelect)="onMultiSelect($event)"
+        (onDropRecord)="onDrop($event)"
+        (onReloadData)="reloadData($event)"
+        (onSelectCancel)="onCancel($event)">
+        <sklad-detail [sklad]="sklad" ></sklad-detail>
+</mw-table>

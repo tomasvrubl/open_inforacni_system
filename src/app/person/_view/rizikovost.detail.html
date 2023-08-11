@@ -1,0 +1,85 @@
+<mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+<div class='detail'> 
+    <legend *ngIf="_rec.id < 1"><i class="fa fa-plus"></i>Nový záznam</legend>
+    <legend *ngIf="_rec.id > -1"><i class="fa fa-edit"></i>Editace</legend>
+      <div class="form-buttons">
+      <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>
+      <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!detForm.form.valid"><i class="fa fa-save"></i>Uložit záznam / změny</button>
+      <button *ngIf="(_rec.id > -1)" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit záznam</button>
+    </div>
+    <mw-alert-message [response]="response"></mw-alert-message>       
+    <form #detForm="ngForm">
+        <ul class="form-fields">             
+            <li class="clmn">
+              <label for="skupina_id" class="control-label">Skupina prohlídek</label>
+              <select  class="form-control" [(ngModel)]="_rec.skupina_id" name="skupina_id" id="skupina_id">
+                <option *ngFor="let k of skupinyList" [value]="k.id">{{k.nazev}}</option>
+              </select>
+            </li>
+            <li>
+                <label for="n_kod" class="control-label">Kód rizika</label>
+                <div>
+                  <input [(ngModel)]="_rec.kod" class="form-control" id="n_kod" name='kod' placeholder="Zadej kód rizika" type="text" required #kod="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                  <div *ngIf="kod.errors && (kod.dirty || kod.touched)" class="alert alert-danger">   
+                      <div [hidden]="!kod.errors.required">
+                             Zadej kód rizika
+                       </div>
+                  </div>
+                </div>  
+            </li>
+            <li>
+              <label for="druh_prace" class="control-label">Název pracovní pozice</label>
+              <div>
+                  <input [(ngModel)]="_rec.druh_prace" class="form-control" id="druh_prace" name='druh_prace' placeholder="Zadej název pracovní pozice" type="text" required #druh_prace="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                  <div *ngIf="druh_prace.errors && (druh_prace.dirty || druh_prace.touched)" class="alert alert-danger">   
+                      <div [hidden]="!druh_prace.errors.required">
+                             Zadej název pracovní pozice
+                       </div>
+                  </div>
+              </div>  
+            </li>     
+            <li>
+              <label for="rezim_prace" class="control-label">Režim práce</label>
+              <div>
+                  <input [(ngModel)]="_rec.rezim_prace" class="form-control" id="rezim_prace" name='rezim_prace' placeholder="Zadej režim práce" type="text" onfocus="this.select()">
+              </div>  
+            </li>     
+            
+            <li class="pers-rizik clmn">
+              <label for="nazev" class="control-label">Rizikovost kategorie</label>
+              <div class="col"><span>Hluk</span><input [(ngModel)]="_rec.hluk" class="form-control" id="hluk" name='hluk' type="number" onfocus="this.select()"></div>
+              <div class="col"><span>Prach</span><input [(ngModel)]="_rec.prach" class="form-control" id="prach" name='prach' type="number" onfocus="this.select()"></div>
+              <div class="col"><span>Vibrace</span><input [(ngModel)]="_rec.vibrace" class="form-control" id="vibrace" name='vibrace' type="number" onfocus="this.select()"></div>
+              <div class="col"><span>Fyzická zátěž</span><input [(ngModel)]="_rec.fyzicka_zatez" class="form-control" id="fyzicka_zatez" name='fyzicka_zatez' type="number" onfocus="this.select()"></div>
+              <div class="col"><span>Tepelná zátěž</span><input [(ngModel)]="_rec.zatez_teplem" class="form-control" id="zatez_teplem" name='zatez_teplem' type="number" onfocus="this.select()"></div>
+              <div class="col"><span>Zraková zátěž</span><input [(ngModel)]="_rec.zrakova_zatez" class="form-control" id="zrakova_zatez" name='zrakova_zatez' type="number" onfocus="this.select()"></div>
+              <div class="col"><span>Chladová zátěž</span><input [(ngModel)]="_rec.zatez_chladem" class="form-control" id="zatez_chladem" name='zatez_chladem' type="number" onfocus="this.select()"></div>
+              <div class="col"><span>Psychická zátěž</span><input [(ngModel)]="_rec.psychicka_zatez" class="form-control" id="psychicka_zatez" name='psychicka_zatez' type="number" onfocus="this.select()"></div>
+              <div class="col"><span>Pracovní poloha</span><input [(ngModel)]="_rec.pracovni_poloha" class="form-control" id="pracovni_poloha" name='pracovni_poloha' type="number" onfocus="this.select()"></div>              
+              <div class="col"><span>Chemické látky</span><input [(ngModel)]="_rec.chemicke_latky_smesi" class="form-control" id="chemicke_latky_smesi" name='chemicke_latky_smesi' type="number" onfocus="this.select()"></div>
+              <div class="col"><span>Neionizující záření</span><input [(ngModel)]="_rec.neionizujici_zareni" class="form-control" id="neionizujici_zareni" name='neionizujici_zareni' btype="number" onfocus="this.select()"></div>
+            </li>
+            <li class="pers-rizik-chk clmn">
+              <div class="pnl-head">Pracovní činnosti
+                <div class="tool-part">
+                    <div class="btn-group"></div>
+                </div>             
+              </div>
+
+              <div *ngFor="let cn of cinnostList " class="col"><span>{{cn.nazev}}</span><input [checked]="_rec.cinnost.includes(cn.id)" (change)="cinnostChanged($event.target, cn.id)" type="checkbox" /></div>
+              
+            </li>
+            <li class="clmn">
+              <label for="n_poznamka" class="control-label">Popis práce</label>
+              <div>
+                  <textarea [(ngModel)]="_rec.popis_prace" id="n_poznamka" name='poznamka' class='form-control'></textarea>              
+              </div>     
+            </li>  
+        </ul>         
+        <mw-changed [zmeneno]="_rec.zmeneno" [zmenil]="_rec.zmenil"></mw-changed>            
+      </form>
+</div>      
+
+
+
+

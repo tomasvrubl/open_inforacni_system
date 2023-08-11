@@ -1,0 +1,62 @@
+<detail-form *ngIf="_rec" [detail]="this" [customButton]="_custButtons" [ButtonSave]="pravoSave()" [ButtonDelete]="pravoDelete()">
+  <form  #detForm="ngForm">
+      <div>
+          <ul class="form-fields">
+              <li>
+                  <div class="clmn clmn2">
+                    <label for="platnost_od" class="control-label">Datum</label>
+                    <mw-date [(datum)]="_rec.datum"  [readonly]="_rec.stav > 0"></mw-date>
+                  </div>
+                  <div class="clmn clmn2">                      
+                      <div class="clmn clmn2">
+                        <label for="od" class="control-label">Čas (od)</label>
+                        <mw-time [(cas)]="_rec.od"  [readonly]="_rec.stav > 0"></mw-time>
+                      </div>
+                      <div class="clmn clmn2">
+                        <label for="od" class="control-label">do</label>
+                        <mw-time [(cas)]="_rec.do"  [readonly]="_rec.stav > 0"></mw-time>
+                      </div>
+                  </div>
+              </li> 
+              <li>
+                <div class="clmn clmn2">
+                  <label>Zdroj</label>
+                  <mw-choose [label]="'Zdroj'" 
+                          [txtPlaceholder]="'Kód zdroje'"
+                          [txtValue]="_rec.zdroj_kod"
+                          [txtLabel]="_rec.zdroj"
+                          [TypeOfList]="_zdrojList"
+                          [urlDetail]="'/ciselnik/zdroj/'+_rec.zdroj_id"
+                          [readonly]="_rec.stav > 0"
+                          (onSelectedEvent)="onZdrojChanged($event)">
+                  </mw-choose> 
+                </div>
+                <div class="clmn clmn2">
+                    <label>Typ poruchy</label>
+                    <mw-choose [label]="'Typ poruchy'" 
+                            [txtPlaceholder]="'Kód poruchy'"
+                            [txtValue]="_rec.porucha_kod"
+                            [txtLabel]="_rec.porucha"
+                            [TypeOfList]="_poruchaList"
+                            [urlDetail]="'/ciselnik/poruchy/'+_rec.porucha_id"
+                            [readonly]="_rec.stav > 0"
+                            (onSelectedEvent)="onPoruchaChanged($event)">
+                    </mw-choose> 
+                </div>
+              </li>
+              <li style="width: 100%;">
+                <label for="n_poznamka" class="control-label">Popis problému</label>
+                <div>
+                  <textarea [(ngModel)]="_rec.poznamka" id="n_poznamka" name='poznamka' class="form-control" style="min-height: 140px" [readonly]="_rec.stav > 0"></textarea>
+                </div>     
+              </li>
+          </ul>         
+          <mw-changed [zmeneno]="_rec.zmeneno" [zmenil]="_rec.zmenil" [vytvoreno]="_rec.vytvoreno" [vytvoril]="_rec.vytvoril"></mw-changed>    
+        </div>        
+      </form>   
+
+</detail-form>      
+
+
+
+

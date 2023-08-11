@@ -1,0 +1,89 @@
+<mw-modal-drop (onYes)="dropPlan()" ></mw-modal-drop>
+<mw-alert-message [response]="response"></mw-alert-message>   
+<div class="page-header">
+    <h1>Plán formovacích linek <small>/ {{pracoviste.nazev}}</small></h1>
+    <small>Plánování zdrojů pro dané Středisko.</small>
+</div>
+<div class="pnl plan">
+        <div class="filter">
+            <label>Vyber zdroj pro plánování</label>
+            <select  class="form-control" name="zdroj" class="md30" (change)="changedZdroj($event.target.value)"  [(ngModel)]="cZdroj">
+                <option *ngFor="let z of lstZdroj; let idx = index" [value]="idx">{{z.nazev}}</option>
+            </select>
+            <label>Kalendář plánu</label>
+            
+            <select  class="form-control" name="kalendar" class="md30" [(ngModel)]="cKalendar">
+                <option *ngFor="let k of lstKalendar; let kdx = index;" [value]="kdx">{{k.nazev}}</option>
+            </select>            
+            <div id='dt-picker-prac-{{pracoviste.id}}'></div>            
+        </div>
+        <div class="pnl-body">
+            <label>Plán pro den :  {{formatDatum()}}</label>
+            <div class="section">     
+            <div class="form-buttons">
+                
+                <button  class="btn btn-primary" (click)="saveme()" ><i class="fa fa-save"></i>Uložit změny v plánu</button>
+                <button *ngIf="plan.id > 0" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit plán</button>                
+            </div>
+            <table class="tab-plan">
+                <thead>
+                    <tr>
+                        <th rowspan="2" width='40'>Index</th>
+                        <th rowspan="2">Karta</th>
+                        <th rowspan="2">Název</th>
+                        <th rowspan="2">Technologický pokyn</th>
+                        <th rowspan="2">Směna</th>                        
+                        <th rowspan="2" width="60">Vyrobit [Ks]</th>                        
+                        <th colspan="3">Zakázka</th>                        
+                        <th rowspan="2"></th>
+                    </tr>
+                    <tr>                        
+                        <th title='Množství z výrobního příkazu v Ks'>Plán [Ks]</th>
+                        <th title='Odvedeno v Ks'>Odved. [Ks]</th>
+                        <th title='Počet množství, které je potřeba vyrobit.'>Zbývá [Ks]</th>                        
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr *ngFor="let r of plan.polozky; let i = index;">
+                        <td><input [(ngModel)]="r.poradi" class="form-control" name='poradi' placeholder="poradi" type="text" onfocus="this.select()"></td>
+                        <td>{{r.vyrobek}}</td>
+                        <td><input [(ngModel)]="r.nazev" class="form-control" name='nazev' placeholder="název výrobku" type="text" onfocus="this.select()"></td>
+                        <td><input [(ngModel)]="r.pokyn" class="form-control" name='pokyn' placeholder="pokyn pro zaměstnance" type="text" onfocus="this.select()"></td>
+                        <td>
+                            <select  class="form-control" [(ngModel)]="r.kalendar_smena_id">
+                                <option *ngFor="let sm of lstKalendar[cKalendar].smeny;" [value]="sm.id">{{sm.nazev}}</option>
+                            </select>                            
+                        </td>
+                        <td><input [(ngModel)]="r.mnozstvi" class="form-control" name='mnozstvi' placeholder="mnozstvi" type="text" (focusout)="checkNumber(i)" onfocus="this.select()" maxlength="4"></td>
+                        <td>{{r._plan}}</td>
+                        <td>{{r._odvedeno}}</td>
+                        <td>{{r._zbyva}}</td>
+                        <td>
+                            <button type="button" class="tab-btn" data-toggle="modal" (click)="dropRow(i)"><i class="fa fa-remove"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            </div>
+            
+            <label>Zadej kódové označení výrobku/název/číslo výrobní zakázky</label>
+            <div class="section">
+            <div class="search-bar">                
+                 <div class="input-group">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button" (click)="searchZP($event)">Hledej !</button>
+                    </span>
+                     <input type="text" class="form-control" [(ngModel)]="search" (input)="searchZP($event)" placeholder="zadej název nebo kódové označení..." onfocus="this.select()">
+                  </div>                
+            </div>
+            
+            <mw-table [css]="'vyrzak'" 
+                      [table]="tabVZ" 
+                      [CollapseIcon]="false"
+                      [CustomButton]="getCustomButtons()" 
+                      (onReloadData)="reloadVZ()"></mw-table>
+            </div>
+        </div>
+</div>

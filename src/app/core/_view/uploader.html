@@ -1,0 +1,25 @@
+<div class="mw-uploader"  mwDragDrop (fileDropped)="onFileDropped($event)" >
+    <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event.target.files)" />
+    <img src="assets/img/ic-upload-file.svg" alt="">
+    <h3>Přetáhni sem soubory</h3>
+    <h3>nebo</h3>
+    <label for="fileDropRef">Vložit soubory ...</label>
+</div>
+<div class="files-list">    
+    <div class="single-file" *ngFor="let file of files; let i = index">
+        <img src="assets/img/ic-file.svg" width="25px" alt="file">
+        <div class="info">
+            <h4 class="name">
+                {{ file?.name }}
+            </h4>
+            <p class="size">
+                {{ formatBytes(file?.size) }}
+            </p>
+            <div class="progress" *ngIf="file?.progress < 100">
+                <div class="percent" [style.width.%]="file?.progress"><span>{{file?.progress}} %</span></div>            
+                
+            </div>
+            <div class="upload-done" *ngIf="file?.progress == 100">Nahráno na server <a *ngIf="file?.url" [href]="file?.url">{{file?.url}}</a></div>
+        </div>                
+    </div>    
+</div>

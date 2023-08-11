@@ -1,0 +1,85 @@
+<detail-form *ngIf="_rec" [detail]="this">
+      <form #labForm="ngForm" >
+          <ul class="form-fields">
+              <li>
+                <div class="col clmn2">
+                  <label class="control-label">Datum</label> 
+                  <mw-date [(datum)]="_rec.datum"></mw-date> 
+                </div>   
+                <div class="col clmn2">
+                  <label for="nazev" class="control-label">Číslo tavby</label>
+                  <div>
+                    <input [(ngModel)]="_rec.cislo_tavby" class="form-control" id="nazev" name='nazev' placeholder="Zadej číslo tavby" type="text" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                    <div *ngIf="nazev.errors && (nazev.cislo_tavby || nazev.touched)" class="alert alert-danger">   
+                        <div [hidden]="!nazev.errors.required">
+                              Zadej číslo tavby
+                        </div>
+                    </div>
+                  </div>  
+
+                </div>
+              </li>
+              <li>
+                  <div class="col clmn3">
+                    <label for="material" class="control-label">Materiál</label>
+                    <div  class="col">
+                       <input [(ngModel)]="_rec.material" class="form-control" id="material" name='material' placeholder="Materiál" type="text" onfocus="this.select()">            
+                    </div>             
+                  </div>
+                  <div class="col clmn3">
+                    <label for="karta" class="control-label">Tárná</label>
+                    <div  class="col">
+                      <input [checked]="_rec.istvarna" (change)="_rec.istvarna = !_rec.istvarna;" type="checkbox" />                        
+                    </div>    
+                  </div>
+                  <div class="col clmn3">
+                    <label for="karta" class="control-label">Číslo bubnu</label>
+                    <div  class="col">
+                           <input [(ngModel)]="_rec.buben" class="form-control" id="buben" name='buben' placeholder="Zadej číslo bubnu" type="text" onfocus="this.select()">            
+                    </div>                    
+                  </div>
+              </li>                            
+              <li class="clmn">
+                <label>Chemické složení</label>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Uhlík [C]</th>
+                      <th>Křemík [Si]</th>
+                      <th>Mangán [Mn]</th>
+                      <th>Fosfor [P]</th>
+                      <th>Chrom [Cr]</th>
+                      <th>Nikl [Ni]</th>
+                      <th>Měď [Cu]</th>
+                      <th>Hliník [Al]</th>
+                      <th>Hořčík [Mg]</th>
+                      <th>Síra [S]</th>
+                      <th>Zbytkový hořčík [Mg]</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><input [(ngModel)]="_rec.lab_c" class="form-control" name='lab_c' type="text"></td>
+                      <td><input [(ngModel)]="_rec.lab_si" class="form-control" name='lab_si' type="text"></td>
+                      <td><input [(ngModel)]="_rec.lab_mn" class="form-control" name='lab_mn' type="text"></td>
+                      <td><input [(ngModel)]="_rec.lab_p" class="form-control" name='lab_p' type="text"></td>
+                      <td><input [(ngModel)]="_rec.lab_cr" class="form-control" name='lab_cr' type="text"></td>
+                      <td><input [(ngModel)]="_rec.lab_ni" class="form-control" name='lab_ni' type="text"></td>
+                      <td><input [(ngModel)]="_rec.lab_cu" class="form-control" name='lab_cu' type="text"></td>
+                      <td><input [(ngModel)]="_rec.lab_al" class="form-control" name='lab_al' type="text"></td>
+                      <td><input [(ngModel)]="_rec.lab_mg" class="form-control" name='lab_mg' type="text"></td>
+                      <td><input [(ngModel)]="_rec.lab_s" class="form-control" name='lab_s' type="text"></td>
+                      <td><input [(ngModel)]="_rec.lab_zbyt_mg" class="form-control" name='lab_zbyt_mg' type="text"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+
+          </ul>                   
+          <mw-changed [zmeneno]="_rec.zmeneno" [zmenil]="_rec.zmenil"></mw-changed>
+        </form>   
+</detail-form>      
+
+
+
+

@@ -1,0 +1,75 @@
+<detail-form *ngIf="_rec" [detail]="this">
+  <form  #detForm="ngForm">
+      <div>
+          <ul class="form-fields">
+                <li>
+                  <label for="kod" class="control-label">Kód poruchy(unikátní)</label>
+                  <div>
+                    <input [(ngModel)]="_rec.kod" class="form-control" id="kod" name='kod' placeholder="Zadej kód poruchy" type="text" required #kod="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                    <div *ngIf="kod.errors && (kod.dirty || kod.touched)" class="alert alert-danger">   
+                        <div [hidden]="!kod.errors.required">
+                               Zadej kód poruchy, bude použit jako qr-kod.
+                         </div>
+                    </div>
+                  </div>  
+              </li> 
+              <li>
+                <label for="nazev" class="control-label">Název poruchy</label>
+                <div>
+                    <input [(ngModel)]="_rec.nazev" class="form-control" id="nazev" name='nazev' placeholder="Zadej název" type="text" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                    <div *ngIf="nazev.errors && (nazev.dirty || nazev.touched)" class="alert alert-danger">   
+                        <div [hidden]="!nazev.errors.required">
+                               Zadej název prouchy
+                         </div>
+                    </div>
+                </div>  
+              </li>              
+              <li>
+                <label for="platnost" class="control-label">Platnost</label>
+                 <div  class="col">
+                    <input [checked]="_rec.platnost" (change)="_rec.platnost = !_rec.platnost;" type="checkbox" />                              
+                 </div>
+              </li>
+              <li style="width: 100%;">
+                <label for="n_poznamka" class="control-label">Poznámka</label>
+                <div>     
+                    <textarea [(ngModel)]="_rec.poznamka" id="n_poznamka" name='poznamka'  class="form-control" style="min-height: 140px"></textarea>    
+                </div>     
+              </li>
+          </ul>         
+          <mw-changed [zmeneno]="_rec.zmeneno" [zmenil]="_rec.zmenil"></mw-changed>    
+        </div>        
+      </form>   
+
+      <ng-container *ngIf="_rec.id > -1">            
+        <div class="pnl">
+            <div class="pnl-head">             
+              <div class="section">Seznam přiřazených zdrojů</div>
+                <div *ngIf="!showSelectZdroj" class="tool-part" >
+                      <button class="btn " (click)="showSelectZdroj=true"><i class="fa fa-random" aria-hidden="true"></i>Přidat existující zdroj</button>
+                </div>
+                
+            </div>
+            <div class="pnl-body"  [class.box-shadow]="showSelectZdroj">
+              <mw-table  *ngIf="!showSelectZdroj" 
+                      [id]="zdroj-relation"
+                      [table]="tabZdroj" 
+                      [CollapseIcon]="false"
+                      [DropButton]="true" 
+                      [EditButton]="true"  
+                      (onDropRecord)="unlinkZdroj($event)"
+                      (onReloadData)="reloadDataZdroj($event)">                        
+              </mw-table>                
+             
+              <mw-popwnd  *ngIf="showSelectZdroj" [title]="'Vyber zdroje, které přiřadit k poruše'" (onCancel)="showSelectZdroj=false">
+                  <zdroj-list [isMultiSelect]="true" [doReload]="showSelectZdroj" (onSelectedMultiEvent)="onSelectedZdrojList($event)"></zdroj-list>                
+              </mw-popwnd>
+
+            </div>   
+        </div>      
+    </ng-container>
+</detail-form>      
+
+
+
+

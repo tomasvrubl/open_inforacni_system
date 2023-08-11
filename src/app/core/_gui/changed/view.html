@@ -1,0 +1,31 @@
+<ul class="mw-change-info">        
+    <li>
+        <label for="n_zmeneno">Změněno</label>
+        <input type="text" id="n_zmeneno" value="{{zmeneno}}" readonly  class="readonly"/>
+    </li>
+    <li>
+        <label for="n_zmenil">Změnil</label>    
+        <input type="text" id="n_zmenil" value="{{zmenil}}" readonly class="readonly"/>
+    </li>
+    <ng-container *ngIf="vytvoril != null">
+        <li>
+            <label for="n_vytvoreno">Vytvořeno</label>    
+            <input type="text" id="n_vytvoreno" value="{{vytvoreno}}" readonly class="readonly"/>
+        </li>
+        <li>
+            <label for="n_vytvoril">Vytvořil</label>    
+            <input type="text" id="n_vytvoril" value="{{vytvoril}}" readonly class="readonly"/>
+        </li>
+    </ng-container>
+    <ng-container *ngIf="schvalil != null">
+        <li>
+            <label for="n_schvaleno">Odsouhlaseno</label>    
+            <input type="text" id="n_schvaleno" value="{{schvaleno}}" readonly class="readonly"/>
+        </li>
+        <li>
+            <label for="n_schvalil">Odsouhlasil</label>    
+            <input type="text" id="n_schvalil" value="{{schvalil}}" readonly class="readonly"/>
+        </li>
+    </ng-container>
+    
+</ul>

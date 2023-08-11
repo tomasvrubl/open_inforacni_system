@@ -1,0 +1,20 @@
+<div class="page-header">
+    <h1>Středisko  <span *ngIf="isSelector"> - vyber Středisko</span></h1>
+    <small>Jednotlivé úseky firmy</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/pracoviste/list"><i class='fa fa-align-justify'></i>Seznam pracovišť</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/pracoviste/-1"><i class='fa fa-plus'></i>Přidat Středisko</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <pracoviste-list *ngIf="_showList"></pracoviste-list>
+        <pracoviste-detail *ngIf="_showDetail" [detail]="pracoviste" ></pracoviste-detail>
+    </div>        
+</div>
+
+
+
+

@@ -1,0 +1,93 @@
+
+<mw-modal-drop (onYes)="dropme()" [id]="'dropModalUserDetail'"></mw-modal-drop>
+
+<div class='detail'> 
+    <mw-alert-message [response]="response"></mw-alert-message>   
+    <form #detForm="ngForm">
+        <div class="btn-group">
+          <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!detForm.form.valid"><i class="fa fa-save"></i>Uložit záznam / změny</button>
+          <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>          
+          <button *ngIf="(_user.id > -1)" type="button" class="btn btn-danger" data-toggle="modal"  data-target="#dropModalUserDetail"><i class="fa fa-trash"></i>Odstranit záznam</button>  
+          <button *ngIf="(_user.id > -1)" type="button" class="btn btn-primary btn-approve" style="margin-left: 30px;" (click)="resetPassword()"><i class="fa fa-send"></i>Resetovat heslo a zaslat e-mailem</button>
+        </div>
+
+        <ul class="form-fields">
+            <li>
+                <label for="f_username" class="control-label">Přihlašovací jméno</label>
+                <input [(ngModel)]="_user.username" class="form-control" id="f_username" name='f_username' placeholder="uživatelské jméno" type="text" required #f_username="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                <div *ngIf="f_username.errors && (f_username.dirty || f_username.touched)" class="alert alert-danger">   
+                    <div [hidden]="!f_username.errors.required">
+                            Zadej uživatelské jméno, které bude sloužit pro přihlášení do systému.
+                        </div>
+                </div>
+            </li>   
+            <li>
+                <label for="f_heslo" class="control-label">Heslo (min. 8)</label>
+                <input type="password"  [(ngModel)]="_user.heslo" class="form-control" id="f_heslo" name='f_heslo' placeholder="heslo min. 8 znaků" onfocus="this.select()">               
+            </li>
+            <li>
+                <label for="f_prijmeni" class="control-label">Příjmení</label>
+                <input [(ngModel)]="_user.prijmeni" class="form-control" id="f_prijmeni" name='f_prijmeni' placeholder="Příjmení" type="text" required #f_prijmeni="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                <div *ngIf="f_prijmeni.errors && (f_prijmeni.dirty || f_prijmeni.touched)" class="alert alert-danger">   
+                    <div [hidden]="!prijmeni.errors.required">
+                            Zadej příjmení osoby
+                    </div>
+                </div>
+            </li>
+            <li>
+                <label for="f_jmeno" class="control-label">Jméno</label>
+                <input [(ngModel)]="_user.jmeno" class="form-control" id="f_jmeno" name='f_jmeno' placeholder="Jméno" type="text" required #f_jmeno="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                <div *ngIf="f_jmeno.errors && (f_jmeno.dirty || f_jmeno.touched)" class="alert alert-danger">   
+                    <div [hidden]="!f_jmeno.errors.required">
+                        Zadej jméno osoby
+                    </div>
+                </div>
+            </li>            
+            <li>
+                <label for="f_email" class="control-label">E-mail</label>
+                <input [(ngModel)]="_user.email" class="form-control" id="f_email" name='f_email' placeholder="e-mailová adresa" type="text" onfocus="this.select()">
+            </li>  
+            <li>
+                <label for="platnost" class="control-label">Platnost</label>                 
+                <input [checked]="_user.platnost" (change)="_user.platnost = !_user.platnost;" type="checkbox" />                              
+            </li>    
+            <li>
+                <label for="osoba" class="control-label">Osoba</label>   
+                <mw-choose [label]="'Osoba'" 
+                        [txtPlaceholder]="'Vyber osobu'"
+                        [txtValue]="_user.osoba_oscislo"
+                        [txtLabel]="_user.osoba"
+                        [TypeOfList]="_osobaList"
+                        (onSelectedEvent)="onOsobaChanged($event)">
+                </mw-choose>         
+                <div class="note">Je zakládána automaticky při vládání nového uživatele !!!</div>
+               
+            </li>    
+            <li>
+                <label for="platnost" class="control-label red">Administrátor</label>
+                <input [checked]="_user.isadmin" (change)="_user.isadmin = !_user.isadmin;" type="checkbox" />                              
+            </li> 
+        </ul>        
+        <mw-changed [zmeneno]="_user.zmeneno" [zmenil]="_user.zmenil"></mw-changed>
+    </form>   
+
+
+
+    <ng-container *ngIf="_user.id > -1">            
+        <div class="pnl">
+            <div class="pnl-head">             
+                <div class="tool-part" >
+                    <button class="btn" (click)="selectMenuList=true"><i class="fa fa-plus"></i>Přidat oprávnění</button>
+                </div>
+                <div class="section">Seznam oprávnění uživatele</div>
+            </div>
+            <div class="pnl-body" >
+                <user-role-list *ngIf="!selectMenuList" [userid]="_user.id"></user-role-list>
+                <mw-popwnd *ngIf="selectMenuList" [title]="'Vyber položky oprávnění'" (onCancel)="selectMenuList=false">
+                    <role-list [isMultiSelect]="true" [doReload]="selectMenuList" (onSelectedMultiEvent)="onSelectedRoleMulti($event)"></role-list>
+                </mw-popwnd> 
+            </div>   
+        </div>      
+    </ng-container>
+
+</div>

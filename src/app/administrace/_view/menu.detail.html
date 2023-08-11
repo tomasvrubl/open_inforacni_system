@@ -1,0 +1,71 @@
+
+<mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+<div *ngIf="menuitem != null" class='detail'> 
+      <legend *ngIf="menuitem.id < 1"><i class="fa fa-plus"></i>Nová menu položka</legend>
+      <legend *ngIf="menuitem.id > -1"><i class="fa fa-edit"></i>Editace menu položky</legend>
+        <div class="btn-group">
+        <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>
+        <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!menuitemForm.form.valid"><i class="fa fa-save"></i>Uložit záznam / změny</button>
+        <button *ngIf="(menuitem.id > -1)" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit záznam</button>
+      </div>
+      <mw-alert-message [response]="response"></mw-alert-message>       
+      <form #menuitemForm="ngForm">
+          <ul class="form-fields">
+                <li>
+                  <label for="name" class="control-label">Název položky</label>
+                  <div>
+                    <input [(ngModel)]="menuitem.name" class="form-control" id="name" name='name' placeholder="Zadej název položky v menu" type="text" required #name="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                    <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">   
+                        <div [hidden]="!name.errors.required">
+                               Zadej název položky. Toto pole nesmí být prázdné.
+                         </div>
+                    </div>
+                  </div>  
+                </li>   
+                <li>
+                  <label for="icon" class="control-label">Class ikony</label>
+                  <div>
+                    <input [(ngModel)]="menuitem.icon" class="form-control" id="icon" name='icon' placeholder="Zadej název class ikony" type="text" onfocus="this.select()">                    
+                  </div>  
+                </li>  
+                <li>
+                  <label for="url" class="control-label">Url routovaci adresy</label>
+                  <div>
+                    <input [(ngModel)]="menuitem.url" class="form-control" id="url" name='url' placeholder="Zadej url adresu" type="text" onfocus="this.select()">                    
+                  </div>  
+                </li>
+                <li *ngIf="parentList.length > 0">
+                  <label for="parent_id" class="control-label">Nadřazená menu položka</label>
+                  <select class="form-control" [(ngModel)]="menuitem.parent_id" name="parent_id" id="parent_id">
+                        <option *ngFor="let k of parentList" [value]="k.id">{{k.name}}</option>
+                  </select>
+                </li>
+                <li *ngIf="grpList.length > 0">
+                  <label for="role_group_id" class="control-label">Oprávnění k položce</label>
+                  <div class="col" style="display:inline-block; margin-right: 4px;">
+                    <mw-dropdown [items]="grpList" [(value)]="menuitem.role_group_id" (change)="selectGroupRoleChange($event)"></mw-dropdown>
+                  </div>
+                  <div class="col" style="display:inline-block;">
+                    <mw-dropdown [items]="roleList" [(value)]="menuitem.role_id"></mw-dropdown>
+                  </div>                  
+                </li>
+                <li>
+                  <label for="sortorder" class="control-label">Pořadí položky v menu</label>
+                  <div>
+                    <input [(ngModel)]="menuitem.sortorder" class="form-control" id="sortorder" name='sortorder' placeholder="Zadej celé číslo" type="text" onfocus="this.select()">
+                  </div>  
+                </li>
+                <li style="width: 100%;">
+                  <label for="poznamka" class="control-label">Poznámka</label>
+                  <div>
+                      <textarea [(ngModel)]="menuitem.note" id="poznamka" name='poznamka'></textarea>              
+                  </div>     
+                </li>
+          </ul>         
+          <mw-changed [zmeneno]="menuitem.zmeneno" [zmenil]="menuitem.zmenil"></mw-changed>            
+        </form>   
+</div>      
+
+
+
+

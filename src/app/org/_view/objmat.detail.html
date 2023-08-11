@@ -1,0 +1,150 @@
+<mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+<mw-modal-drop (onYes)="dropPol($event)" [id]="'dpol'" [note]="'Opravdu odstranit položku?'" ></mw-modal-drop>
+
+<div class='detail' *ngIf="_obj"> 
+    <legend *ngIf="_obj.id < -1"><i class="fa fa-copy"></i>Kopie požadaveku na materiál</legend>
+    <legend *ngIf="_obj.id == -1"><i class="fa fa-plus"></i>Nový požadavek na materiál</legend>
+    <legend *ngIf="_obj.id > -1"><i class="fa fa-edit"></i>Editace požadavku<small class="status">{{stavObjednavky()}}</small></legend>
+      <div class="form-buttons">
+      <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>
+      <button *ngIf="_obj.id > -1" class="btn btn-copy" (click)="copy()"><i class="fa fa-copy"></i>Kopie záznamu</button>
+      <button type="submit" *ngIf="_obj.stav < 2" class="btn btn-primary" (click)="saveme()" [disabled]="!detailForm.form.valid"><i class="fa fa-save"></i>Uložit záznam / změny</button>
+      <div *ngIf="_obj.id > -1" style="display: inline-block;">
+        <button *ngIf="_showSchval || _schvaluje || _obj.stav == 0" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit záznam</button>
+        <div class="pad-30"></div>
+        <button *ngIf="_obj.stav == 0" class="btn btn-primary btn-approve" (click)="sendSchvalit()"><i class="fa fa-send"></i>Odeslat ke schválení</button>                
+        <button *ngIf="_showSchval && _obj.stav == 1" class="btn btn-primary btn-approve" (click)="odsouhlasit()"><i class="fa fa-send"></i>Odsouhlasit, k objednání</button>
+        <button *ngIf="_showSchval && _obj.stav == 1" class="btn btn-primary btn-gray" (click)="vratitNazpet()"><i class="fa fa-retweet"></i>Vrátit zpět, požadavek</button>
+        <button *ngIf="_showObjednano && _obj.stav == 2" class="btn btn-primary btn-approve" (click)="sendObjednano()"><i class="fa fa-send"></i>Objednáno, uzavřít</button>
+      </div>      
+    </div>
+    <mw-alert-message [response]="response"></mw-alert-message>       
+    <mw-infobox *ngIf="_obj.id > -1 && _obj.stav == 0" [btnText]="'Odeslat ke schválení'" (btnClick)="sendSchvalit()">
+        Pozor, je potřeba odeslat objednávku ke schválení !!  
+    </mw-infobox>    
+    <form #detailForm="ngForm">
+        <ul class="form-fields">
+            <li>
+                <label for="platnost_od" class="control-label">Datum objednávky</label>
+                <mw-date [(datum)]="_obj.datum"></mw-date>
+            </li> 
+            <li>
+                <label for="nazev" class="control-label">Objednal</label>
+                <mw-choose [label]="'Osoba'" 
+                        [txtPlaceholder]="'Osoba'"
+                        [txtValue]="_obj.objednal_oscislo"
+                        [txtLabel]="_obj.objednal_osoba"
+                        [TypeOfList]="_osobaList"
+                        (onSelectedEvent)="onOsobaChanged($event)">
+                </mw-choose> 
+            </li>
+            <li>
+                <label for="pracoviste" class="control-label">Středisko, které objednává</label>
+                <mw-choose [label]="'Středisko'" 
+                    [txtPlaceholder]="'Kód Středisko'"
+                    [txtValue]="_obj.pracoviste_kod"
+                    [txtLabel]="_obj.pracoviste_nazev"
+                    [TypeOfList]="_pracovisteList"
+                    [urlDetail]="'/ciselnik/pracoviste/'+_obj.pracoviste_id"
+                    (onSelectedEvent)="onPracovisteChanged($event)">
+                </mw-choose>            
+            </li>
+            <li>
+                <label for="cena" class="control-label">Předpokl. cena</label>
+                <input [(ngModel)]="_obj.cena_celkem" class="form-control" id="cena" name='cena' style="width: 120px;display: inline-block;" placeholder="Zadej předpokládanou cenu" type="number" #cena="ngModel"  onfocus="this.select()"><span>Kč</span>
+            </li>
+            <li>                
+                <label for="objednano" class="control-label">Objednáno</label>
+                <mw-date [(datum)]="_obj.datum_objednano"></mw-date>
+                <div class="note">datum kdy byla uskutečněná objednávka</div>
+            </li>
+            <li class="clmn">
+                <label for="n_poznamka" class="control-label">Poznámka k objednání</label>
+                <div>
+                    <textarea [(ngModel)]="_obj.note" id="n_poznamka" name='poznamka' class="form-control" style="min-height: 140px"></textarea>              
+                </div>     
+            </li>   
+        </ul>  
+        </form>       
+        <br/>
+
+        <div class="polozky">
+            <div class="pnl-head">Položky požadavku
+                <div class="tool-part">
+                    <div class="btn-group">
+                    </div>
+                </div>             
+            </div>
+            <div>
+                <table class='objmat'>
+                    <thead>
+                        <tr>                      
+                            <th *ngIf="_obj.stav > 1">Objednáno</th>
+                            <th class="mpop">Název/popis</th>
+                            <th class="mmnoz" style="width: 40px;">Množství</th>                            
+                            <th class="mcena" title="Měrná jednotka ks,kg,T,m3,L">Měrná jedn.</th>
+                            <th class="mcena" title="Cena za jednotku v Kč. Jednotky zapisovat přímo do popisu.">Cena jednotk. Kč</th>                            
+                            <th class="mprac" title="">Středisko</th>
+                            <th class="mfirm" title="">Firma</th>
+                            <th class="mstav">Stav</th>
+                            <th></th>
+                            <th *ngIf="_showSchval" style="width: 80px;"></th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let r of _obj.polozky; let i = index;" [class.zamitnuto]="r.stav == 1">    
+                            <td *ngIf="_obj.stav > 1" [class.objednano]="r.objednano" class="chk"><input type="checkbox" [(ngModel)]="r.objednano" (change)="saveObjPolObjednano(r)" title="Zda je položka objednaná. Pouze informativní charakter." /></td>
+                            <td><input type="text" class="form-control" [(ngModel)]="r.popis" onfocus="this.select()" title='Popis objednávaného materiálu.' /></td>                                                        
+                            <td><input type="text" class="form-control" [(ngModel)]="r.mnozstvi" (change)="recalcCelkem()" onfocus="this.select()" title='Množství číselna hodnota bez jednotky.' /></td>
+                            <td><input type="text" class="form-control" [(ngModel)]="r.jednotka" onfocus="this.select()" title='Měrná jednotka ks,kg,T,m3,L' /></td>
+                            <td><input type="text" class="form-control" [(ngModel)]="r.cena"  (change)="recalcCelkem()" onfocus="this.select()" title='Celkem za položku v Kč.' /></td>
+                            <td class="rstred">                                               
+                               <mw-choose [label]="'Středisko'" 
+                                    [txtPlaceholder]="'Kód Středisko'"
+                                    [txtValue]="r.pracoviste_kod"
+                                    [txtLabel]="r.pracoviste_nazev"
+                                    [TypeOfList]="_pracovisteList"
+                                    (onSelectedEvent)="onPracovisteRowChanged($event, r)">
+                                </mw-choose>
+                            
+                            </td>
+                            <td class="rfirm">                               
+                                <mw-choose [label]="'Vyber firmu'" 
+                                    [txtPlaceholder]="'Název firmy'"
+                                    [txtValue]="r.firma_nazev"
+                                    [txtLabel]="r.firma_adresa"
+                                    [TypeOfList]="_firmaList"
+                                    
+                                    (onSelectedEvent) = "onFirmaRowChanged($event, r)">
+                                </mw-choose>
+                            </td>
+                            
+                            <td>{{getPolozkaStav(r)}}</td>
+                            <td  class="right">                               
+                                <button class='drop' title="Odstranit položku" data-toggle="modal" data-target="#dpol" value="{{i}}" ><i class="fa fa-trash"></i></button>
+                            </td>
+                            <td *ngIf="_showSchval" class="right"><button *ngIf="r.stav == 1" class="btn-green" (click)="r.stav=0;">Schvalit</button><button *ngIf="r.stav == 0" class="btn-gray" (click)="r.stav=1;">Zamítnout</button></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="11">
+                                <button class="btn btn-success" (click)="addPol()"><i class="fa fa-plus"></i>Přidej položku</button>
+                            </td>
+                        </tr>                        
+                    </tfoot>
+                </table>                
+            </div>
+        </div>
+
+        <div style="margin-top: 15px">
+            <attach-frm #attach [modul]="'org_obj_mat'" [urlrec]="_obj.priloha_hash" [showSeznam]="true"></attach-frm>
+        </div>
+        <mw-changed [zmeneno]="_obj.zmeneno" [zmenil]="_obj.zmenil" [vytvoreno]="_obj.vytvoreno" [vytvoril]="_obj.vytvoril" [schvaleno]="_obj.schvaleno" [schvalil]="_obj.schvalil_osoba"></mw-changed>            
+  
+</div>      
+
+
+
+
+

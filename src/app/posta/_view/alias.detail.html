@@ -1,0 +1,35 @@
+<detail-form *ngIf="_rec" [detail]="this" [prilohy]="false"  [ButtonSave]="_rec.typ != 1" [ButtonDelete]="_rec.typ != 1">
+    <form  #detForm="ngForm">
+        <div>
+            <ul class="form-fields">
+                  <li>
+                    <label for="n_nazev" class="control-label">Název aliasu</label>
+                    <div>
+                      <input [(ngModel)]="_rec.source" class="form-control" id="n_nazev" name='nazev' placeholder="Zadej název aliasu, například provoz@giff.cz" type="text" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                      <div *ngIf="nazev.errors && (nazev.dirty || nazev.touched)" class="alert alert-danger">   
+                          <div [hidden]="!nazev.errors.required">
+                                Zadej název aliasu pod, kterým bude budou e-maily. Například vsichni@giff.cz  
+                          </div>
+                      </div>
+                    </div>  
+                </li>
+                <li>
+                  <label for="domena" class="control-label">Doména</label> 
+                  <mw-dropdown [items]="_domeny" [(value)]="_rec.domain_id"></mw-dropdown>
+                </li>
+
+                <li class="clmn">
+                    <label>Seznam adres e-mailových adres přiřazených pod tento alias</label>
+                    <div class="posta-alias-group">
+                        <div *ngFor="let adr of _adresy; let i=index;">
+                          <input type="text" class="form-control" [value]="_adresy[i]" (change)="_adresy[i] = $event.target.value" id="_adresy[i]" name="adresy[]" id="adresy[]"/><button (click)="_adresy.splice(i, 1)"><i class="fa fa-trash"></i></button>
+                        </div>                                                
+                        <button class="btn btn-primary" (click)="_adresy.push('')"><i class="fa fa-plus"></i> Přidat adresu</button>
+                    </div>
+                    
+                </li>
+                </ul>
+                <mw-changed [zmeneno]="_rec.zmeneno" [zmenil]="_rec.zmenil"></mw-changed>            
+        </div>
+    </form>
+</detail-form>

@@ -1,0 +1,19 @@
+<div class="mw-datetime" id='dt-picker-{{id}}'>
+  
+
+    <!--<mat-label>Vyber datum</mat-label>-->
+    
+    <!--<mat-hint>{{getFormat()}}</mat-hint>-->
+
+      <mat-form-field appearance="fill">
+      <input [readonly]="readonly" matInput [matDatepicker]="dp" [formControl]="_date" [class]="'form-control'" (dateChange)="datumZmena($event.value)">
+      <mat-datepicker-toggle [class.hidden]="readonly" matSuffix [for]="dp"></mat-datepicker-toggle>
+      <mat-datepicker #dp [startView]="getStartView()"
+                          (monthSelected)="setMonthAndYear($event, dp)"
+                          (yearSelected)="setMonthAndYear($event, dp)"
+                          (daySelected)="setMonthAndYear($event, dp)"></mat-datepicker>
+      </mat-form-field>
+
+
+</div>  
+

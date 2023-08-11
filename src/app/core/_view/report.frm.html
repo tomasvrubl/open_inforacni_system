@@ -1,0 +1,19 @@
+<div class="page-header">
+    <h1>Tiskové sestavy</h1>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" [class.active] = "showSeznam" (click)="showSeznam = true"><i class='fa fa-align-justify'></i>Seznam sestav</button>
+            <button type="button" class="btn btn-default" [class.active] = "!showSeznam" (click)="showSeznam = false"><i class='fa fa-plus'></i>Přidat sestavu</button>
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <report-list *ngIf="showSeznam" [urlrec]="urlrec"></report-list>        
+        <report-detail *ngIf="!showSeznam" [detail]="rec" [urlrec]="urlrec" [modul]="modul"></report-detail>        
+    </div>        
+</div>
+
+
+
+

@@ -1,0 +1,28 @@
+<div class="content">
+    <div id="loginbox"  class="mainbox d-flex justify-content-center">
+       <div class="panel " >
+               <div class="panel-heading">
+                   <div class="panel-title"></div>
+                   Zapomenutý přístup do systému
+               </div>
+               <div class="frm-part">
+                   <div style="padding-top:30px" class="panel-body" *ngIf="!respondMsg" >
+                       <form id="loginform" class="form-horizontal" role="form">
+                           <label for="email">Zadej e-mailovou adresu</label>
+                           <div class="input-group">
+                                   <input [(ngModel)]="email" name="eml" id="eml" type="email" class="form-control" placeholder="e-mailová adresa" onfocus="this.select()">                                   
+                           </div>                           
+                            <span *ngIf="errorMsg.length > 0" class="errmsg">{{errorMsg}}</span>
+                            <button id="btn-fblogin"  class="btn btn-primary" (click)="resetPass()"><i *ngIf="loading" class='fa fa-spinner fa-spin '></i>Zaslat přihlašovací údaje</button>
+                        </form>     
+                   </div>          
+                   <div *ngIf="respondMsg" style="padding-top:30px" class="panel-body">
+                        <p class="resp-info" [innerHTML]="respondMsg"></p>
+                        <button class="btn btn-primary" routerLink="/login" class="login-link"> Přihlásit se</button>
+                   </div>
+                   <div class="panel-footer">
+                           GIFF a.s., copyright 2021, informační systém, admin@giff.cz
+                   </div>
+               </div>  
+       </div>
+   </div>

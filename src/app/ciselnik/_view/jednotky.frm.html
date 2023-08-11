@@ -1,0 +1,20 @@
+<div class="page-header">
+    <h1>Měrné jednotky <span *ngIf="isSelector"> - vyber jednotku</span></h1>
+    <small>Seznam měrných jednotek</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/jednotky/list"><i class='fa fa-align-justify'></i>Seznam jednotek</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/jednotky/-1"><i class='fa fa-plus'></i>Přidat jednotku</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <jednotka-list *ngIf="_showList"></jednotka-list>
+        <jednotka-detail *ngIf="_showDetail" [detail]="detail" ></jednotka-detail>
+    </div>        
+</div>
+
+
+
+

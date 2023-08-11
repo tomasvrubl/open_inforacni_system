@@ -1,0 +1,23 @@
+<mw-alert-message [response]="response"></mw-alert-message> 
+<div class="toolbar">
+    <select  class="form-control" (change)="onSkladChange($event.target.value)"  [(ngModel)]="_sklad_id">
+        <option value="-1">-- Vyber sklad --</option>
+        <option *ngFor="let k of _cboSklad" [value]="k.id">{{k.nazev}}</option>
+    </select>    
+</div>
+
+<mw-table
+        [css]="'skladkarta'" 
+        [table]="tabKarta" 
+        [SelectButton]="isSelector"
+        [MultiSelectButton]="isMultiSelect"
+        [DropButton]="true" 
+        [EditButton]="true"  
+        (onEditRecord)="onEdit($event, false)" 
+        (onEditRecordWnd)="onEdit($event, true)"
+        (onSelectRecord)="onSelected($event)"
+        (onMultiSelect)="onMultiSelect($event)"
+        (onDropRecord)="onDrop($event)"
+        (onSelectCancel)="onCancel($event)">
+        <sklad-karta-detail *ngIf="skladKarta" [karta]="skladKarta" ></sklad-karta-detail>
+</mw-table>

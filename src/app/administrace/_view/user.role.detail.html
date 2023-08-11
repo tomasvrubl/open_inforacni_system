@@ -1,0 +1,32 @@
+<mw-alert-message [response]="response" id="resp-role-detail"></mw-alert-message>       
+<mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+  <div class='detail'> 
+      <legend><i class="fa fa-edit"></i>Editace role oprávnění</legend>
+      <div class="btn-group">
+        <button type="submit" class="btn btn-primary" (click)="saveme()"><i class="fa fa-save"></i>Uložit změny</button>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit oprávnění</button>
+      </div>      
+      <form #detForm="ngForm">
+          <ul class="form-fields form-user-role-fields">
+              <li>
+              <label class="control-label">Role</label>
+                <div>{{_role.role}}</div>  
+              </li>
+              <li>
+                <label class="control-label">Skupina</label>
+                <div>{{_role.skupina}}</div>     
+              </li>
+          </ul>    
+          <h4>Seznam rozšířených oprávnění</h4>
+          <ul class="form-fields form-user-role-fields">
+            <li *ngFor="let pp of _role.role_params_all; let i = index;" class="clmn">
+                {{pp.note}} <input [checked]="isCheckedSubrole(pp.tag)" [value]="pp.tag" (change)="chkChangeSubrole($event.target)" type="checkbox" />                   
+            </li>
+          </ul>          
+          <mw-changed [zmeneno]="_role.zmeneno" [zmenil]="_role.zmenil"></mw-changed>            
+        </form>   
+  </div>      
+
+
+
+

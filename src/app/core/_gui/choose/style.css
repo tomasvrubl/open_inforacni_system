@@ -1,0 +1,17 @@
+.mw-choose .pop-wnd { position: absolute; background: #FFF; left: 2%; width: 96%; z-index: 100; border-radius: 4px;  -webkit-border-radius: 4px; -moz-border-radius: 4px;} 
+.mw-choose img.loader {height: 30px;}
+.mw-choose input[type="text"] {height: 32px;}
+.mw-choose button.chooser { height: 32px; vertical-align: top; width: 34px; background: #337ab7; border: none; margin: 0px; display: inline-block;}
+.mw-choose label.nazev { display: inline-block; margin-left: 5px; color: #595959;}
+.mw-choose a.nazev { display: inline-block; margin-left: 5px; color: #0a4a82; cursor: pointer;}
+.mw-choose a.nazev  i {font-size: 0.8em;}
+.mw-choose a.nazev:hover {text-decoration: underline;}
+.mw-choose a.nazev:active {text-decoration: underline;}
+.mw-choose ul.popup { border: 1px solid #888;  font-size: 1.1em; box-shadow: 0px 2px 4px;}
+.mw-choose ul.popup li { padding: 5px; border-bottom: 1px dotted #444;}
+.mw-choose ul.popup li:hover { background: #0d72cc; color: #FFF; cursor:pointer;}
+.mw-choose ul.popup li:last-child {border-bottom: none; }
+.mw-choose ul.popup li > * {  margin-right: 5px; display: inline-block; }
+.mw-choose ul.popup li .num { font-size: 0.8em; color: #444;}
+.mw-choose .mw-popup-hidden  {display: none;}
+

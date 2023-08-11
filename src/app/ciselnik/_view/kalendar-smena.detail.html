@@ -1,0 +1,52 @@
+
+  <div *ngIf="_smena" class='detail cal-smena'> 
+      <mw-modal-drop (onYes)="dropme()" [id]="_smena.id" ></mw-modal-drop>
+      <legend *ngIf="_smena.id < 1"><i class="fa fa-plus"></i>Nová směna</legend>
+      <legend *ngIf="_smena.id > -1"><i class="fa fa-edit"></i>Editace směny</legend>
+        <div class="form-buttons">
+        <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>
+        <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!smenaForm.form.valid"><i class="fa fa-save"></i>Uložit záznam / změny</button>
+        <button *ngIf="_smena.id > -1" type="button" class="btn btn-danger" data-toggle="modal" data-target="#dropSmena"><i class="fa fa-trash"></i>Odstranit záznam</button>
+      </div>
+      <mw-alert-message [response]="response"></mw-alert-message>       
+      <form #smenaForm="ngForm" (ngSubmit)="onSubmit()">
+          <ul class="form-fields">
+              <li>
+                <label for="nazev" class="control-label">Název</label>
+                <div>
+                    <input [(ngModel)]="_smena.nazev" class="form-control" id="nazev" name='nazev' placeholder="Zadej název směny" type="text" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                    <div *ngIf="nazev.errors && (nazev.dirty || nazev.touched)" class="alert alert-danger">   
+                        <div [hidden]="!nazev.errors.required">
+                               Zadej název směny
+                         </div>
+                    </div>
+                </div>  
+              </li>   
+              <li class='time'>
+                    <label for="zacatek" class="control-label">Začátek směny</label>  
+                    <mw-time [(cas)]="_smena.smena_zacatek"></mw-time>
+              </li>
+              <li class='time'>
+                    <label for="konec" class="control-label">Konec směny</label>  
+                    <mw-time [(cas)]="_smena.smena_konec"></mw-time>
+              </li>
+              <li class="days">
+                <label for="platnost" class="section">Platnost ve dnech</label>
+
+                <div class="col"><span>Pondělí</span><input [checked]="_smena.pondeli" (change)="_smena.pondeli = !_smena.pondeli;" type="checkbox" /></div>
+                <div class="col"><span>Úterý</span><input [checked]="_smena.utery" (change)="_smena.utery = !_smena.utery;" type="checkbox" /></div>
+                <div class="col"><span>Středa</span><input [checked]="_smena.streda" (change)="_smena.streda = !_smena.streda;" type="checkbox" /></div>
+                <div class="col"><span>Čtvrtek</span><input [checked]="_smena.ctvrtek" (change)="_smena.ctvrtek = !_smena.ctvrtek;" type="checkbox" /></div>
+                <div class="col"><span>Pátek</span><input [checked]="_smena.patek" (change)="_smena.patek = !_smena.patek;" type="checkbox" /></div>
+                <div class="col"><span class='weekend'>Sobota</span><input [checked]="_smena.sobota" (change)="_smena.sobota = !_smena.sobota;" type="checkbox" /></div>
+                <div class="col"><span class='weekend'>Neděle</span><input [checked]="_smena.nedele" (change)="_smena.nedele = !_smena.nedele;" type="checkbox" /></div>
+              </li>
+          </ul>        
+          <mw-changed [zmeneno]="_smena.zmeneno" [zmenil]="_smena.zmenil"></mw-changed>            
+          </form>   
+
+  </div>      
+
+
+
+

@@ -1,0 +1,7 @@
+<div class='popBrowser mw-popwnd'>
+    <h4><i class=" fa fa-menu-hamburger"></i>{{title}}<a (click)="useCancel()" style="cursor: pointer;"><i class="fa fa-times" aria-hidden="true"></i> zavřít </a></h4>
+  <div class="pop-body">
+        <ng-content></ng-content>    
+  </div>  
+</div> 
+<div *ngIf="centerScreen" class="mw-popup-bg"></div>

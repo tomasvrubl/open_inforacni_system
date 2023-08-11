@@ -1,0 +1,20 @@
+<div class="page-header">
+    <h1>Objednávka materiálu  <span *ngIf="isSelector"> - vyber objednávku</span></h1>
+    <small>Seznam objednávek na materiál</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/org/objmat/list"><i class='fa fa-align-justify'></i>Seznam objednávek</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/org/objmat/-1"><i class='fa fa-plus'></i>Přidat objednávku</button>     
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/org/objmat/print"><i class='fa fa-print'></i>Tiskové sestavy</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">    
+    <div class="pnl-body" *ngIf="!_showSestavy">
+        <objmaterial-list *ngIf="detail == null" urlrec="/org/objmat" [isPrint]="true"></objmaterial-list>
+        <objmaterial-detail *ngIf="detail" [detail]="detail" ></objmaterial-detail>        
+    </div>        
+    <div class="pnl-body" *ngIf="_showSestavy">
+        <report-frm urlrec="/org/objmat"></report-frm>
+    </div>    
+</div>

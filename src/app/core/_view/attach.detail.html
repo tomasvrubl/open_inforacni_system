@@ -1,0 +1,47 @@
+
+
+  <div class='detail' *ngIf="_att">       
+      <mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+      <legend><i class="fa fa-edit"></i>Editace přílohy</legend>
+        <div class="form-buttons">
+        <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>
+        <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!detForm.form.valid"><i class="fa fa-save"></i>Uložit změny</button>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit přílohu</button>
+      </div>
+      <mw-alert-message [response]="response"></mw-alert-message>       
+
+      <form #detForm="ngForm" (ngSubmit)="onSubmit()">
+          <ul class="form-fields">             
+              <li>
+                  <label for="n_nazev" class="control-label">Název</label>
+                  <div>
+                    <input [(ngModel)]="_att.nazev" class="form-control" id="n_nazev" name='nazev' placeholder="Zadej název operace" type="text" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                    <div *ngIf="nazev.errors && (nazev.dirty || nazev.touched)" class="alert alert-danger">   
+                        <div [hidden]="!nazev.errors.required">
+                               Zadej název přílohy
+                         </div>
+                    </div>
+                  </div>  
+              </li>
+              <li>
+                <label for="n_nazev" class="control-label">Tágy, klíčová slova pro vyhledávání. Odděluj čárkou.</label>
+                <div>
+                    <input [(ngModel)]="_att.tagy" class="form-control" id="n_tagy" name='tagy' type="text">
+                  </div>
+              </li>
+                   
+              <li class="clmn">
+                <label for="n_poznamka" class="control-label">Poznámka</label>
+                <div>
+                    <textarea [(ngModel)]="_att.note" id="n_poznamka" name='poznamka'  class="form-control" style="min-height: 140px"></textarea>    
+                </div>     
+              </li>              
+          </ul>         
+          <mw-changed [zmeneno]="_att.zmeneno" [zmenil]="_att.zmenil"></mw-changed>            
+        </form>                  
+  </div>      
+  <div class="detail" *ngIf="_att === null">
+    <mw-uploader [modul]="modul" [urlrec]="urlrec"></mw-uploader>
+  </div>
+
+

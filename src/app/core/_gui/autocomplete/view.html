@@ -1,0 +1,19 @@
+<div class="mw-autocomp">
+    <div class="input-group">
+        <input type="text" id='n_input' class="form-control" aria-label="..." [(ngModel)]="textValue" 
+               (keydown)="inputElKeyHandler($event)"
+               (focus)="focusIn($event)"
+               (focusout)="focusOut($event)"
+               (input)="reloadListInDelay($event)"
+               onfocus="this.select()" 
+               autocomplete="off">
+        <div class="input-group-btn">
+            <button type="button" class="form-control btn btn-default btn-pop" (click)="showPopup($event)" tabindex="-1">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </button>
+        </div>
+    </div>    
+    <ul *ngIf="_isPop" class='popup'>
+       <li *ngFor="let r of _filteredList; let i = index"><span [class.selected]=" i == _itemIndex" (mousedown)="selectOne(r)">{{r}}</span><button type="button" (click)="dropValue(r)" tabindex="-1"><i class="fa fa-remove" aria-hidden="true"></i></button></li>     
+    </ul>
+</div> 

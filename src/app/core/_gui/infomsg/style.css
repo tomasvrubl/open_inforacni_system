@@ -1,0 +1,16 @@
+.mw-infobox {
+	padding: 3px 5px;
+	background: #018c93;
+	color: #FFF;
+    display: flex;
+    justify-content: space-between;
+    width: 20rem;
+    align-items: center;
+    width: 100%;
+}
+
+.mw-infobox p { font-size: 1.1em; display: inline-block; margin: 0px; padding-left: 8px;}
+.mw-infobox button {
+    background: #f0f0f0;
+	color: #333;
+}

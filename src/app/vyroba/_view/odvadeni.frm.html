@@ -1,0 +1,20 @@
+<div class="page-header">
+    <h1>Odvádění <span *ngIf="isSelector"> - vyber záznam</span></h1>
+    <small>Seznam odvádění</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/vyroba/odvadeni"><i class='fa fa-align-justify'></i>Seznam odvádění</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/vyroba/odvadeni/-1"><i class='fa fa-plus'></i>Přidat odvádění</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <odvadeni-list *ngIf="odvadeni == null"></odvadeni-list>
+        <odvadeni-detail *ngIf="odvadeni" [detail]="odvadeni" ></odvadeni-detail>
+    </div>        
+</div>
+
+
+
+

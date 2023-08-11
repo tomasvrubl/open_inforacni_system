@@ -1,0 +1,86 @@
+<detail-form *ngIf="_rec" [detail]="this">
+      <form #jakostForm="ngForm" >
+          <ul class="form-fields">
+                <li>
+                  <label for="nazev" class="control-label">Název (unikátní)</label>
+                  <div>
+                    <input [(ngModel)]="_rec.nazev" class="form-control" id="nazev" name='nazev' placeholder="Zadej název tavící pece" type="text" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                    <div *ngIf="nazev.errors && (nazev.dirty || nazev.touched)" class="alert alert-danger">   
+                        <div [hidden]="!nazev.errors.required">
+                               Zadej název pece. Název musí být unikátní. Např. Eges-1, Eges-2 atd.
+                        </div>
+                    </div>
+                  </div>  
+              </li>              
+
+              <li>
+                <label for="karta" class="control-label">Kód</label>
+                 <div  class="col">
+                        <input [(ngModel)]="_rec.kod" class="form-control" id="kod" name='kod' placeholder="Zadej kód pro převod mezi systémy" type="text" onfocus="this.select()">            
+                 </div>                
+              </li>           
+              <li>
+                <label for="platnost" class="control-label">Platnost</label>
+                 <div  class="col">
+                    <input [checked]="_rec.platnost" (change)="_rec.platnost = !_rec.platnost;" type="checkbox" />                              
+                 </div>
+              </li>   
+              <li>
+                <div class="col clmn2" style="width:80px">
+                  <label for="pec" class="control-label">Číslo pece</label>
+                  <input [(ngModel)]="_rec.pec" class="form-control" id="pec" name='pec' placeholder="číslo" type="text" onfocus="this.select()" maxlength="2">                  
+                </div>  
+                <div class="col clmn2" style="width:78px">
+                  <label for="rok" class="control-label">Fiskální rok</label>
+                  <input [(ngModel)]="_rec.rok" class="form-control" id="rok" name='rok' placeholder="fiskální rok" type="text" onfocus="this.select()" maxlength="2">                  
+                </div>  
+                <div class="col clmn2" style="width:120px">
+                  <label for="kampan" class="control-label">Kampaň</label>
+                  <input [(ngModel)]="_rec.kampan" class="form-control" id="kampan" (change)="formatKampan($event.target.value)" placeholder="číslo kampaně" name='kampan' type="text" onfocus="this.select()" maxlength="3">                  
+                </div>  
+                <div class="col clmn2" style="width:120px">
+                  <label for="tavba" class="control-label">Pořadí tavby</label>
+                  <input [(ngModel)]="_rec.tavba" class="form-control" id="tavba" (change)="formatTavba($event.target.value)" placeholder="pořadí tavby" name='tavba' type="text" onfocus="this.select()" maxlength="3">                  
+                </div>  
+                <div class="col clmn2" style="width:220px">
+                  <label for="tavba" class="control-label">&nbsp;</label>
+                    <button class="btn btn-primary" (click)="zalozNovouKampan($event)">Založ novou kampaň</button>
+                </div>                  
+              </li>
+
+              <li>
+                <label for="zdroj" class="control-label">Zdroj pece</label>
+                <mw-choose [label]="'Seznam zdrojů'" 
+                        [txtPlaceholder]="'Kód zdroje'"
+                        [txtValue]="_rec.zdroj_kod"
+                        [txtLabel]="_rec.zdroj_nazev"
+                        [TypeOfList]="_zdrojList"
+                        (onSelectedEvent)="onZdrojChanged($event)">
+                </mw-choose>      
+              </li>
+
+              <li class="clmn">
+                <label for="n_poznamka" class="control-label">Poznámka</label>
+                <div>
+                    <textarea [(ngModel)]="_rec.poznamka" id="n_poznamka" name='poznamka'  class="form-control" style="min-height: 140px"></textarea>              
+                </div>
+              </li>
+          </ul>                   
+          <mw-changed [zmeneno]="_rec.zmeneno" [zmenil]="_rec.zmenil"></mw-changed>            
+
+          <div *ngIf="_rec.id > -1"  class="pnl">
+            <div class="pnl-head">
+                <div class="section">Historie kampaní</div>
+            </div>
+            <div class="pnl-body">
+              <mw-table [css]="'tavkamphist'" [table]="tabHistorie"  [SelectButton]="false" [DropButton]="false" [CollapseIcon]="false" (onReloadData)="reloadHistorieKampani($event)"></mw-table>
+            </div>
+
+          </div>
+
+        </form>   
+</detail-form>      
+
+
+
+

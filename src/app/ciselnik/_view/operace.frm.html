@@ -1,0 +1,20 @@
+<div class="page-header">
+    <h1>Operace  <span *ngIf="isSelector"> - vyber operaci</span></h1>
+    <small>Výrobní jsou použity v technologických postupech. Definují jednotlivé akce, které se provádějí při výrobě.</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/operace"><i class='fa fa-align-justify'></i>Seznam operací</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/operace/-1"><i class='fa fa-plus'></i>Přidat operaci</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <operace-list *ngIf="_showList"></operace-list>
+        <operace-detail *ngIf="_showDetail" [detail]="rec" ></operace-detail>
+    </div>        
+</div>
+
+
+
+

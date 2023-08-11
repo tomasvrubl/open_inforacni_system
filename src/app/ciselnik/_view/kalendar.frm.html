@@ -1,0 +1,20 @@
+<div class="page-header">
+    <h1>Kalendář  <span *ngIf="isSelector"> - vyber kalendář</span></h1>
+    <small>Seznam kalendářů</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/kalendar/list"><i class='fa fa-align-justify'></i>Seznam kalendář</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/ciselnik/kalendar/-1"><i class='fa fa-plus'></i>Přidat kalendář</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">    
+    <div class="pnl-body">
+        <kalendar-list *ngIf="_showList"></kalendar-list>
+        <kalendar-detail *ngIf="_showDetail" [detail]="kalendar" ></kalendar-detail>
+    </div>        
+</div>
+
+
+
+

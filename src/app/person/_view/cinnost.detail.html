@@ -1,0 +1,73 @@
+<mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+<mw-alert-message [response]="response"></mw-alert-message>
+<div class='detail'> 
+    <legend *ngIf="_rec.id < 1"><i class="fa fa-plus"></i>Nový záznam</legend>
+    <legend *ngIf="_rec.id > -1"><i class="fa fa-edit"></i>Editace</legend>
+      <div class="form-buttons">
+      <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>
+      <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!detForm.form.valid"><i class="fa fa-save"></i>Uložit záznam / změny</button>
+      <button *ngIf="(_rec.id > -1)" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit záznam</button>
+    </div>    
+    <form #detForm="ngForm">
+        <ul class="form-fields">             
+          <li>
+            <label for="n_nazev" class="control-label">Název pracovní činnosti</label>
+            <div>
+              <input [(ngModel)]="_rec.nazev" class="form-control" id="n_nazev" name='nazev' placeholder="Zadej název činnosti" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+              <div *ngIf="nazev.errors && (nazev.dirty || nazev.touched)" class="alert alert-danger">   
+                  <div [hidden]="!nazev.errors.required">
+                         Zadej název pracovní činnosti rizikového faktoru. Je použita v rizikovišť pracovišt + zdravotních prohlídkách.
+                   </div>
+              </div>
+            </div>  
+        </li>
+        <li>
+          <label for="platnost" class="control-label">Platnost</label>                 
+          <input [checked]="_rec.platnost" (change)="_rec.platnost = !_rec.platnost;" type="checkbox" />
+        </li> 
+        <li>
+          <div class="col clmn2">
+            <label for="zakon_riziko" class="control-label">Buď I. nebo II. atd. nebo prázdné</label>
+            <input [(ngModel)]="_rec.zakon_riziko" class="form-control" id="zakon_riziko" name='zakon_riziko' placeholder="Zadej I. nebo II. nebo prázdné" type="text" onfocus="this.select()">           
+            <span class="note">Použito při generování požadavku na lékařskou prohlídku.</span>
+          </div>
+          <div class="col clmn2">
+            <label for="zakon_skupina" class="control-label">Ze zakona např. 3.3, 6.2 apod. nebo prázdné</label>
+            <input [(ngModel)]="_rec.zakon_skupina" class="form-control" id="zakon_skupina" name='zakon_skupina' placeholder=" použito" type="text" onfocus="this.select()">           
+            <span class="note">Použito při generování požadavku na lékařskou prohlídku.</span>
+          </div>  
+        </li>
+
+        <li>
+          <label for="n_lhuta" class="control-label">Lhůta lékařské prohlídky, roky</label>
+          <div>
+            <input [(ngModel)]="_rec.lhuta" class="form-control" id="n_lhuta" name='lhuta' placeholder="Zadej lhůtu / roky" type="number" required #lhuta="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+            <div *ngIf="lhuta.errors && (lhuta.dirty || lhuta.touched)" class="alert alert-danger">   
+                <div [hidden]="!lhuta.errors.required">
+                        Zadej lhůtu lékařské prohlídky. Jsou to roky celočíselná hodnota
+                  </div>
+            </div>
+          </div>  
+        </li>        
+        <li class="clmn">
+          <label for="n_poznamka" class="control-label">Poznámka</label>
+          <div>
+              <textarea [(ngModel)]="_rec.poznamka" id="n_poznamka" name='poznamka'  class="form-control"></textarea>              
+          </div>     
+        </li>      
+        
+        <li>
+          <label for="n_order" class="control-label">Pořadí řazení ve formuláři prohlídek</label>
+          <div>
+            <input [(ngModel)]="_rec.order" class="form-control" id="n_order" name='n_order' placeholder="0" type="number" required #lhuta="ngModel" onfocus="this.select()">
+          </div>  
+        </li> 
+
+        </ul>         
+        <mw-changed [zmeneno]="_rec.zmeneno" [zmenil]="_rec.zmenil"></mw-changed>            
+      </form>
+</div>      
+
+
+
+

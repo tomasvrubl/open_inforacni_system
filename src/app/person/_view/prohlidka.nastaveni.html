@@ -1,0 +1,59 @@
+<mw-alert-message [response]="response"></mw-alert-message>     
+<div class="page-header">    
+</div>
+<div class="pnl">
+    <div class="pnl-rules">
+        <div class="pnl-rules-head">Přidat novou podmínku</div>
+        <div class="pnl-rules-body"> 
+                <fieldset class="inline mr5 default">
+                    <legend>Pokud</legend>
+                    <div class="inline  mr5">
+                        <mw-dropdown [items]="cboOpt" [(value)]="cboOptVal" (change)="onOptChange()"></mw-dropdown>
+                    </div>
+                    <div class="inline mr5" *ngIf="cboOptVal == 0">                
+                        <div class="inline mr5">
+                            <mw-dropdown [items]="cboPodm" [(value)]="cboPodmVal"></mw-dropdown>
+                        </div>
+                        <div class="inline">
+                            <input [(ngModel)]="txtVal" class="form-control" placeholder="0" type="text" onfocus="this.select()">    
+                        </div>
+                        <div class="inline mr5">&nbsp;let</div>                                                        
+                    </div>    
+                    <div class="inline mr5" *ngIf="cboOptVal == 1">                
+                        <div class="inline mr5">
+                            JE
+                        </div>
+                        <div class="inline mr5">
+                            <input [(ngModel)]="txtVal" class="form-control" placeholder="0" type="text" onfocus="this.select()">    
+                        </div>                                
+                    </div>                
+                </fieldset>            
+                <fieldset class="inline mr5 default">
+                        <legend>Pak následná prohlídka</legend>
+                        <div *ngIf="cboOptVal == 0" class="inline">
+                            <div class="inline mr5">
+                                <input [(ngModel)]="txtRoky" class="form-control" placeholder="0" type="text" onfocus="this.select()">
+                            </div>
+                            <div class="inline">roky</div>
+                        </div>
+                        <div *ngIf="cboOptVal == 1" class="inline">
+                            <div class="inline">
+                                <div class="inline mr5">
+                                    <input [(ngModel)]="txtRoky" class="form-control" placeholder="0" type="text" onfocus="this.select()">    
+                                </div>        
+                                <div class="inline">roky</div>
+                            </div>
+                        </div>                        
+                </fieldset>
+
+            <button class="btn btn-primary" (click)="addPodminku()"><i class='fa fa-plus'></i> Přidat podmínku</button>
+        </div>
+    </div>
+    <div class="pnl-body">    
+        <div class="pnl-rules-head">Nastavená pravidla</div>
+        <div class="pnl-rules-body">      
+            <div *ngFor="let c of podminky; let ic = index;" class="cond cond-user">{{c.lbl}} <span *ngIf="c.roky > 0">{{c.roky}} roky</span><button class="btn-primary" (click)="dropPodminka(ic)"><i class="fa fa-trash"></i></button></div>            
+            <div *ngFor="let c of cinnost" class="cond">{{c.nazev}} pak <span>{{c.lhuta}} roky</span> <button class="btn-primary"><i class="fa fa-trash"></i></button></div>
+        </div>
+    </div>        
+</div>

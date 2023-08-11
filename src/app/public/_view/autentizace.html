@@ -1,0 +1,40 @@
+<div class="terminal-login">
+    <div *ngIf="!jePrihlasen()">
+        <h1 *ngIf="errmsg.length < 1">Přihlášení</h1>
+        <h1 *ngIf="errmsg.length > 0" class="err">{{errmsg}}</h1>
+        <div class="oscislo">
+            <h2>Zadej osobní číslo / kód</h2>
+            <input type="text" id="oscislo" [(ngModel)]="oscislo" onfocus="this.select()"/>
+        </div>
+        <div class="klavesnice">
+            <div>
+                <button (click)="addCislo(1)">1</button>
+                <button (click)="addCislo(2)">2</button>
+                <button (click)="addCislo(3)">3</button>            
+            </div>
+            <div>
+                <button (click)="addCislo(4)">4</button>
+                <button (click)="addCislo(5)">5</button>
+                <button (click)="addCislo(6)">6</button>            
+            </div>
+            <div>
+                <button (click)="addCislo(7)">7</button>
+                <button (click)="addCislo(8)">8</button>
+                <button (click)="addCislo(9)">9</button>            
+            </div>
+            <div>
+                <button class="del" (click)="delAll()"><i class="fa-solid fa-repeat"></i>Smaž vše</button>
+                <button (click)="addCislo(0)">0</button>
+                <button class="del" (click)="delLast()"><i class="fa fa-times-circle"></i>Odstr. znak</button>            
+            </div>
+            <div>
+                <button class="prihlasit" (click)="prihlasit()"><i class="fa fa-paper-plane"></i>Přihlásit se </button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="jePrihlasen()" class="prilasena-osoba">
+        <h1>Aktuálně přihlášená osoba</h1>
+        <h2 class="osoba">{{srv.userTerminal.osoba}}</h2>
+        <button class="odhlasit" (click)="logout()"><i class="fa-solid fa-person-walking-arrow-right"></i> Odhlásit se</button>
+    </div>
+</div>

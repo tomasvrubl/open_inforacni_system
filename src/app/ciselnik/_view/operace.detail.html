@@ -1,0 +1,69 @@
+
+<mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+  <div class='detail'> 
+      <legend *ngIf="_operace.id < 1"><i class="fa fa-plus"></i>Nová aperace</legend>
+      <legend *ngIf="_operace.id > -1"><i class="fa fa-edit"></i>Editace operace</legend>
+        <div class="form-buttons">
+        <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>
+        <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!detForm.form.valid"><i class="fa fa-save"></i>Uložit záznam / změny</button>
+        <button *ngIf="(_operace.id > -1)" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit záznam</button>
+      </div>
+      <mw-alert-message [response]="response"></mw-alert-message>       
+      <form #detForm="ngForm" (ngSubmit)="onSubmit()">
+          <ul class="form-fields">             
+              <li>
+              <label for="n_nazev" class="control-label">Název</label>
+                  <div>
+                    <input [(ngModel)]="_operace.nazev" class="form-control" id="n_nazev" name='nazev' placeholder="Zadej název operace" type="text" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                    <div *ngIf="nazev.errors && (nazev.dirty || nazev.touched)" class="alert alert-danger">   
+                        <div [hidden]="!nazev.errors.required">
+                               Zadej název operace
+                         </div>
+                    </div>
+                  </div>  
+              </li>
+              <li>
+                <label for="platnost" class="control-label">Platnost</label>
+                 <div  class="col">
+                    <input [checked]="_operace.platnost" (change)="_operace.platnost = !_operace.platnost;" type="checkbox" />                              
+                 </div>
+              </li>             
+              <li class="clmn">
+                <label for="n_poznamka" class="control-label">Poznámka</label>
+                <div>
+                    <textarea [(ngModel)]="_operace.poznamka" id="n_poznamka" name='poznamka'  class="form-control" style="min-height: 140px"></textarea>    
+                </div>     
+              </li>              
+          </ul>         
+          <mw-changed [zmeneno]="_operace.zmeneno" [zmenil]="_operace.zmenil"></mw-changed>            
+        </form>             
+        <ng-container *ngIf="_operace.id > -1">            
+          <div class="pnl">
+              <div class="pnl-head">             
+                  <div *ngIf="!showSelectZdroj" class="tool-part" >
+                        <button *ngIf="!showSelectZdroj" class="btn " (click)="showSelectZdroj=true"><i class="fa fa-random" aria-hidden="true"></i>Přidat existující zdroj</button>
+                        <button *ngIf="showSelectZdroj" class="btn " (click)="listZdroj()"><i class='fa fa-align-justify'></i>Seznam zdrojů</button>                       
+                  </div>
+                  Seznam přiřazených zdrojů k operaci
+              </div>
+              <div class="pnl-body"  [class.box-shadow]="showSelectZdroj">
+                <mw-table  *ngIf="!showSelectZdroj" 
+                        [id]="zdroj-relation"
+                        [table]="tabZdroj" 
+                        [CollapseIcon]="false"
+                        [DropButton]="true" 
+                        [EditButton]="true"  
+                        (onDropRecord)="unlinkZdroj($event)"
+                        (onReloadData)="reloadDataZdroj($event)">                        
+                </mw-table>                
+                <mw-popwnd  *ngIf="showSelectZdroj" [title]="'Vyber zdroje, které přidat do oprace'" (onCancel)="showSelectZdroj=false">
+                    <zdroj-list [isMultiSelect]="true" (onSelectedZdrojList)="onSelectedZdrojList($event)"></zdroj-list>                
+                </mw-popwnd> 
+              </div>   
+          </div>      
+      </ng-container>
+  </div>      
+
+
+
+

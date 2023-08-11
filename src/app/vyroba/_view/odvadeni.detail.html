@@ -1,0 +1,61 @@
+<mw-alert-message [response]="response"></mw-alert-message>       
+<mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+  <div class='detail'> 
+      <legend *ngIf="_rec.id < 1"><i class="fa fa-plus"></i>Nové odvádění</legend>
+      <legend *ngIf="_rec.id > -1"><i class="fa fa-edit"></i>Editace odvádění</legend>
+      <div class="form-buttons">
+        <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>
+        <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!odvForm.form.valid"><i class="fa fa-save"></i>Uložit záznam / změny</button>
+        <button *ngIf="(_rec.id > -1)" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit záznam</button>
+      </div>      
+      <form #odvForm="ngForm">                   
+          <ul class="form-fields">               
+              <li>                  
+                    <label for="zakazka" class="control-label">Výrobní zakázka</label>                  
+                    <mw-choose [label]="'Výrobní zakázka'" 
+                          [txtPlaceholder]="'Číslo zakázky'"
+                          [txtValue]="_rec.zakazka_vyrobek"
+                          [txtLabel]="_rec.zakazka_nazev"
+                          [TypeOfList]="_zakazkaList"
+                          (onSelectedEvent)="onZakazkaChanged($event)">
+                    </mw-choose> 
+              </li>
+              <li>
+                  <label for="platnost_od" class="control-label">Datum / Směna</label>
+                  <div>
+                    
+                    <select class="form-control" [(ngModel)]="_rec.kalendar_smena_id"  name="smena" class="form-control inline-control">
+                        <option *ngFor="let sm of cboSmena" [value]="cboSmena.id">{{cboSmena.nazev}}</option>
+                    </select>  
+                  </div>                  
+              </li>   
+              <li>
+                <label for="pracoviste" class="control-label">Zdroj</label>            
+                  <select class="form-control" [(ngModel)]="_rec.zdroj_id" name="zdroj_id" id="zdroj_id">
+                        <option *ngFor="let k of cboZdroj" [value]="k.id">{{k.name}}</option>
+                  </select>
+              </li>
+              <li>
+                  <label for="platnost_od" class="control-label">Osoba</label>
+                  <input [(ngModel)]="_rec.osoba" class="form-control" id="osoba" name='osoba' placeholder="Zadej osobu" type="text" required #osoba="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+              </li>
+              <li>
+                  <label for="platnost_od" class="control-label">Shodné ks</label>
+                  <input [(ngModel)]="_rec.mnozstvi_shodne" class="form-control" id="shodne_ks" name='shodne_ks' placeholder="0" type="text" onfocus="this.select()">
+              </li>    
+              <li>
+                  <label for="platnost_od" class="control-label">Neshodné ks / Vada</label>
+                  <div>
+                    <input [(ngModel)]="_rec.mnozstvi_neshodne" class="form-control" id="neshodne_ks" name='neshodne_ks' placeholder="0" type="text" onfocus="this.select()" style="width: auto; display: inline-block;"> /
+                    <input [(ngModel)]="_rec.vada_kod" class="form-control" id="vada_kod" name='vada_kod' placeholder="Kód neshody" type="text" onfocus="this.select()"  style="width: auto; display: inline-block;">    
+                  </div>
+                  
+              </li>
+          </ul>         
+          <mw-changed [zmeneno]="_rec.zmeneno" [zmenil]="_rec.zmenil"></mw-changed>            
+          </form>   
+  </div>      
+
+
+
+

@@ -1,0 +1,10 @@
+<div class="mw-dropdown">
+    <mat-form-field appearance="fill">
+        <mat-label></mat-label>
+        <mat-select [(value)]="_val" (selectionChange)="selectChanged($event)">
+          <mat-option *ngFor="let it of _lst" [value]="it.value">
+            {{it.label}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+</div> 

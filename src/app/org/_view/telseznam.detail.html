@@ -1,0 +1,44 @@
+<detail-form *ngIf="_rec" [detail]="this" [prilohy]="false" [ButtonSave]="_rec.typ != 1" [ButtonDelete]="_rec.typ != 1">
+    <form  #detForm="ngForm">
+        <div>
+            <ul class="form-fields">
+                  <li>
+                    <label for="n_nazev" class="control-label">Název</label>
+                    <div>
+                      <input [(ngModel)]="_rec.nazev" class="form-control" id="n_nazev" name='nazev' placeholder="Zadej název firmy" type="text" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                      <div *ngIf="nazev.errors && (nazev.dirty || nazev.touched)" class="alert alert-danger">   
+                          <div [hidden]="!nazev.errors.required">
+                                Zadej název kontaktu
+                          </div>
+                      </div>
+                    </div>  
+                </li>
+                <li *ngIf="_rec.typ == 1">
+                    <label for="narozeni">Datum narození</label>
+                    <div>
+                      <input [(ngModel)]="_rec.narozeni" class="form-control"  id="narozeni" name='narozeni' readonly>
+                    </div>  
+                </li>
+                <li>
+                  <label for="n_mobil" class="control-label">Mobil</label>
+                  <div>
+                    <input [(ngModel)]="_rec.mobil" class="form-control" id="n_mobil" name='n_mobil' placeholder="mobil" type="text" onfocus="this.select()">
+                  </div>  
+                </li>
+                <li>
+                  <label for="n_telefon" class="control-label">Pevná linka / telefón</label>
+                  <div>
+                    <input [(ngModel)]="_rec.telefon" class="form-control" id="n_telefon" name='n_telefon' placeholder="telefón, pevná linka" type="text" onfocus="this.select()">
+                  </div>  
+                </li>
+                <li>
+                  <label for="n_email" class="control-label">E-mail</label>
+                  <div>
+                    <input [(ngModel)]="_rec.email" class="form-control" id="n_email" name='n_email' placeholder="emailová adresa" type="text" onfocus="this.select()">
+                  </div>  
+                </li>
+                </ul>
+                <mw-changed [zmeneno]="_rec.zmeneno" [zmenil]="_rec.zmenil"></mw-changed>            
+        </div>
+    </form>
+</detail-form>

@@ -1,0 +1,23 @@
+<div class="page-header">
+    <ng-container  *ngIf="!_showSestavy">
+        <h1><i class="fa fa-envelope"></i>&nbsp;Poštovní domény</h1>
+        <small>Seznam domén, které běží na poštovním serveru. Pozor na velké zásahy, změny jsou okamžitě propisovány do poštovního serveru!</small>
+    </ng-container>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/posta/domain/list"><i class='fa fa-address-book'></i>Seznam domén</button>
+            <button type="button" class="btn btn-default" routerLink="/posta/domain/-1"><i class='fa fa-plus'></i>Přidat doménu</button>     
+            <button type="button" class="btn btn-default" routerLink="/posta/domain/print" ><i class='fa fa-print'></i>Tiskové sestavy</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body" *ngIf="!_showSestavy">
+        <posta-domain-list *ngIf="_showList" [urlrec]="urlrec" [isPrint]="true"></posta-domain-list>
+        <posta-domain-detail *ngIf="_showDetail" [detail]="detail" [urlrec]="urlrec" ></posta-domain-detail>
+    </div>        
+    <div class="pnl-body" *ngIf="_showSestavy">
+        <report-frm  [urlrec]="urlrec"></report-frm>
+    </div>    
+    
+</div>

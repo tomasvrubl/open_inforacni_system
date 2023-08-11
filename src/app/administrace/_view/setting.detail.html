@@ -1,0 +1,56 @@
+
+<mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+  <div class='detail'> 
+      <legend *ngIf="_detail.id < 1"><i class="fa fa-plus"></i>Nový parametr</legend>
+      <legend *ngIf="_detail.id > -1"><i class="fa fa-edit"></i>Editace parametru</legend>
+      <div class="btn-group">
+        <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>
+        <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!detForm.form.valid"><i class="fa fa-save"></i>Uložit záznam / změny</button>
+        <button *ngIf="(_detail.id > -1)" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit záznam</button>
+      </div>
+      <mw-alert-message [response]="response"></mw-alert-message>       
+      <form #detForm="ngForm">
+          <ul class="form-fields">
+                <li>
+                  <label for="kod" class="control-label">Kód/Parametr (unikátní)</label>
+                  <div>
+                    <input [(ngModel)]="_detail.kod" class="form-control" id="kod" name='kod' placeholder="Zadej název parametru" type="text" required #kod="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                    <div *ngIf="kod.errors && (kod.dirty || kod.touched)" class="alert alert-danger">   
+                        <div [hidden]="!kod.errors.required">
+                               Zadej kód. Toto pole nesmí být prázdné, musí být uníkátní.
+                         </div>
+                    </div>
+                  </div>  
+              </li>   
+              <li>
+                <label for="hodnota" class="control-label">Hodnota</label>
+                  <div>
+                    <input [(ngModel)]="_detail.param" class="form-control" id="hodnota" name='hodnota' placeholder="Zadej hodnotu pro parametr" type="text" onfocus="this.select()">                   
+                  </div>  
+              </li>
+              <li class="clmn">
+                  <label for="hodnota2" class="control-label">Hodnota 2 / Přemět e-mailu</label>
+                  <div> 
+                    <input [(ngModel)]="_detail.param2" class="form-control" id="hodnota2" name='hodnota2' type="text" onfocus="this.select()">                   
+                  </div>  
+              </li>
+              <li class="clmn">
+                <label for="hodnota3" class="control-label">Hodnota 3 / Obsah e-mailových zpráv</label>
+                <div> 
+                  <textarea [(ngModel)]="_detail.param3" class="form-control" id="hodnota3" name='hodnota3' onfocus="this.select()"></textarea>
+                </div>  
+            </li>
+              <li class="clmn">
+                <label for="n_poznamka" class="control-label">Poznámka</label>
+                <div>
+                    <textarea [(ngModel)]="_detail.poznamka" id="n_poznamka" name='poznamka'  class="form-control" style="min-height: 140px"></textarea>    
+                </div>     
+              </li>
+          </ul>         
+          <mw-changed [zmeneno]="_detail.zmeneno" [zmenil]="_detail.zmenil"></mw-changed>            
+        </form>   
+  </div>      
+
+
+
+

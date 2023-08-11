@@ -1,0 +1,23 @@
+<div class="page-header">
+    <ng-container *ngIf="!_showSestavy">
+        <h1><i class="fa fa-address-book"></i>&nbsp;Telefonní seznam</h1>
+        <small>Seznam telefonní čísel zaměstnanců a dalších kontaktů.</small>
+    </ng-container>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/org/telseznam/list"><i class='fa fa-address-book'></i>Telefonní seznam</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/org/telseznam/0/-1"><i class='fa fa-plus'></i>Přidat kontakt</button>     
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/org/telseznam/print" ><i class='fa fa-print'></i>Tiskové sestavy</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body" *ngIf="!_showSestavy">        
+        <org-telefonni-seznam-list *ngIf="_showList" [urlrec]="urlrec" [isPrint]="true"></org-telefonni-seznam-list>
+        <org-telefonni-seznam-detail *ngIf="_showDetail" [detail]="detail" [urlrec]="urlrec" ></org-telefonni-seznam-detail>
+    </div>        
+    <div class="pnl-body" *ngIf="_showSestavy">
+        <report-frm  [urlrec]="urlrec"></report-frm>
+    </div>    
+    
+</div>

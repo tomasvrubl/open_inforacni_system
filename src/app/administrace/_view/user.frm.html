@@ -1,0 +1,22 @@
+<div class="page-header">
+    <h1>Uživatel systému</h1>
+    <small>Seznam uživatelů systému. Pouze tito uživatelé se mohou přihlásit do aplikace.</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">            
+            <button type="button" class="btn btn-default active" routerLink="/admin/user/list"><i class='fa fa-align-justify'></i>Seznam uživatelů</button>
+            <button type="button" class="btn btn-default" routerLink="/admin/user/-1"><i class='fa fa-plus'></i>Přidat uživatele</button>     
+        </div>        
+    </div>
+</div>
+
+
+<div class="pnl">
+    <div class="pnl-body">        
+        <user-list *ngIf="user == null"></user-list>
+        <user-detail *ngIf="user" [detail]="user" ></user-detail>
+    </div>        
+</div>
+
+
+
+

@@ -1,0 +1,50 @@
+<mw-alert-message [response]="response"></mw-alert-message>       
+<mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+  <div class='detail'> 
+      <legend *ngIf="typ.id < 1"><i class="fa fa-plus"></i>Nový typ</legend>
+      <legend *ngIf="typ.id > -1"><i class="fa fa-edit"></i>Editace záznamu</legend>
+      <div class="btn-group">
+        <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nový záznam</button>
+        <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!typForm.form.valid"><i class="fa fa-save"></i>Uložit záznam / změny</button>
+        <button *ngIf="(typ.id > -1)" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit záznam</button>
+      </div>
+      
+      <form #typForm="ngForm" (ngSubmit)="onSubmit()">
+          <ul class="form-fields">
+            <li>
+              <label for="kod" class="control-label">Kod</label>
+              <div>
+                  <input [(ngModel)]="typ.kod" class="form-control" id="kod" name='kod' placeholder="Zadej kód" type="text" required #kod="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                  <div *ngIf="kod.errors && (kod.dirty || kod.touched)" class="alert alert-danger">   
+                      <div [hidden]="!kod.errors.required">
+                             Zadej kod typu hlášení (unikátní).
+                       </div>
+                  </div>
+              </div>  
+            </li>        
+
+              <li>
+                <label for="nazev" class="control-label">Název</label>
+                <div>
+                    <input [(ngModel)]="typ.nazev" class="form-control" id="nazev" name='nazev' placeholder="Zadej název typu" type="text" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                    <div *ngIf="nazev.errors && (nazev.dirty || nazev.touched)" class="alert alert-danger">   
+                        <div [hidden]="!nazev.errors.required">
+                               Zadej název typu hlášení, stručný popis.
+                         </div>
+                    </div>
+                </div>  
+              </li>              
+              <li>
+                <label for="platnost" class="control-label">Platnost</label>
+                 <div class="col">
+                    <input [checked]="typ.platnost" (change)="typ.platnost = !typ.platnost;" type="checkbox" />                              
+                 </div>
+              </li>
+          </ul>         
+          <mw-changed [zmeneno]="typ.zmeneno" [zmenil]="typ.zmenil"></mw-changed>            
+          </form>   
+  </div>      
+
+
+
+

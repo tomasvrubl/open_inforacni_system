@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <base href="/">
+  <title>Informační system</title>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  <link href="assets/font/Material-icons/icon.css" rel="stylesheet">
+  <link href="assets/font/Roboto/font.css" rel="stylesheet">
+  
+  <script id="phpcontent" type="text/javascript">
+
+    var AppUrlWS =  document.location.origin  + '/ws/';
+    var AppUrlBase = '/';
+    
+    var AppLibrary = {
+
+        dnyTyden: ['Po', 'Út', 'St', 'Čt', 'Pá', 'So', 'Ne'],
+        mesice: ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec' ],             
+        formatNumber : function(val){        
+              if(typeof val == 'string'){
+                  if(val.trim().length == 0){
+                      return "0";
+                  }
+              return val.replace(",", ".");
+             }
+             return val;
+          }
+    }
+    
+    Date.prototype.toJSON = function(){ return moment(this).format(); }
+
+</script>
+
+</head>
+<body class="mat-typography">
+  <app-content>
+    Načítám framework...
+  </app-content>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<div class="page-header">
+    <h1>Zakázky  <span *ngIf="isSelector"> - vyber zakázku</span></h1>
+    <small>Seznam výrobních zakázek</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/vyroba/zakazka"><i class='fa fa-align-justify'></i>Seznam zakázek</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/vyroba/zakazka/-1"><i class='fa fa-plus'></i>Přidat zakázku</button>     
+        </div>        
+    </div>
+</div>
+<div class="pnl">
+    <div class="pnl-body">
+        <zakazka-list *ngIf="zakazka == null"></zakazka-list>
+        <zakazka-detail *ngIf="zakazka" [detail]="zakazka" ></zakazka-detail>
+    </div>        
+</div>
+
+
+
+

@@ -1,0 +1,4 @@
+<div *ngIf="isDisplayed()" class="mw-alert alert animated" [class.mw-alert-err]="response.kod == 1" role="alert" [class.fadeOut]= "response.kod == -1" [class.fadeIn]= "response.kod > -1"  [class.alert-info] = "response.kod == 0" [class.alert-danger] = "response.kod == 1">
+    <i class="fa fa-info-sign"></i>{{response.nazev}}
+    <button type="button" (click)="response.kod = -1"><i class="fa fa-remove"></i></button>
+</div>

@@ -1,0 +1,25 @@
+{
+    "name": "ws/gis",
+    "autoload": {
+        "psr-0": {
+            "ws\\": "./"
+        }
+    },
+    "require": {
+        "nette/security": "3.*.*",
+        "nette/http" : "3.*.*",
+        "nette/di": "3.*.*",
+        "nette/neon": "3.*.*",
+        "nette/php-generator": "3.*.*",
+        "nette/utils": "3.*.*",        
+        "nette/bootstrap": "3.*.*",
+        "tracy/tracy": "2.9.*",
+        "symfony/console": "2.8.*",        
+        "phpmailer/phpmailer": "^6.5",
+        "dibi/dibi": "^4.2",
+        "psr/log": "1.1.*",
+        "phpoffice/phpword": "^0.18.3",
+        "dompdf/dompdf": "^1.2",
+        "phpoffice/phpspreadsheet": "^1.28"
+    }
+}

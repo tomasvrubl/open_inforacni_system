@@ -1,0 +1,22 @@
+<div class="page-header">
+    <h1>Pracovní zařazení ve výrobě<span *ngIf="isSelector"> - vyber zařazení</span></h1>
+    <small>Seznam pracovních zařazení ve výrobě. Použito například v zápisu směny.</small>
+    <div class='tool-part'>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/vyroba/zarazeni/list"><i class='fa fa-align-justify'></i>Seznam zařazení</button>
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/vyroba/zarazeni/-1"><i class='fa fa-plus'></i>Přidat záznam</button>     
+            <button type="button" class="btn btn-default" routerLinkActive="active" routerLink="/vyroba/zarazeni/print" ><i class='fa fa-print'></i>Tiskové sestavy</button>
+        </div>        
+    </div>
+</div>
+
+<div class="pnl">
+    <div class="pnl-body" *ngIf="!_showSestavy">
+        <vyr-zarazeni-list *ngIf="detail == null" urlrec="/vyroba/zapis-smeny" [isPrint]="true"></vyr-zarazeni-list>
+        <vyr-zarazeni-detail *ngIf="detail" [detail]="detail" ></vyr-zarazeni-detail>
+    </div>        
+    <div class="pnl-body" *ngIf="_showSestavy">
+        <report-frm urlrec="/vyroba/zarazeni"></report-frm>
+    </div> 
+</div>
+

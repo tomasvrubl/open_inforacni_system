@@ -1,0 +1,71 @@
+<div class='detail' *ngIf="_det">       
+    <mw-modal-drop (onYes)="dropme()" ></mw-modal-drop>
+    <legend><i class="fa fa-edit"></i>Editace tiskové sestavy</legend>
+      <div class="form-buttons">
+      <button class="btn btn-success" (click)="newone()"><i class="fa fa-plus"></i>Nová sestava</button>
+      <button type="submit" class="btn btn-primary" (click)="saveme()" [disabled]="!detForm.form.valid"><i class="fa fa-save"></i>Uložit změny</button>
+      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#dropModal"><i class="fa fa-trash"></i>Odstranit sestavu</button>
+    </div>
+    <mw-alert-message [response]="response"></mw-alert-message>       
+
+    <form #detForm="ngForm">
+        <ul class="form-fields">             
+            <li>
+                <label for="n_nazev" class="control-label">Název</label>
+                <div>
+                  <input [(ngModel)]="_det.nazev" class="form-control" id="n_nazev" name='nazev' placeholder="Zadej název sestavy" type="text" required #nazev="ngModel" oninvalid="this.setCustomValidity('Toto pole musí být zadáno')" onfocus="this.select()">
+                  <div *ngIf="nazev.errors && (nazev.dirty || nazev.touched)" class="alert alert-danger">   
+                      <div [hidden]="!nazev.errors.required">
+                              Zadej název tiskové sestavy
+                      </div>
+                  </div>
+                </div>  
+            </li>
+            <li class="clmn">
+              <label for="n_poznamka" class="control-label">Poznámka</label>
+              <div>
+                  <textarea [(ngModel)]="_det.note" id="n_poznamka" name='poznamka'  class="form-control" style="min-height: 140px"></textarea>    
+              </div>     
+            </li>              
+        </ul>         
+      
+        <div *ngIf="_state == 0" class="mw-uploader"  mwDragDrop (fileDropped)="onFileDropped($event)" >
+            <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event.target.files)" />
+            <img src="assets/img/ic-upload-file.svg" alt="">
+            <h3>Přetáhni sem soubor</h3>
+            <h3>nebo</h3>
+            <label for="fileDropRef">Vložit soubor ...</label>
+        </div>
+        <div *ngIf="_state == 1" class="report">    
+            <div class="single-file" *ngFor="let file of files; let i = index">
+                <img src="assets/img/ic-file.svg" width="25px" alt="file">
+                <div class="info">
+                    <h4 class="name">
+                        {{ file?.name }}
+                    </h4>
+                    <p class="size">
+                        {{ formatBytes(file?.size) }}
+                    </p>
+                    <div class="progress" *ngIf="file?.progress < 100">
+                        <div class="percent" [style.width.%]="file?.progress"><span>{{file?.progress}} %</span></div>                                    
+                    </div>
+                </div>                      
+            </div>    
+        </div>        
+        <div *ngIf="_state == 2" class="report">    
+            <div class="single-file">
+                <img src="assets/img/ic-file.svg" width="25px" alt="file">
+                <a [href]="_det.url"> {{ _det.url }}</a>
+                <button (click)="clearFile()" class="btn btn-primary"><i class="fa fa-refresh"></i>Změnit soubor</button>
+            </div>    
+        </div>
+
+
+        <mw-changed [zmeneno]="_det.zmeneno" [zmenil]="_det.zmenil"></mw-changed>            
+      </form>             
+      
+    
+</div>      
+
+
+
